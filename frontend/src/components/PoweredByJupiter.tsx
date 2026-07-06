@@ -21,22 +21,31 @@ export function PoweredByJupiter({
       rel="noopener noreferrer"
       className={cn(
         'jupiter-brand inline-flex items-center transition-opacity hover:opacity-90',
-        variant === 'wordmark' ? 'flex-col gap-2' : 'gap-1.5',
+        variant === 'wordmark' ? 'gap-3' : 'gap-1.5',
         className,
       )}
       aria-label="Powered by Jupiter Lock — open lock.jup.ag"
     >
       {variant === 'wordmark' ? (
         <>
-          <span className="jup-label text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Powered by
-          </span>
           <img
-            src={JUPITER_WORDMARK_SRC}
-            alt="Jupiter"
+            src={JUPITER_LOGO_SRC}
+            alt=""
             draggable={false}
-            className="jup-wordmark h-7 w-auto brightness-0 invert sm:h-8"
+            aria-hidden
+            className="jup-logo h-10 w-10 shrink-0 object-contain sm:h-11 sm:w-11"
           />
+          <span className="flex flex-col gap-1.5">
+            <span className="jup-label text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Powered by
+            </span>
+            <img
+              src={JUPITER_WORDMARK_SRC}
+              alt="Jupiter"
+              draggable={false}
+              className="jup-wordmark h-7 w-auto brightness-0 sm:h-8"
+            />
+          </span>
         </>
       ) : (
         <>
