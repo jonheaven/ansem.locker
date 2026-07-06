@@ -24,13 +24,13 @@
 [data-committed='true'] {
   color-scheme: dark;
   --color-background: #000000;
-  --color-foreground: #f5f5f7;
-  --color-surface: rgb(28 28 30 / 0.88);
+  --color-foreground: #fbfbfd;
+  --color-surface: #1c1c1e;
   --color-surface-elevated: #2c2c2e;
   --color-surface-hover: #3a3a3c;
-  --color-border: #48484a;
-  --color-border-strong: #636366;
-  --color-muted-foreground: #aeaeb2;
+  --color-border: #545456;
+  --color-border-strong: #8e8e93;
+  --color-muted-foreground: #d1d1d6;
 }
 
 *,
@@ -68,13 +68,13 @@ body {
   background-position: center top;
 }
 
-/* Locked state — locker art fills main content area at native aspect ratio */
+/* Locked state — fit locker art in content area without over-scaling */
 .locker-content-bg {
-  background-color: #0a0a0a;
+  background-color: #050505;
   background-image: url('/lockerbg.jpg');
   background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  background-position: center center;
+  background-size: contain;
 }
 
 /* Slider bull — shake / scale ramps with amount & lock length */

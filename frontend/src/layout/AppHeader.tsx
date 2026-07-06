@@ -5,7 +5,9 @@ import { toast } from 'sonner';
 import { PoweredByJupiter } from '@/components/PoweredByJupiter';
 import { XMenuButton } from '@/components/XMenuButton';
 import { BUILDER_WALLET, BUILDER_X, BUILDER_X_URL, GITHUB_URL } from '@/config/constants';
+import { useHasActiveLock } from '@/hooks/useHasActiveLock';
 import { shortenAddress } from '@/lib/format';
+import { cn } from '@/lib/cn';
 
 function HeaderActions() {
   return (
@@ -18,6 +20,7 @@ function HeaderActions() {
 
 export function AppHeader() {
   const [copied, setCopied] = useState(false);
+  const committed = useHasActiveLock();
 
   const copyWallet = async () => {
     try {
@@ -31,7 +34,12 @@ export function AppHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-background/72 backdrop-blur-2xl backdrop-saturate-150 transition-colors duration-700">
+    <header
+      className={cn(
+        'sticky top-0 z-50 border-b border-border/80 backdrop-blur-2xl backdrop-saturate-150 transition-colors duration-700',
+        committed ? 'bg-black/88' : 'bg-background/72',
+      )}
+    >
       <div className="mx-auto flex w-full max-w-5xl flex-col px-4 py-3 sm:flex-row sm:items-center sm:gap-8 sm:px-6 lg:gap-10">
         <div className="relative flex w-full items-center justify-center sm:w-[38%] sm:max-w-[360px] sm:shrink-0 lg:max-w-[400px]">
           <a

@@ -5,6 +5,7 @@ import { LeaderboardTable } from '@/components/LeaderboardTable';
 import { MyLocksPanel } from '@/components/MyLocksPanel';
 import { TrustSection } from '@/components/TrustSection';
 import { APP_VIEWS, type AppView, useAppView } from '@/hooks/useAppView';
+import { useHasActiveLock } from '@/hooks/useHasActiveLock';
 import { GITHUB_URL, JUPITER_LOCK_PROGRAM_ID } from '@/config/constants';
 import { COPY } from '@/lib/copy';
 import { cn } from '@/lib/cn';
@@ -18,6 +19,7 @@ const TABS: { id: AppView; label: string; icon: typeof Lock }[] = [
 
 export function AppCarousel() {
   const { view, setView, index } = useAppView();
+  const committed = useHasActiveLock();
 
   return (
     <div className="flex w-full max-w-5xl flex-col items-stretch gap-6 sm:flex-row sm:items-start sm:gap-8 lg:gap-10">
@@ -27,7 +29,10 @@ export function AppCarousel() {
         <div
           role="tablist"
           aria-label="ansem.locker views"
-          className="mb-5 flex rounded-full border border-border/80 bg-surface/80 p-1.5 shadow-sm backdrop-blur-md"
+          className={cn(
+            'mb-5 flex rounded-full border border-border/80 p-1.5 shadow-sm backdrop-blur-md',
+            committed ? 'bg-surface' : 'bg-surface/80',
+          )}
         >
         {TABS.map(({ id, label, icon: Icon }) => (
           <button
@@ -63,7 +68,13 @@ export function AppCarousel() {
             >
               {id === 'lock' && (
                 <div className="space-y-4">
-                  <div className="text-left">
+                  <div
+                    className={cn(
+                      'text-left',
+                      committed &&
+                        'rounded-2xl border border-border/70 bg-surface px-4 py-4 shadow-sm backdrop-blur-md sm:px-5',
+                    )}
+                  >
                     <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
                       {COPY.headline}
                     </h1>

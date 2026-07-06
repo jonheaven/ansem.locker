@@ -22,7 +22,7 @@ export function AppShell() {
         >
           {committed ? (
             <div
-              className="pointer-events-none absolute inset-0 bg-black/40 transition-colors duration-700"
+              className="pointer-events-none absolute inset-0 bg-black/58 transition-colors duration-700"
               aria-hidden
             />
           ) : null}
