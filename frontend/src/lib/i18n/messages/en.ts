@@ -163,7 +163,7 @@ export const en = {
     flexTitle: 'Flex earns visibility',
     flexBody:
       'Share your lock on 𝕏, verify the post, and land on the Locker List. Early bulls who prove conviction publicly are who projects (and communities) notice.',
-    diamondTitle: 'Diamond hooves, not paper paws',
+    diamondTitle: 'Diamond hooves vs paper hands',
     diamondBody:
       'You chose the unlock date. No early exit, no rug-by-panic-selling your own bags. When unlock hits, you decide — but until then, you\'re locked in with the bulls going for $1B.',
     disclaimer:
