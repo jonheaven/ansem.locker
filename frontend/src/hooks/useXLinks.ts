@@ -15,15 +15,29 @@ type XLinksResponse = {
 };
 
 async function fetchXLinks(): Promise<Map<string, XLinkRecord>> {
+  let remote = new Map<string, XLinkRecord>();
   try {
     const result = await fetchJson<XLinksResponse>('/api/x-links');
-    if (!result.ok || !result.data) {
-      return new Map();
+    if (result.ok && result.data) {
+      remote = new Map(result.data.links.map((link) => [link.wallet, link]));
     }
-    return new Map(result.data.links.map((link) => [link.wallet, link]));
   } catch {
-    return new Map();
+    // API unavailable — still merge any links saved in this browser
   }
+
+  const local = useXLinkStore.getState().links;
+  for (const [wallet, link] of Object.entries(local)) {
+    if (!remote.has(wallet)) {
+      remote.set(wallet, {
+        wallet,
+        xHandle: link.xHandle,
+        tweetUrl: link.tweetUrl,
+        linkedAt: link.linkedAt,
+      });
+    }
+  }
+
+  return remote;
 }
 
 export function useXLinks() {

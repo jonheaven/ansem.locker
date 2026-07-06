@@ -25,6 +25,7 @@ Set in Vercel → Project → Settings → Environment Variables. Enable **Produ
 |----------|------------|-------------|
 | `SOLANA_RPC_URL` | Server (`/api/locks`, `/api/wallet-locks`) | **Required** — full QuickNode or Helius mainnet URL |
 | `VITE_SOLANA_RPC_URL` | Browser (build time) | Same RPC URL — balances, lock txs, wallet reads |
+| `BLOB_READ_WRITE_TOKEN` | Server (`/api/x-links`) | **Required for leaderboard 𝕏 handles** — create a [Vercel Blob](https://vercel.com/docs/vercel-blob) store on the project; Vercel injects this token automatically |
 
 **Do not** use `VITE_` prefix for `SOLANA_RPC_URL`. The server reads `process.env.SOLANA_RPC_URL` only.
 

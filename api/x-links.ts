@@ -1,19 +1,12 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import {
+  loadXLinkStore,
+  saveXLinkStore,
+  type XLinkRecord,
+} from './_shared/x-link-store';
 import { isBase58Address } from './_shared/solana';
 
-export type XLinkRecord = {
-  wallet: string;
-  xHandle: string;
-  tweetUrl: string;
-  linkedAt: number;
-};
-
-declare global {
-  // eslint-disable-next-line no-var
-  var __ansemXLinksStore: Map<string, XLinkRecord> | undefined;
-}
-
-const store = globalThis.__ansemXLinksStore ??= new Map<string, XLinkRecord>();
+export type { XLinkRecord };
 
 function isValidWallet(wallet: string) {
   return isBase58Address(wallet);
@@ -100,6 +93,8 @@ async function verifyTweetLink(
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  const store = await loadXLinkStore();
+
   if (req.method === 'GET') {
     return res.status(200).json({
       links: Array.from(store.values()).sort((a, b) => b.linkedAt - a.linkedAt),
@@ -112,6 +107,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Invalid wallet address' });
     }
     store.delete(wallet);
+    await saveXLinkStore(store);
     return res.status(200).json({ ok: true });
   }
 
@@ -142,6 +138,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       linkedAt: Date.now(),
     };
     store.set(wallet, link);
+    await saveXLinkStore(store);
     return res.status(200).json({ link });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Verification failed';
