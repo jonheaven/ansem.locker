@@ -20,8 +20,7 @@ export function MyLocksPanel() {
 
     setUnlocking(vestingAccount);
     try {
-      const instructions = await buildClaimAnsemInstructions(
-        connection,
+      const instructions = buildClaimAnsemInstructions(
         new PublicKey(vestingAccount),
         publicKey,
         amount,

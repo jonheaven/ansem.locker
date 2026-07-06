@@ -171,8 +171,7 @@ export function LockPanel() {
 
     setPending(true);
     try {
-      const { instructions, extraSigners } = await buildLockAnsemInstructions(
-        connection,
+      const { instructions, extraSigners } = buildLockAnsemInstructions(
         publicKey,
         raw,
         unlockTs,
