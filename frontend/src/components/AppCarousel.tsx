@@ -81,7 +81,7 @@ export function AppCarousel() {
                 {id === 'leaderboard' && (
                   <div
                     className={cn(
-                      !committed && 'max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain',
+                      !committed && 'app-scroll max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain',
                     )}
                   >
                     <LeaderboardTable showSortTabs limit={25} />
@@ -92,7 +92,7 @@ export function AppCarousel() {
                   <div
                     className={cn(
                       'space-y-4',
-                      !committed && 'max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain',
+                      !committed && 'app-scroll max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain',
                     )}
                   >
                     <WhyLockSection />

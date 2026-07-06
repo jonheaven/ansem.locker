@@ -22,7 +22,7 @@ export function AppShell() {
         {/* Single scroll container in locked-in mode — background stays fixed */}
         <main
           className={cn(
-            'relative min-h-0 flex-1 px-4 sm:px-6',
+            'app-scroll relative min-h-0 flex-1 px-4 sm:px-6',
             committed
               ? 'overflow-y-auto overscroll-y-contain py-4 sm:py-5'
               : 'overflow-y-auto py-6 sm:py-8',
