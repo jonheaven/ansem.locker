@@ -14,7 +14,7 @@ export function BullAside({ className }: BullAsideProps) {
 
   const bullClass = cn(
     'relative z-10 mx-auto w-full object-contain',
-    committed ? 'max-h-[min(52vh,440px)] opacity-90' : 'max-h-[min(58vh,520px)]',
+    committed ? 'max-h-[min(52vh,440px)] opacity-95' : 'max-h-[min(58vh,520px)]',
   );
 
   return (
@@ -25,24 +25,12 @@ export function BullAside({ className }: BullAsideProps) {
       )}
       aria-hidden
     >
-      <div className="relative w-full">
-        {committed ? (
-          <>
-            <img
-              src="/locked-bg.jpg"
-              alt=""
-              className="absolute inset-0 rounded-2xl object-cover object-center"
-            />
-            <div className="absolute inset-0 rounded-2xl bg-black/30" />
-          </>
-        ) : null}
-        <img
-          src={committed ? BULL_HAPPY_SRC : BULL_SRC}
-          alt=""
-          draggable={false}
-          className={bullClass}
-        />
-      </div>
+      <img
+        src={committed ? BULL_HAPPY_SRC : BULL_SRC}
+        alt=""
+        draggable={false}
+        className={bullClass}
+      />
     </div>
   );
 }
