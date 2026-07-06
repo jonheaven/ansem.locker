@@ -1,4 +1,3 @@
-import { useHasActiveLock } from '@/hooks/useHasActiveLock';
 import { cn } from '@/lib/cn';
 
 type AppBackgroundProps = {
@@ -6,20 +5,11 @@ type AppBackgroundProps = {
 };
 
 export function AppBackground({ className }: AppBackgroundProps) {
-  const committed = useHasActiveLock();
-
   return (
     <div className={cn('app-bg-fixed', className)} aria-hidden>
-      {committed ? (
-        <>
-          <div className="locker-page-bg" />
-          <div className="absolute inset-0 bg-background/55 transition-colors duration-700" />
-        </>
-      ) : (
-        <div className="bg-gold-blocks-pattern absolute inset-0">
-          <div className="absolute inset-0 bg-background/25 transition-colors duration-700" />
-        </div>
-      )}
+      <div className="bg-gold-blocks-pattern absolute inset-0">
+        <div className="absolute inset-0 bg-background/25 transition-colors duration-700" />
+      </div>
     </div>
   );
 }

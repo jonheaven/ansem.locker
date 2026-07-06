@@ -79,16 +79,6 @@ html[data-committed='true'] #root > * {
   pointer-events: none;
 }
 
-.locker-page-bg {
-  position: absolute;
-  inset: 0;
-  background-color: #050505;
-  background-image: url('/lockerbg.jpg');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-}
-
 /* Isometric block tile — default (unlocked) page background */
 .bg-gold-blocks-pattern {
   background-color: var(--color-background);
