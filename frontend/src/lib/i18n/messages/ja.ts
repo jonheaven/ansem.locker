@@ -18,17 +18,8 @@ export const ja = {
     confirmInWallet: 'ウォレットで確認…',
     poweredByJupiter: 'Powered by',
     jupiter: 'Jupiter',
-    region: '地域',
     language: '言語',
     currency: '通貨',
-  },
-  region: {
-    japan: '日本',
-    unitedStates: 'アメリカ',
-    unitedKingdom: 'イギリス',
-    europe: 'ヨーロッパ',
-    australia: 'オーストラリア',
-    canada: 'カナダ',
   },
   locale: {
     en: 'English',

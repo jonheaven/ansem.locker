@@ -18,17 +18,8 @@ export const en = {
     confirmInWallet: 'Confirm in wallet…',
     poweredByJupiter: 'Powered by',
     jupiter: 'Jupiter',
-    region: 'Region',
     language: 'Language',
     currency: 'Currency',
-  },
-  region: {
-    japan: 'Japan',
-    unitedStates: 'United States',
-    unitedKingdom: 'United Kingdom',
-    europe: 'Europe',
-    australia: 'Australia',
-    canada: 'Canada',
   },
   locale: {
     en: 'English',
