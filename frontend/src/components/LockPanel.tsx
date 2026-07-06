@@ -5,7 +5,7 @@ import { Transaction } from '@solana/web3.js';
 import { Loader2, Lock } from 'lucide-react';
 import { toast } from 'sonner';
 import { BullSlider } from '@/components/BullSlider';
-import { AnsemFiatValue } from '@/components/AnsemFiatValue';
+import { AnsemAmountDisplay } from '@/components/AnsemFiatValue';
 import { PoweredByJupiter } from '@/components/PoweredByJupiter';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -268,49 +268,45 @@ export function LockPanel() {
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-muted-foreground">
             {t('lock.yourBalance')}
           </p>
-          <p className="mt-2 font-mono text-4xl font-bold tracking-tight tabular-nums text-foreground sm:text-5xl">
-            {balance.isLoading
-              ? '…'
-              : balance.isError
-                ? '—'
-                : formatAnsemAmount(maxRaw)}
-          </p>
-          {!balance.isLoading && !balance.isError && maxRaw > 0n ? (
-            <AnsemFiatValue raw={maxRaw} inline={false} className="mt-1 text-sm" />
-          ) : null}
-          {balance.isError ? (
-            <p className="mt-2 text-sm text-destructive">{t('lock.balanceError')}</p>
-          ) : null}
-          <p className="mt-1 text-xl font-semibold text-accent">{t('common.ansem')}</p>
+          {balance.isLoading ? (
+            <p className="mt-2 font-mono text-4xl font-bold text-muted-foreground sm:text-5xl">…</p>
+          ) : balance.isError ? (
+            <>
+              <p className="mt-2 font-mono text-4xl font-bold text-muted-foreground sm:text-5xl">—</p>
+              <p className="mt-2 text-sm text-destructive">{t('lock.balanceError')}</p>
+            </>
+          ) : (
+            <div className="mt-2">
+              <AnsemAmountDisplay raw={maxRaw} size="hero" align="center" />
+            </div>
+          )}
         </div>
 
         <div>
           <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <span className="text-base font-semibold text-foreground">{t('lock.lockAmount')}</span>
-            <div className="flex flex-col items-end gap-0.5">
-              <div className="flex items-baseline justify-end gap-2">
-              <input
-                type="text"
-                inputMode="decimal"
-                placeholder="0"
-                value={amountInputFocused ? amountInput : amountDisplay || '0'}
-                disabled={!hasBalance || balance.isLoading}
-                onFocus={() => {
-                  setAmountInputFocused(true);
-                  setAmountInput(amountDisplay || '');
-                }}
-                onChange={(e) => handleAmountInputChange(e.target.value)}
-                onBlur={handleAmountInputBlur}
-                className="w-36 rounded-xl border border-border bg-surface-elevated px-3 py-2 text-right font-mono text-2xl font-bold tabular-nums text-foreground outline-none transition-colors focus:border-accent sm:w-44 sm:text-3xl"
-                aria-label={t('lock.lockAmount')}
-              />
-              <span className="text-base font-semibold text-muted-foreground sm:text-lg">
-                {t('common.ansem')}
-              </span>
-              </div>
+            <div className="flex flex-col items-end gap-2">
               {amountRaw > 0n ? (
-                <AnsemFiatValue raw={amountRaw} inline={false} className="text-xs" />
+                <AnsemAmountDisplay raw={amountRaw} size="md" align="right" />
               ) : null}
+              <div className="flex items-baseline justify-end gap-2">
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  placeholder="0"
+                  value={amountInputFocused ? amountInput : amountDisplay || '0'}
+                  disabled={!hasBalance || balance.isLoading}
+                  onFocus={() => {
+                    setAmountInputFocused(true);
+                    setAmountInput(amountDisplay || '');
+                  }}
+                  onChange={(e) => handleAmountInputChange(e.target.value)}
+                  onBlur={handleAmountInputBlur}
+                  className="w-28 rounded-xl border border-border bg-surface-elevated px-3 py-1.5 text-right font-mono text-base font-semibold tabular-nums text-muted-foreground outline-none transition-colors focus:border-accent focus:text-foreground sm:w-32"
+                  aria-label={t('lock.lockAmount')}
+                />
+                <span className="text-sm font-medium text-muted-foreground">{t('common.ansem')}</span>
+              </div>
             </div>
           </div>
           <BullSlider

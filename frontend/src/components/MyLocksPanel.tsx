@@ -3,14 +3,13 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { PublicKey, Transaction } from '@solana/web3.js';
 import { Loader2, Unlock } from 'lucide-react';
 import { toast } from 'sonner';
-import { AnsemFiatValue } from '@/components/AnsemFiatValue';
+import { AnsemAmountDisplay } from '@/components/AnsemFiatValue';
 import { LockFlexBanner } from '@/components/LockFlexBanner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLocalizedFormat } from '@/hooks/useLocalizedFormat';
 import { useMyLocks } from '@/hooks/useLocks';
 import { buildClaimAnsemInstructions } from '@/lib/bonfida';
-import { formatAnsemAmount } from '@/lib/format';
 import { useI18n } from '@/lib/i18n/i18n-context';
 import { clearJustLocked, readJustLocked, type JustLockedPayload } from '@/lib/just-locked';
 
@@ -117,15 +116,7 @@ export function MyLocksPanel() {
                     className="flex flex-col gap-3 rounded-xl border border-border/80 bg-surface-elevated p-4 sm:flex-row sm:items-center sm:justify-between"
                   >
                     <div>
-                      <p className="font-mono text-xl font-bold sm:text-2xl">
-                        {formatAnsemAmount(lock.remainingInVault)}{' '}
-                        <span className="text-accent">{t('common.ansem')}</span>
-                      </p>
-                      <AnsemFiatValue
-                        raw={lock.remainingInVault}
-                        inline={false}
-                        className="mt-0.5 text-sm"
-                      />
+                      <AnsemAmountDisplay raw={lock.remainingInVault} size="lg" align="left" />
                       <p className="mt-1 text-sm font-medium text-muted-foreground sm:text-base">
                         {unlocked
                           ? t('locks.cliffPassed')

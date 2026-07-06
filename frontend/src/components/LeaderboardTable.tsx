@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Medal, Share2, Trophy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { AnsemFiatValue } from '@/components/AnsemFiatValue';
+import { AnsemAmountDisplay } from '@/components/AnsemFiatValue';
 import { CopyWalletButton } from '@/components/CopyWalletButton';
 import { FlexVerifyForm } from '@/components/FlexVerifyForm';
 import { LockerListPanel } from '@/components/LockerListPanel';
@@ -12,7 +12,7 @@ import { useLeaderboard, sortLocks, type LeaderboardSort } from '@/hooks/useLock
 import { useLockerList } from '@/hooks/useLockerList';
 import { useLocalizedFormat } from '@/hooks/useLocalizedFormat';
 import { useXLinks } from '@/hooks/useXLinks';
-import { formatAnsemAmount, shortenAddress } from '@/lib/format';
+import { shortenAddress } from '@/lib/format';
 import { useI18n } from '@/lib/i18n/i18n-context';
 import { openLeaderboardEntryShare, openLeaderboardHypeShare } from '@/lib/share-x';
 import { cn } from '@/lib/cn';
@@ -237,19 +237,11 @@ export function LeaderboardTable({
                     </div>
                   </div>
                   <div className="flex shrink-0 items-center gap-2">
-                    <div className="text-right">
-                      <p className="font-mono font-semibold tabular-nums">
-                        {formatAnsemAmount(entry.remainingInVault)}
-                      </p>
-                      <AnsemFiatValue
-                        raw={entry.remainingInVault}
-                        inline={false}
-                        className="text-[10px]"
-                      />
-                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                        {t('common.ansem')}
-                      </p>
-                    </div>
+                    <AnsemAmountDisplay
+                      raw={entry.remainingInVault}
+                      size="sm"
+                      align="right"
+                    />
                     <CopyWalletButton address={entry.owner} />
                     <Button
                       size="sm"
