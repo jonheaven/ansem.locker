@@ -10,29 +10,25 @@ export function AppShell() {
   return (
     <div
       className={cn(
-        'relative text-foreground transition-colors duration-700',
-        committed ? 'flex h-screen max-h-screen flex-col overflow-hidden' : 'min-h-screen',
+        'relative flex min-h-0 flex-1 flex-col text-foreground transition-colors duration-700',
+        !committed && 'min-h-screen',
       )}
     >
       <AppBackground />
 
-      <div
-        className={cn(
-          'relative z-10 flex flex-col',
-          committed ? 'min-h-0 flex-1 overflow-hidden' : 'min-h-screen',
-        )}
-      >
+      <div className="relative z-10 flex min-h-0 flex-1 flex-col overflow-hidden">
         <AppHeader />
 
+        {/* Single scroll container in locked-in mode — background stays fixed */}
         <main
           className={cn(
-            'relative flex flex-1 flex-col items-center px-4 sm:px-6',
+            'relative min-h-0 flex-1 px-4 sm:px-6',
             committed
-              ? 'min-h-0 justify-center overflow-hidden py-4 sm:py-5'
+              ? 'overflow-y-auto overscroll-y-contain py-4 sm:py-5'
               : 'overflow-y-auto py-6 sm:py-8',
           )}
         >
-          <div className="relative z-10 flex w-full min-h-0 flex-1 flex-col items-center justify-center">
+          <div className="mx-auto flex w-full max-w-5xl flex-col items-stretch">
             <Outlet />
           </div>
         </main>

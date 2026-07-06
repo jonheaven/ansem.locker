@@ -26,13 +26,12 @@ export function AppCarousel() {
   return (
     <div
       className={cn(
-        'flex w-full max-w-5xl flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:gap-6 lg:gap-8',
-        committed && 'min-h-0',
+        'flex w-full max-w-5xl flex-col items-stretch gap-4 sm:flex-row sm:items-start sm:gap-6 lg:gap-8',
       )}
     >
       <BullAside className={committed ? undefined : 'sm:sticky sm:top-24'} />
 
-      <div className={cn('flex min-h-0 min-w-0 flex-1 flex-col', committed && 'max-h-[calc(100dvh-11rem)]')}>
+      <div className="flex min-w-0 flex-1 flex-col">
         <div
           role="tablist"
           aria-label="ansem.locker views"
@@ -67,7 +66,7 @@ export function AppCarousel() {
         ))}
         </div>
 
-        <div className="min-h-0 flex-1 overflow-hidden">
+        <div className="overflow-x-hidden">
         <div
           className="flex transition-transform duration-300 ease-out motion-reduce:transition-none"
           style={{ transform: `translateX(-${index * 100}%)` }}
@@ -99,23 +98,13 @@ export function AppCarousel() {
                 </div>
               )}
               {id === 'leaderboard' && (
-                <div
-                  className={cn(
-                    'overflow-y-auto overscroll-contain',
-                    committed ? 'max-h-[calc(100dvh-13rem)]' : 'max-h-[min(58vh,520px)]',
-                  )}
-                >
+                <div className={cn(!committed && 'max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain')}>
                   <LeaderboardTable showSortTabs limit={25} />
                 </div>
               )}
               {id === 'locks' && <MyLocksPanel />}
               {id === 'info' && (
-                <div
-                  className={cn(
-                    'space-y-4 overflow-y-auto overscroll-contain',
-                    committed && 'max-h-[calc(100dvh-13rem)]',
-                  )}
-                >
+                <div className={cn('space-y-4', !committed && 'max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain')}>
                   <WhyLockSection />
                   <TrustSection variant="stacked" />
                   <p className="text-center text-[11px] text-muted-foreground">

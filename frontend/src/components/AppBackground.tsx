@@ -9,10 +9,10 @@ export function AppBackground({ className }: AppBackgroundProps) {
   const committed = useHasActiveLock();
 
   return (
-    <div className={cn('pointer-events-none fixed inset-0 z-0', className)} aria-hidden>
+    <div className={cn('app-bg-fixed', className)} aria-hidden>
       {committed ? (
         <>
-          <div className="locker-page-bg absolute inset-0" />
+          <div className="locker-page-bg" />
           <div className="absolute inset-0 bg-black/48 transition-colors duration-700" />
         </>
       ) : (

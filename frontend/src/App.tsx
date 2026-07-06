@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AppToaster } from '@/components/AppToaster';
 import { CommittedTheme } from '@/components/CommittedTheme';
+import { CommittedViewport } from '@/components/CommittedViewport';
 import { AppShell } from '@/layout/AppShell';
 import HomePage from '@/pages/HomePage';
 import { AppIntlProvider } from '@/providers/AppIntlProvider';
@@ -13,15 +14,17 @@ export default function App() {
       <AppIntlProvider>
         <SolanaWalletProvider>
           <CommittedTheme />
-          <BrowserRouter>
-            <Routes>
-              <Route element={<AppShell />}>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/leaderboard" element={<Navigate to="/#leaderboard" replace />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-          <AppToaster />
+          <CommittedViewport>
+            <BrowserRouter>
+              <Routes>
+                <Route element={<AppShell />}>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/leaderboard" element={<Navigate to="/#leaderboard" replace />} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+            <AppToaster />
+          </CommittedViewport>
         </SolanaWalletProvider>
       </AppIntlProvider>
     </QueryProvider>

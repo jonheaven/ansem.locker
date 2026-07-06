@@ -63,10 +63,45 @@ body {
 }
 
 html[data-committed='true'],
-html[data-committed='true'] body,
+html[data-committed='true'] body {
+  overflow: hidden;
+  height: 100dvh;
+  max-height: 100dvh;
+}
+
 html[data-committed='true'] #root {
   overflow: hidden;
-  height: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+html[data-committed='true'] #root > * {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fixed viewport background — never scrolls with content */
+.app-bg-fixed {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100dvh;
+  pointer-events: none;
+}
+
+.locker-page-bg {
+  position: absolute;
+  inset: 0;
+  background-color: #050505;
+  background-image: url('/lockerbg.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
 }
 
 /* Isometric block tile — default (unlocked) page background */
@@ -76,15 +111,6 @@ html[data-committed='true'] #root {
   background-repeat: repeat;
   background-size: 80px 160px;
   background-position: center top;
-}
-
-/* Locked state — full-viewport locker art behind floating UI */
-.locker-page-bg {
-  background-color: #050505;
-  background-image: url('/lockerbg.jpg');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
 }
 
 /* ── Locked-in glass UI ── */

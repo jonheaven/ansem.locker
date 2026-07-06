@@ -24,7 +24,7 @@ export function AppHeader() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 border-b backdrop-blur-2xl backdrop-saturate-150 transition-colors duration-700',
+        'sticky top-0 z-50 shrink-0 border-b backdrop-blur-2xl backdrop-saturate-150 transition-colors duration-700',
         committed ? 'app-header-bar border-white/8' : 'border-border/80 bg-background/72',
       )}
     >
