@@ -13,7 +13,7 @@ export function AppBackground({ className }: AppBackgroundProps) {
       {committed ? (
         <>
           <div className="locker-page-bg absolute inset-0" />
-          <div className="absolute inset-0 bg-black/55 transition-colors duration-700" />
+          <div className="absolute inset-0 bg-black/48 transition-colors duration-700" />
         </>
       ) : (
         <div className="bg-gold-blocks-pattern absolute inset-0">

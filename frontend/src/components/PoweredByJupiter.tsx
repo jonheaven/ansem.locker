@@ -20,7 +20,7 @@ export function PoweredByJupiter({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        'inline-flex items-center transition-opacity hover:opacity-85',
+        'jupiter-brand inline-flex items-center transition-opacity hover:opacity-90',
         variant === 'wordmark' ? 'flex-col gap-2' : 'gap-1.5',
         className,
       )}
@@ -28,14 +28,14 @@ export function PoweredByJupiter({
     >
       {variant === 'wordmark' ? (
         <>
-          <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          <span className="jup-label text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             Powered by
           </span>
           <img
             src={JUPITER_WORDMARK_SRC}
             alt="Jupiter"
             draggable={false}
-            className="h-7 w-auto sm:h-8"
+            className="jup-wordmark h-7 w-auto brightness-0 invert sm:h-8"
           />
         </>
       ) : (
@@ -45,10 +45,10 @@ export function PoweredByJupiter({
             alt=""
             draggable={false}
             aria-hidden
-            className="h-4 w-4 shrink-0 object-contain"
+            className="jup-logo h-4 w-4 shrink-0 object-contain"
           />
-          <span className="text-[11px] font-medium text-muted-foreground">
-            Powered by <span className="text-foreground">Jupiter</span>
+          <span className="jup-label text-[11px] font-medium text-muted-foreground">
+            Powered by <span className="jup-name font-semibold text-foreground">Jupiter</span>
           </span>
         </>
       )}

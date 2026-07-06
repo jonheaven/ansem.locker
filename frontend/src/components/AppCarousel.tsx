@@ -37,8 +37,10 @@ export function AppCarousel() {
           role="tablist"
           aria-label="ansem.locker views"
           className={cn(
-            'mb-5 flex rounded-full border border-border/80 p-1.5 shadow-sm backdrop-blur-md',
-            committed ? 'bg-surface' : 'bg-surface/80',
+            'mb-4 flex rounded-full border p-1.5 shadow-sm backdrop-blur-md',
+            committed
+              ? 'app-tab-rail border-white/12'
+              : 'border-border/80 bg-surface/80',
           )}
         >
         {TAB_IDS.map(({ id, labelKey, icon: Icon }) => (
@@ -49,10 +51,14 @@ export function AppCarousel() {
             aria-selected={view === id}
             onClick={() => setView(id)}
             className={cn(
-              'flex flex-1 items-center justify-center gap-2 rounded-full py-2.5 text-sm font-semibold transition-colors sm:text-base',
+              'flex flex-1 items-center justify-center gap-2 rounded-full py-2.5 text-sm font-semibold transition-all sm:text-base',
               view === id
-                ? 'bg-foreground text-background shadow-sm'
-                : 'text-muted-foreground hover:text-foreground',
+                ? committed
+                  ? 'app-tab-active'
+                  : 'bg-foreground text-background shadow-sm'
+                : committed
+                  ? 'app-tab-idle'
+                  : 'text-muted-foreground hover:text-foreground',
             )}
           >
             <Icon className="h-4 w-4 shrink-0" aria-hidden />
@@ -61,7 +67,7 @@ export function AppCarousel() {
         ))}
         </div>
 
-        <div className={cn('min-h-0 flex-1 overflow-hidden', committed && 'overflow-y-auto overscroll-contain')}>
+        <div className="min-h-0 flex-1 overflow-hidden">
         <div
           className="flex transition-transform duration-300 ease-out motion-reduce:transition-none"
           style={{ transform: `translateX(-${index * 100}%)` }}
@@ -79,7 +85,7 @@ export function AppCarousel() {
                     className={cn(
                       'text-left',
                       committed &&
-                        'rounded-2xl border border-border/70 bg-surface px-4 py-4 shadow-sm backdrop-blur-md sm:px-5',
+                        'app-glass rounded-2xl border px-4 py-4 shadow-sm sm:px-5',
                     )}
                   >
                     <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">

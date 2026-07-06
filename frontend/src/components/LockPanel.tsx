@@ -264,7 +264,7 @@ export function LockPanel() {
   return (
     <Card>
       <CardContent className="space-y-7 pt-6">
-        <div className="rounded-2xl border border-border/70 bg-surface-elevated/90 px-5 py-5 text-center">
+        <div className="rounded-2xl border border-border/70 bg-surface-elevated/90 px-5 py-5 text-center app-glass-elevated">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-muted-foreground">
             {t('lock.yourBalance')}
           </p>

@@ -12,7 +12,7 @@ function HeaderActions() {
   return (
     <div className="flex items-center gap-2">
       <XMenuButton />
-      <WalletMultiButton className="!h-9 !rounded-full !bg-foreground !px-4 !text-sm !font-medium !text-background hover:!bg-black" />
+      <WalletMultiButton />
     </div>
   );
 }
@@ -24,22 +24,37 @@ export function AppHeader() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 border-b border-border/80 backdrop-blur-2xl backdrop-saturate-150 transition-colors duration-700',
-        committed ? 'bg-black/88' : 'bg-background/72',
+        'sticky top-0 z-50 border-b backdrop-blur-2xl backdrop-saturate-150 transition-colors duration-700',
+        committed ? 'app-header-bar border-white/8' : 'border-border/80 bg-background/72',
       )}
     >
       <div className="mx-auto flex w-full max-w-5xl flex-col px-4 py-3 sm:flex-row sm:items-center sm:gap-8 sm:px-6 lg:gap-10">
         <div className="relative flex w-full items-center justify-center sm:w-[38%] sm:max-w-[360px] sm:shrink-0 lg:max-w-[400px]">
           <a
             href="#lock"
-            className="flex items-center gap-2.5"
+            className="group flex items-center gap-2.5"
             onClick={(e) => {
               e.preventDefault();
               window.location.hash = 'lock';
             }}
           >
-            <img src="/blackbull4.png" alt="" className="h-8 w-auto" draggable={false} />
-            <p className="text-base font-semibold tracking-tight text-foreground">ansem.locker</p>
+            <img
+              src="/blackbull4.png"
+              alt=""
+              className={cn(
+                'h-8 w-auto transition-transform duration-300 group-hover:scale-105',
+                committed && 'drop-shadow-[0_0_12px_rgba(167,139,250,0.5)]',
+              )}
+              draggable={false}
+            />
+            <p
+              className={cn(
+                'app-logo-text text-base font-semibold tracking-tight text-foreground',
+                committed && 'app-logo-text',
+              )}
+            >
+              ansem.locker
+            </p>
           </a>
           <div className="absolute right-0 top-1/2 -translate-y-1/2 sm:hidden">
             <HeaderActions />
@@ -50,7 +65,14 @@ export function AppHeader() {
           <HeaderActions />
         </div>
       </div>
-      <div className="border-t border-border/50 px-4 py-1.5 text-center text-[11px] text-muted-foreground">
+      <div
+        className={cn(
+          'border-t px-4 py-1.5 text-center text-[11px]',
+          committed
+            ? 'app-header-meta border-white/6'
+            : 'border-border/50 text-muted-foreground',
+        )}
+      >
         <span className="inline-flex flex-wrap items-center justify-center gap-x-1 gap-y-0.5">
           <span>
             {t('common.builtBy')}{' '}
@@ -58,31 +80,41 @@ export function AppHeader() {
               href={BUILDER_X_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors hover:text-foreground"
+              className="transition-colors hover:text-accent"
             >
               {BUILDER_X}
             </a>
           </span>
-          <span aria-hidden>·</span>
+          <span aria-hidden className={committed ? 'text-white/30' : undefined}>
+            ·
+          </span>
           <span>
             {t('common.tipBuilder')}{' '}
             <CopyWalletButton address={BUILDER_WALLET} variant="inline" />
           </span>
-          <span aria-hidden>·</span>
+          <span aria-hidden className={committed ? 'text-white/30' : undefined}>
+            ·
+          </span>
           <a
             href={GITHUB_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-foreground"
+            className="transition-colors hover:text-accent"
           >
             {t('common.github')}
           </a>
           <span>· {t('common.openSource')}</span>
-          <span aria-hidden>·</span>
+          <span aria-hidden className={committed ? 'text-white/30' : undefined}>
+            ·
+          </span>
           <span>{t('common.nonCustodial')}</span>
-          <span aria-hidden>·</span>
+          <span aria-hidden className={committed ? 'text-white/30' : undefined}>
+            ·
+          </span>
           <LocaleCurrencySelector />
-          <span aria-hidden>·</span>
+          <span aria-hidden className={committed ? 'text-white/30' : undefined}>
+            ·
+          </span>
           <PoweredByJupiter />
         </span>
       </div>

@@ -113,7 +113,7 @@ export function MyLocksPanel() {
                 return (
                   <li
                     key={lock.vestingAccount}
-                    className="flex flex-col gap-3 rounded-xl border border-border/80 bg-surface-elevated p-4 sm:flex-row sm:items-center sm:justify-between"
+                    className="flex flex-col gap-3 rounded-xl border border-border/80 bg-surface-elevated p-4 app-row-glass sm:flex-row sm:items-center sm:justify-between"
                   >
                     <div>
                       <AnsemAmountDisplay raw={lock.remainingInVault} size="lg" align="left" />

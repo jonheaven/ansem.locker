@@ -33,11 +33,11 @@ export function LockFlexBanner({ payload, onDismiss, className }: LockFlexBanner
   return (
     <div
       className={cn(
-        'rounded-2xl border border-accent/35 bg-accent/10 p-4 shadow-sm backdrop-blur-md',
+        'app-glass rounded-2xl border border-accent/35 bg-accent/10 p-4 shadow-sm',
         className,
       )}
     >
-      <p className="text-sm font-bold uppercase tracking-[0.14em] text-accent">
+      <p className="locked-in-glow text-sm font-bold uppercase tracking-[0.14em]">
         {t('bull.youAreLockedIn')}
       </p>
       <p className="mt-2 text-base font-semibold text-foreground">

@@ -27,7 +27,7 @@ export function BullAside({ className }: BullAsideProps) {
       )}
     >
       {committed ? (
-        <p className="text-center text-sm font-bold uppercase tracking-[0.22em] text-accent sm:text-base">
+        <p className="locked-in-glow text-center text-sm font-bold uppercase tracking-[0.22em] sm:text-base">
           {t('bull.lockedIn')}
         </p>
       ) : null}

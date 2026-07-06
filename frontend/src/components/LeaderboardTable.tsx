@@ -185,7 +185,7 @@ export function LeaderboardTable({
               return (
                 <div
                   key={entry.vestingAccount}
-                  className="relative flex items-center justify-between gap-3 overflow-hidden rounded-xl border border-border/80 bg-surface-elevated px-4 py-3"
+                  className="relative flex items-center justify-between gap-3 overflow-hidden rounded-xl border border-border/80 bg-surface-elevated px-4 py-3 app-row-glass"
                 >
                   {rank <= 3 ? (
                     <span

@@ -41,7 +41,7 @@ export function CopyWalletButton({
         onClick={copy}
         title={address}
         className={cn(
-          'inline-flex items-center gap-1 font-mono transition-colors hover:text-foreground',
+          'inline-flex items-center gap-1 font-mono transition-colors hover:text-accent',
           className,
         )}
       >

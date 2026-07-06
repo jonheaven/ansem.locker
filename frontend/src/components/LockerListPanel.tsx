@@ -15,7 +15,7 @@ export function LockerListPanel({ className }: LockerListPanelProps) {
   return (
     <div
       className={cn(
-        'rounded-2xl border border-accent/25 bg-accent/5 p-4 shadow-sm backdrop-blur-md',
+        'app-glass rounded-2xl border border-accent/25 bg-accent/5 p-4 shadow-sm',
         className,
       )}
     >

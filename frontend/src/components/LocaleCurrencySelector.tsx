@@ -63,8 +63,9 @@ export function LocaleCurrencySelector({ className }: LocaleCurrencySelectorProp
     readStoredRegion() ??
     detectRegion();
 
-  const selectClass =
-    'rounded-md border border-border/70 bg-surface-elevated px-1.5 py-0.5 text-[10px] font-medium text-foreground outline-none focus:border-accent';
+  const selectClass = cn(
+    'app-select rounded-md border border-border/70 bg-surface-elevated px-1.5 py-0.5 text-[10px] font-medium text-foreground outline-none focus:border-accent',
+  );
 
   const applyRegion = (id: AppRegion) => {
     const picked = REGIONS.find((r) => r.id === id);
