@@ -3,9 +3,12 @@ import { Medal, Share2, Trophy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { AnsemFiatValue } from '@/components/AnsemFiatValue';
+import { FlexVerifyForm } from '@/components/FlexVerifyForm';
+import { LockerListPanel } from '@/components/LockerListPanel';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLeaderboard, sortLocks, type LeaderboardSort } from '@/hooks/useLocks';
+import { useLockerList } from '@/hooks/useLockerList';
 import { useLocalizedFormat } from '@/hooks/useLocalizedFormat';
 import { useXLinks } from '@/hooks/useXLinks';
 import { formatAnsemAmount, shortenAddress } from '@/lib/format';
@@ -57,12 +60,16 @@ export function LeaderboardTable({
   const [sort, setSort] = useState<LeaderboardSort>(initialSort);
   const { t } = useI18n();
   const { formatTimeRemaining } = useLocalizedFormat();
+  const { data: lockerList = [] } = useLockerList();
+  const verifiedWallets = new Set(lockerList.map((e) => e.wallet));
 
   const sorted = sortLocks(data ?? [], sort).slice(0, limit);
   const nowSec = Math.floor(Date.now() / 1000);
 
   return (
-    <Card>
+    <div className="space-y-4">
+      <LockerListPanel />
+      <Card>
       <CardHeader>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
@@ -139,14 +146,17 @@ export function LeaderboardTable({
             {sorted.map((entry, i) => {
               const xLink = xLinks?.get(entry.owner);
               const rank = i + 1;
-              const whoLabel = xLink
-                ? `@${xLink.xHandle}`
+              const lockerEntry = lockerList.find((e) => e.wallet === entry.owner);
+              const displayHandle = xLink?.xHandle ?? lockerEntry?.xHandle;
+              const whoLabel = displayHandle
+                ? `@${displayHandle}`
                 : shortenAddress(entry.owner, 6);
               const timeRemaining =
                 entry.unlockTs > nowSec
                   ? formatTimeRemaining(entry.unlockTs, nowSec)
                   : t('leaderboard.unlockAvailable');
               const isSelf = wallet === entry.owner;
+              const flexVerified = verifiedWallets.has(entry.owner);
 
               return (
                 <div
@@ -165,15 +175,23 @@ export function LeaderboardTable({
                   <div className="flex min-w-0 flex-1 items-center gap-3">
                     <RankBadge rank={rank} />
                     <div className="min-w-0">
-                      {xLink ? (
+                      {displayHandle ? (
                         <a
-                          href={`https://x.com/${xLink.xHandle}`}
+                          href={
+                            lockerEntry?.flexTweetUrl ??
+                            `https://x.com/${displayHandle}`
+                          }
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-accent"
+                          className="inline-flex flex-wrap items-center gap-1.5 text-sm font-medium transition-colors hover:text-accent"
                         >
                           <img src="/x.png" alt="" className="h-3.5 w-3.5" aria-hidden />
-                          @{xLink.xHandle}
+                          @{displayHandle}
+                          {flexVerified ? (
+                            <span className="rounded-full bg-accent/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-accent">
+                              {t('leaderboard.verifiedFlex')}
+                            </span>
+                          ) : null}
                         </a>
                       ) : (
                         <a
@@ -186,10 +204,10 @@ export function LeaderboardTable({
                         </a>
                       )}
                       <p className="text-xs text-muted-foreground">
-                        {xLink ? (
+                        {displayHandle ? (
                           <span className="font-mono">{shortenAddress(entry.owner, 4)}</span>
                         ) : null}
-                        {xLink ? ' · ' : ''}
+                        {displayHandle ? ' · ' : ''}
                         {timeRemaining}
                       </p>
                     </div>
@@ -234,5 +252,14 @@ export function LeaderboardTable({
         )}
       </CardContent>
     </Card>
+
+      {wallet && !verifiedWallets.has(wallet) ? (
+        <Card>
+          <CardContent className="pt-6">
+            <FlexVerifyForm wallet={wallet} />
+          </CardContent>
+        </Card>
+      ) : null}
+    </div>
   );
 }

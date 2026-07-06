@@ -36,14 +36,14 @@ export const ja = {
   },
   tabs: {
     lock: 'ロック',
-    ranks: 'ランキング',
+    ranks: 'フーフ',
     yours: 'マイロック',
-    info: '情報',
+    info: 'Why & How',
   },
   home: {
-    headline: '$ANSEM へのコミットを Flex',
+    headline: 'ダイヤモンドフーフを証明',
     tagline:
-      'オンチェーンで強気を証明。$ANSEM を指定日まで信頼できるボルトにロック — 公開・検証可能・自慢できる。',
+      '$ANSEM をオンチェーンでロック、𝕏 で Flex、Locker List に参加。最大ロック × 最長期間 = Diamond Hooves Rank トップ。',
   },
   lock: {
     title: '$ANSEM をロック',
@@ -80,21 +80,28 @@ export const ja = {
     solscanAccount: '{short}… · Solscan',
   },
   leaderboard: {
-    title: 'リーダーボード',
-    description: 'ロック量 × 残り日数でランク付けされたアクティブな $ANSEM ロック',
+    title: 'Diamond Hooves Rank',
+    description:
+      '誰が最も多く・最も長く $ANSEM をロック？ Hoove Score = 量 × 残り日数 — オンチェーンの確信ランキング。',
     shareRanks: 'ランキングをシェア',
     loading: 'ロックを読み込み中…',
-    empty: 'まだアクティブなロックがありません。',
+    empty: 'まだダイヤモンドフーフがありません。',
     lockCta: '$ANSEM をロック',
-    loadError: 'リーダーボードを読み込めませんでした',
+    loadError: 'ランキングを読み込めませんでした',
     rpcHint:
-      'リーダーボードには Vercel の専用 Solana RPC (SOLANA_RPC_URL) が必要です。helius.dev の無料枠で動作します。環境変数追加後に再デプロイしてください。',
-    sortScore: 'スコア',
-    sortAmount: '量',
+      'ランキングには Vercel の専用 Solana RPC (SOLANA_RPC_URL) が必要です。helius.dev の無料枠で動作します。環境変数追加後に再デプロイしてください。',
+    sortScore: 'Hoove Score',
+    sortAmount: 'ロック量',
     sortDuration: '期間',
     unlockAvailable: 'アンロック可能',
     shareRank: 'ランク {rank} を 𝕏 でシェア',
     unlocksOn: '{date} にアンロック',
+    verifiedFlex: 'Flex 検証済み',
+    lockerListTitle: 'The Locker List',
+    lockerListBody:
+      'ロック → 𝕏 で Flex → 投稿 URL を貼り付け。検証されたロッカーがここに表示されます。本気のブルズの可視性（報酬保証なし）。',
+    lockerListEmpty: 'まだ検証済み Flex がありません。ロック、シェア、URL を貼り付け。',
+    lockerListJoin: 'Locker List に参加',
   },
   info: {
     howItWorks: '使い方',
@@ -130,6 +137,33 @@ export const ja = {
   },
   flex: {
     flexOnX: '𝕏 で Flex',
+    verifyTitle: 'Flex を証明 → Locker List',
+    verifyHint:
+      '𝕏 でロック Flex を投稿（上のボタン）、公開投稿 URL を貼り付け。𝕏 oEmbed で検証 — ウォレット連携と同じフロー。',
+    verifyPlaceholder: 'https://x.com/you/status/…',
+    verifySubmit: '検証して Locker List に参加',
+    verifySuccess: 'Locker List に登録されました',
+    verifyRequiresWallet: '先にウォレットを接続してください',
+    step1: '1. 𝕏 で Flex',
+    step2: '2. 投稿 URL を貼り付け',
+  },
+  why: {
+    title: 'なぜ $ANSEM をロック？',
+    intro: 'トレーダーの疑問：「価格が下がったら売れない。」それがポイント — そしてチャンス。',
+    supplyTitle: '本物の供給ショック',
+    supplyBody:
+      'ロックされたトークンは解除日まで市場に出ない。ペーパーハンドの売り圧力が減る。オンチェーンで検証可能 — 約束ではなくボルト。',
+    convictionTitle: 'シグナル > ノイズ',
+    convictionBody:
+      '誰でも「強気」とツイートできる。ロックは証明。Diamond Hooves Rank は量 × 期間で本気度を示す。',
+    flexTitle: 'Flex で可視性',
+    flexBody:
+      '𝕏 でロックをシェア、投稿を検証、Locker List に載る。本気のブルズが注目される。',
+    diamondTitle: 'ダイヤモンドフーフ、ペーパーパウではない',
+    diamondBody:
+      '解除日はあなたが選ぶ。早期退出なし、パニック売りなし。$1B を目指すブルズと一緒にロックイン。',
+    disclaimer:
+      '投資助言ではありません。Locker List の可視性は報酬やエアドロップの保証ではありません — 本気度の公開証明です。',
   },
   duration: {
     under1m: '1分未満',

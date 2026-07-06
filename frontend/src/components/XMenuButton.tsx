@@ -11,6 +11,8 @@ import {
 } from 'lucide-react';
 import { useEffect, useId, useRef, useState, type ComponentType } from 'react';
 import { toast } from 'sonner';
+import { FlexVerifyForm } from '@/components/FlexVerifyForm';
+import { useFlexVerifiedForWallet } from '@/hooks/useLockerList';
 import { useLeaderboard, sortLocks, useMyLocks } from '@/hooks/useLocks';
 import {
   useLinkXAccount,
@@ -31,7 +33,7 @@ import {
 } from '@/lib/share-x';
 import { buildVerificationCode } from '@/lib/x-link-store';
 
-type Panel = 'menu' | 'link';
+type Panel = 'menu' | 'link' | 'flex';
 
 function MenuRow({
   icon: Icon,
@@ -95,6 +97,7 @@ export function XMenuButton() {
   const { data: leaderboard } = useLeaderboard();
   const linkMutation = useLinkXAccount();
   const unlinkMutation = useUnlinkXAccount();
+  const flexVerified = useFlexVerifiedForWallet(wallet);
 
   const topLock = locks[0];
   const rankEntry =
@@ -300,8 +303,25 @@ export function XMenuButton() {
                       formatTimeRemaining(topLock.unlockTs),
                       xHandle,
                     );
-                    setOpen(false);
+                    setPanel('flex');
                   }}
+                  trailing={null}
+                />
+              ) : null}
+
+              {wallet && topLock && !flexVerified ? (
+                <MenuRow
+                  icon={Trophy}
+                  label="Join Locker List"
+                  description="Paste your flex post URL after sharing"
+                  onClick={() => setPanel('flex')}
+                />
+              ) : flexVerified ? (
+                <MenuRow
+                  icon={Trophy}
+                  label="On the Locker List"
+                  description="Flex verified — you're visible to the community"
+                  disabled
                   trailing={null}
                 />
               ) : null}
@@ -330,7 +350,7 @@ export function XMenuButton() {
                 />
               ))}
             </>
-          ) : (
+          ) : panel === 'link' ? (
             <div className="p-3">
               <button
                 type="button"
@@ -395,6 +415,20 @@ export function XMenuButton() {
                   </button>
                 </div>
               ) : null}
+            </div>
+          ) : (
+            <div className="p-3">
+              <button
+                type="button"
+                onClick={() => setPanel('menu')}
+                className="mb-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                ← Back
+              </button>
+              <FlexVerifyForm
+                wallet={wallet}
+                onSuccess={() => setOpen(false)}
+              />
             </div>
           )}
         </div>

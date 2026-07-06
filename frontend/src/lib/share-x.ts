@@ -11,7 +11,7 @@ export function openTweet(text: string) {
 
 export function buildLockShareUrl(amount: string, durationLabel: string, txSig?: string): string {
   const proof = txSig ? `\n\nhttps://solscan.io/tx/${txSig}` : '';
-  const text = `Just locked ${amount} $ANSEM for ${durationLabel} on ansem.locker. Diamond hooves only.\n\nWho's next? Live conviction leaderboard:\n${SITE_URL}/#leaderboard${proof}\n\n#ANSEM`;
+  const text = `Just locked ${amount} $ANSEM for ${durationLabel} on ansem.locker. Diamond hooves only.\n\nWho's next? Live Diamond Hooves Rank:\n${SITE_URL}/#leaderboard\n\nFlex posted? Paste the link back to join the Locker List.${proof}\n\n#ANSEM`;
   return tweetIntent(text);
 }
 

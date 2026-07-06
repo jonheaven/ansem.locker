@@ -5,6 +5,7 @@ import {
   type XLinkRecord,
 } from './_shared/x-link-store';
 import { isBase58Address } from './_shared/solana';
+import { fetchTweetOembed } from './_shared/twitter-oembed';
 
 export type { XLinkRecord };
 
@@ -12,72 +13,12 @@ function isValidWallet(wallet: string) {
   return isBase58Address(wallet);
 }
 
-function parseTweetId(url: string): string | null {
-  try {
-    const parsed = new URL(url.trim());
-    const host = parsed.hostname.replace(/^www\./, '');
-    if (host !== 'x.com' && host !== 'twitter.com') return null;
-    const parts = parsed.pathname.split('/').filter(Boolean);
-    const statusIdx = parts.indexOf('status');
-    if (statusIdx === -1 || !parts[statusIdx + 1]) return null;
-    return parts[statusIdx + 1]!.replace(/\D/g, '');
-  } catch {
-    return null;
-  }
-}
-
-function extractHandle(authorUrl?: string): string | null {
-  if (!authorUrl) return null;
-  try {
-    const parsed = new URL(authorUrl);
-    const segment = parsed.pathname.split('/').filter(Boolean)[0];
-    return segment?.replace(/^@/, '') ?? null;
-  } catch {
-    return null;
-  }
-}
-
-function decodeHtml(text: string) {
-  return text
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/\s+/g, ' ');
-}
-
-async function verifyTweetLink(
+async function verifyAccountLink(
   tweetUrl: string,
   wallet: string,
   code: string,
 ): Promise<{ xHandle: string }> {
-  const tweetId = parseTweetId(tweetUrl);
-  if (!tweetId) {
-    throw new Error('Paste a valid x.com or twitter.com post URL');
-  }
-
-  const oembedUrl = `https://publish.twitter.com/oembed?url=${encodeURIComponent(
-    `https://x.com/i/status/${tweetId}`,
-  )}&omit_script=true`;
-
-  const res = await fetch(oembedUrl);
-  if (!res.ok) {
-    throw new Error('Could not read that post. Make sure it is public.');
-  }
-
-  const data = (await res.json()) as {
-    author_name?: string;
-    author_url?: string;
-    html?: string;
-  };
-
-  const xHandle = extractHandle(data.author_url);
-  if (!xHandle) {
-    throw new Error('Could not read the post author');
-  }
-
-  const haystack = decodeHtml(data.html ?? '').toLowerCase();
+  const { xHandle, haystack } = await fetchTweetOembed(tweetUrl);
   const codeNeedle = code.toLowerCase();
   const walletNeedle = wallet.toLowerCase();
 
@@ -130,12 +71,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { xHandle } = await verifyTweetLink(tweetUrl, wallet, code);
+    const { xHandle } = await verifyAccountLink(tweetUrl, wallet, code);
+    const existing = store.get(wallet);
     const link: XLinkRecord = {
       wallet,
       xHandle,
       tweetUrl,
       linkedAt: Date.now(),
+      flexTweetUrl: existing?.flexTweetUrl,
+      flexVerifiedAt: existing?.flexVerifiedAt,
     };
     store.set(wallet, link);
     await saveXLinkStore(store);

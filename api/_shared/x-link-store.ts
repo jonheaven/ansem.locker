@@ -3,8 +3,12 @@ import { head, put } from '@vercel/blob';
 export type XLinkRecord = {
   wallet: string;
   xHandle: string;
+  /** Account-link verification post (optional if flex-only). */
   tweetUrl: string;
   linkedAt: number;
+  /** Verified flex / lock share post — earns Locker List spot. */
+  flexTweetUrl?: string;
+  flexVerifiedAt?: number;
 };
 
 const X_LINKS_BLOB_PATH = 'ansem-locker-x-links.json';

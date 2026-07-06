@@ -8,6 +8,8 @@ export type XLinkRecord = {
   xHandle: string;
   tweetUrl: string;
   linkedAt: number;
+  flexTweetUrl?: string;
+  flexVerifiedAt?: number;
 };
 
 type XLinksResponse = {
@@ -62,6 +64,8 @@ export function useXLinkForWallet(wallet?: string) {
       xHandle: remote.xHandle,
       tweetUrl: remote.tweetUrl,
       linkedAt: remote.linkedAt,
+      flexTweetUrl: remote.flexTweetUrl,
+      flexVerifiedAt: remote.flexVerifiedAt,
     };
   }
 

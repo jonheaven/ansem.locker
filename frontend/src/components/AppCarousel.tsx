@@ -4,6 +4,7 @@ import { LockPanel } from '@/components/LockPanel';
 import { LeaderboardTable } from '@/components/LeaderboardTable';
 import { MyLocksPanel } from '@/components/MyLocksPanel';
 import { TrustSection } from '@/components/TrustSection';
+import { WhyLockSection } from '@/components/WhyLockSection';
 import { APP_VIEWS, useAppView } from '@/hooks/useAppView';
 import { useHasActiveLock } from '@/hooks/useHasActiveLock';
 import { GITHUB_URL, JUPITER_LOCK_PROGRAM_ID } from '@/config/constants';
@@ -94,6 +95,7 @@ export function AppCarousel() {
               {id === 'locks' && <MyLocksPanel />}
               {id === 'info' && (
                 <div className="space-y-4">
+                  <WhyLockSection />
                   <TrustSection variant="stacked" />
                   <p className="text-center text-[11px] text-muted-foreground">
                     <a

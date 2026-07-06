@@ -36,14 +36,14 @@ export const en = {
   },
   tabs: {
     lock: 'Lock',
-    ranks: 'Ranks',
+    ranks: 'Hooves',
     yours: 'Yours',
-    info: 'Info',
+    info: 'Why & How',
   },
   home: {
-    headline: 'Flex your commitment to $ANSEM',
+    headline: 'Prove your diamond hooves',
     tagline:
-      'Prove your bullishness on-chain. Lock $ANSEM in a trustless vault until your date — public, verifiable, and yours to flex.',
+      'Lock $ANSEM on-chain, flex on 𝕏, and join the Locker List. Biggest locks + longest conviction = top of the Diamond Hooves Rank.',
   },
   lock: {
     title: 'Lock $ANSEM',
@@ -80,21 +80,28 @@ export const en = {
     solscanAccount: '{short}… on Solscan',
   },
   leaderboard: {
-    title: 'Leaderboard',
-    description: 'Active $ANSEM locks ranked by amount × days remaining',
-    shareRanks: 'Share ranks',
+    title: 'Diamond Hooves Rank',
+    description:
+      'Who locked the most $ANSEM for the longest? Hoove Score = amount × days remaining — the on-chain conviction board.',
+    shareRanks: 'Share the rank',
     loading: 'Loading locks…',
-    empty: 'No active locks yet.',
+    empty: 'No diamond hooves yet.',
     lockCta: 'Lock $ANSEM',
-    loadError: 'Could not load leaderboard',
+    loadError: 'Could not load rank',
     rpcHint:
-      'The leaderboard needs a dedicated Solana RPC on Vercel (SOLANA_RPC_URL). Free tier at helius.dev works. Redeploy after adding the env var.',
-    sortScore: 'Score',
-    sortAmount: 'Amount',
+      'The rank board needs a dedicated Solana RPC on Vercel (SOLANA_RPC_URL). Free tier at helius.dev works. Redeploy after adding the env var.',
+    sortScore: 'Hoove Score',
+    sortAmount: 'Locked',
     sortDuration: 'Duration',
     unlockAvailable: 'Unlock available',
     shareRank: 'Share rank {rank} on 𝕏',
     unlocksOn: 'unlocks {date}',
+    verifiedFlex: 'Verified flex',
+    lockerListTitle: 'The Locker List',
+    lockerListBody:
+      'Lock, post your flex on 𝕏, paste the link back — verified lockers get a public spot here. Visibility for the most committed bulls (no guarantees, but this is how you get on radar).',
+    lockerListEmpty: 'No verified flex posts yet. Lock, share, paste your post URL.',
+    lockerListJoin: 'Join the Locker List',
   },
   info: {
     howItWorks: 'How it works',
@@ -130,6 +137,34 @@ export const en = {
   },
   flex: {
     flexOnX: 'Flex on 𝕏',
+    verifyTitle: 'Prove your flex → Locker List',
+    verifyHint:
+      'Post your lock flex on 𝕏 (use the button above), then paste the public post URL here. We verify via 𝕏 oEmbed — same flow as wallet linking.',
+    verifyPlaceholder: 'https://x.com/you/status/…',
+    verifySubmit: 'Verify & join Locker List',
+    verifySuccess: 'You\'re on the Locker List',
+    verifyRequiresWallet: 'Connect your wallet first',
+    step1: '1. Flex on 𝕏',
+    step2: '2. Paste post URL',
+  },
+  why: {
+    title: 'Why lock $ANSEM?',
+    intro:
+      'Memecoin traders ask: "If price dumps, I can\'t sell." That\'s the point — and the opportunity.',
+    supplyTitle: 'Real supply shock',
+    supplyBody:
+      'Every token locked is off the market until your date. Less float for paper hands to dump. Visible, on-chain, verifiable — not a promise, a vault.',
+    convictionTitle: 'Signal > noise',
+    convictionBody:
+      'Anyone can tweet "bullish." Locks prove it. The Diamond Hooves Rank shows who put money where their mouth is — amount × time locked.',
+    flexTitle: 'Flex earns visibility',
+    flexBody:
+      'Share your lock on 𝕏, verify the post, and land on the Locker List. Early bulls who prove conviction publicly are who projects (and communities) notice.',
+    diamondTitle: 'Diamond hooves, not paper paws',
+    diamondBody:
+      'You chose the unlock date. No early exit, no rug-by-panic-selling your own bags. When unlock hits, you decide — but until then, you\'re locked in with the bulls going for $1B.',
+    disclaimer:
+      'Not financial advice. Locker List visibility is not a promise of rewards or airdrops — just public proof you\'re serious.',
   },
   duration: {
     under1m: 'under 1m left',
