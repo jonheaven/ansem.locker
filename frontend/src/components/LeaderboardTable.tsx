@@ -19,19 +19,21 @@ type LeaderboardPreviewProps = {
   showSortTabs?: boolean;
 };
 
+const RANK_STYLES: Record<
+  1 | 2 | 3,
+  { strip: string; medal: string }
+> = {
+  1: { strip: 'bg-[#D4AF37]', medal: 'text-[#D4AF37]' },
+  2: { strip: 'bg-[#B8B8B8]', medal: 'text-[#B8B8B8]' },
+  3: { strip: 'bg-[#CD7F32]', medal: 'text-[#CD7F32]' },
+};
+
 function RankBadge({ rank }: { rank: number }) {
   if (rank <= 3) {
+    const styles = RANK_STYLES[rank as 1 | 2 | 3];
     return (
       <span className="flex h-8 w-8 items-center justify-center">
-        <Medal
-          className={cn(
-            'h-4 w-4',
-            rank === 1 && 'text-foreground',
-            rank === 2 && 'text-muted-foreground',
-            rank === 3 && 'text-border-strong',
-          )}
-          aria-hidden
-        />
+        <Medal className={cn('h-4 w-4 fill-current', styles.medal)} aria-hidden />
       </span>
     );
   }
@@ -149,8 +151,17 @@ export function LeaderboardTable({
               return (
                 <div
                   key={entry.vestingAccount}
-                  className="flex items-center justify-between gap-3 rounded-xl border border-border/80 bg-surface-elevated px-4 py-3"
+                  className="relative flex items-center justify-between gap-3 overflow-hidden rounded-xl border border-border/80 bg-surface-elevated px-4 py-3"
                 >
+                  {rank <= 3 ? (
+                    <span
+                      className={cn(
+                        'absolute inset-y-0 left-0 w-1.5 rounded-l-xl',
+                        RANK_STYLES[rank as 1 | 2 | 3].strip,
+                      )}
+                      aria-hidden
+                    />
+                  ) : null}
                   <div className="flex min-w-0 flex-1 items-center gap-3">
                     <RankBadge rank={rank} />
                     <div className="min-w-0">
