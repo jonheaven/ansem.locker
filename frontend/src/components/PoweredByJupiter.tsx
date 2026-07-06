@@ -4,8 +4,7 @@ import { cn } from '@/lib/cn';
 
 const JUPITER_LOGO_SRC = '/juplogo.png';
 const SOLANA_LOGO_SRC = '/solana.png';
-const X_LOGO_SRC = '/x.png';
-const XAI_LOGO_SRC = '/xai.svg';
+const X_LOGO_SRC = '/xai.svg';
 
 type PoweredByJupiterProps = {
   /** Larger logos for trust blocks; compact for header/footer */
@@ -18,8 +17,6 @@ type PartnerBadgeProps = {
   label: string;
   logoSrc: string;
   logoClassName?: string;
-  secondaryLogoSrc?: string;
-  secondaryLogoClassName?: string;
   large?: boolean;
   ariaLabel: string;
 };
@@ -29,8 +26,6 @@ function PartnerBadge({
   label,
   logoSrc,
   logoClassName,
-  secondaryLogoSrc,
-  secondaryLogoClassName,
   large,
   ariaLabel,
 }: PartnerBadgeProps) {
@@ -42,32 +37,17 @@ function PartnerBadge({
       aria-label={ariaLabel}
       className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-90"
     >
-      <span className="inline-flex items-center gap-0.5">
-        <img
-          src={logoSrc}
-          alt=""
-          draggable={false}
-          aria-hidden
-          className={cn(
-            'shrink-0 object-contain',
-            large ? 'h-8 w-8 sm:h-9 sm:w-9' : 'h-4 w-4',
-            logoClassName,
-          )}
-        />
-        {secondaryLogoSrc ? (
-          <img
-            src={secondaryLogoSrc}
-            alt=""
-            draggable={false}
-            aria-hidden
-            className={cn(
-              'shrink-0 object-contain',
-              large ? 'h-5 w-5 sm:h-6 sm:w-6' : 'h-3.5 w-3.5',
-              secondaryLogoClassName,
-            )}
-          />
-        ) : null}
-      </span>
+      <img
+        src={logoSrc}
+        alt=""
+        draggable={false}
+        aria-hidden
+        className={cn(
+          'shrink-0 object-contain',
+          large ? 'h-8 w-8 sm:h-9 sm:w-9' : 'h-4 w-4',
+          logoClassName,
+        )}
+      />
       <span
         className={cn(
           'font-semibold text-foreground',
@@ -108,29 +88,28 @@ export function PoweredByJupiter({
           large ? 'gap-x-4 gap-y-2' : 'gap-x-2.5 gap-y-1.5',
         )}
       >
-      <PartnerBadge
-        href={JUPITER_LOCK_UI}
-        logoSrc={JUPITER_LOGO_SRC}
-        label="Jupiter"
-        large={large}
-        ariaLabel="Powered by Jupiter Lock — open lock.jup.ag"
-      />
-      <PartnerBadge
-        href="https://solana.com"
-        logoSrc={SOLANA_LOGO_SRC}
-        label="Solana"
-        large={large}
-        ariaLabel="Built on Solana — open solana.com"
-      />
-      <PartnerBadge
-        href="https://x.com"
-        logoSrc={X_LOGO_SRC}
-        secondaryLogoSrc={XAI_LOGO_SRC}
-        secondaryLogoClassName="invert"
-        label={X_SYMBOL}
-        large={large}
-        ariaLabel="Share and verify on X"
-      />
+        <PartnerBadge
+          href={JUPITER_LOCK_UI}
+          logoSrc={JUPITER_LOGO_SRC}
+          label="Jupiter"
+          large={large}
+          ariaLabel="Powered by Jupiter Lock — open lock.jup.ag"
+        />
+        <PartnerBadge
+          href="https://solana.com"
+          logoSrc={SOLANA_LOGO_SRC}
+          label="Solana"
+          large={large}
+          ariaLabel="Built on Solana — open solana.com"
+        />
+        <PartnerBadge
+          href="https://x.com"
+          logoSrc={X_LOGO_SRC}
+          logoClassName="invert"
+          label={X_SYMBOL}
+          large={large}
+          ariaLabel="Share and verify on X"
+        />
       </span>
     </span>
   );
