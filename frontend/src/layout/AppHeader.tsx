@@ -2,6 +2,7 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { PoweredByJupiter } from '@/components/PoweredByJupiter';
 import { XMenuButton } from '@/components/XMenuButton';
 import { BUILDER_WALLET, BUILDER_X, BUILDER_X_URL, GITHUB_URL } from '@/config/constants';
 import { shortenAddress } from '@/lib/format';
@@ -90,6 +91,8 @@ export function AppHeader() {
           </a>
           <span aria-hidden>·</span>
           <span>non-custodial · decentralized</span>
+          <span aria-hidden>·</span>
+          <PoweredByJupiter />
         </span>
       </div>
     </header>

@@ -1,4 +1,5 @@
-import { ExternalLink, Shield, Unplug } from 'lucide-react';
+import { ExternalLink, Unplug } from 'lucide-react';
+import { PoweredByJupiter } from '@/components/PoweredByJupiter';
 import { COPY, HOW_IT_WORKS, REASSURANCE } from '@/lib/copy';
 import { GITHUB_URL, JUPITER_LOCK_PROGRAM_ID } from '@/config/constants';
 import { cn } from '@/lib/cn';
@@ -101,8 +102,8 @@ export function TrustSection({ variant = 'full' }: TrustSectionProps) {
           !stacked && 'mx-auto max-w-2xl text-center',
         )}
       >
-        <div className={cn('mb-2 flex', stacked ? '' : 'justify-center')}>
-          <Shield className="h-5 w-5 text-accent" aria-hidden />
+        <div className={cn('mb-3 flex', stacked ? '' : 'justify-center')}>
+          <PoweredByJupiter variant="wordmark" />
         </div>
         <p className="text-sm font-medium text-foreground">{COPY.bonfidaShort}</p>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{COPY.bonfidaLong}</p>

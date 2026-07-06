@@ -5,6 +5,7 @@ import { Transaction } from '@solana/web3.js';
 import { Loader2, Lock } from 'lucide-react';
 import { toast } from 'sonner';
 import { BullSlider } from '@/components/BullSlider';
+import { PoweredByJupiter } from '@/components/PoweredByJupiter';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAnsemBalance } from '@/hooks/useAnsemBalance';
@@ -235,6 +236,9 @@ export function LockPanel() {
           <CardTitle>Lock $ANSEM</CardTitle>
           <CardDescription>{COPY.lockPanelDisconnected}</CardDescription>
         </CardHeader>
+        <CardContent className="flex flex-col items-center gap-3 pt-0">
+          <PoweredByJupiter />
+        </CardContent>
       </Card>
     );
   }
@@ -394,6 +398,11 @@ export function LockPanel() {
             </>
           )}
         </Button>
+
+        <div className="flex flex-col items-center gap-2 pt-1">
+          <PoweredByJupiter />
+          <p className="text-center text-[11px] text-muted-foreground">{COPY.lockFooter}</p>
+        </div>
       </CardContent>
     </Card>
   );
