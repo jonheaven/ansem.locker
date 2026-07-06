@@ -2,6 +2,7 @@ import { JUPITER_LOCK_UI } from '@/lib/jupiter-lock/constants';
 import { cn } from '@/lib/cn';
 
 const JUPITER_LOGO_SRC = '/juplogo.png';
+const JUPITER_LOCK_SRC = '/jupiter-lock.webp';
 const JUPITER_WORDMARK_SRC = '/jupiter.webp';
 
 type PoweredByJupiterProps = {
@@ -29,11 +30,11 @@ export function PoweredByJupiter({
       {variant === 'wordmark' ? (
         <>
           <img
-            src={JUPITER_LOGO_SRC}
+            src={JUPITER_LOCK_SRC}
             alt=""
             draggable={false}
             aria-hidden
-            className="jup-logo h-10 w-10 shrink-0 object-contain sm:h-11 sm:w-11"
+            className="h-10 w-10 shrink-0 rounded-lg object-contain sm:h-11 sm:w-11"
           />
           <span className="flex flex-col gap-1.5">
             <span className="jup-label text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
