@@ -1,4 +1,4 @@
-import { Trophy, Info, Lock, Wallet } from 'lucide-react';
+import { Diamond, Info, Lock, Wallet } from 'lucide-react';
 import { BullAside } from '@/components/BullAside';
 import { LockPanel } from '@/components/LockPanel';
 import { LeaderboardTable } from '@/components/LeaderboardTable';
@@ -13,7 +13,7 @@ import { cn } from '@/lib/cn';
 
 const TAB_IDS = [
   { id: 'lock' as const, labelKey: 'tabs.lock', icon: Lock },
-  { id: 'leaderboard' as const, labelKey: 'tabs.ranks', icon: Trophy },
+  { id: 'leaderboard' as const, labelKey: 'tabs.ranks', icon: Diamond },
   { id: 'locks' as const, labelKey: 'tabs.yours', icon: Wallet },
   { id: 'info' as const, labelKey: 'tabs.info', icon: Info },
 ];

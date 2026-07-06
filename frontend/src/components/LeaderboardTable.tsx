@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Medal, Share2, Trophy } from 'lucide-react';
+import { Diamond, Medal, Share2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { AnsemAmountDisplay } from '@/components/AnsemFiatValue';
@@ -80,7 +80,7 @@ export function LeaderboardTable({
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <CardTitle className="flex items-center gap-2">
-              <Trophy className="h-5 w-5 text-accent" />
+              <Diamond className="h-5 w-5 text-accent" />
               {t('leaderboard.title')}
             </CardTitle>
             <CardDescription>{t('leaderboard.description')}</CardDescription>

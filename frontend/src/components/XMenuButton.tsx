@@ -5,7 +5,7 @@ import {
   Link2,
   Loader2,
   Share2,
-  Trophy,
+  Diamond,
   Unlink,
   User,
 } from 'lucide-react';
@@ -274,7 +274,7 @@ export function XMenuButton() {
               />
 
               <MenuRow
-                icon={Trophy}
+                icon={Diamond}
                 label="Share leaderboard"
                 description={
                   rank && rankLock
@@ -311,14 +311,14 @@ export function XMenuButton() {
 
               {wallet && topLock && !flexVerified ? (
                 <MenuRow
-                  icon={Trophy}
+                  icon={Diamond}
                   label="Join Locker List"
                   description="Paste your flex post URL after sharing"
                   onClick={() => setPanel('flex')}
                 />
               ) : flexVerified ? (
                 <MenuRow
-                  icon={Trophy}
+                  icon={Diamond}
                   label="On the Locker List"
                   description="Flex verified — you're visible to the community"
                   disabled
