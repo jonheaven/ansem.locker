@@ -1,3 +1,5 @@
+import { Buffer } from 'buffer';
+
 /** Anchor instruction discriminators for Jupiter Lock (sha256("global:<name>")[0..8]) */
 const CREATE_VESTING_ESCROW_V2_DISC = Buffer.from([234, 83, 9, 71, 80, 149, 39, 120]);
 const CLAIM_V2_DISC = Buffer.from([85, 145, 88, 119, 61, 220, 110, 69]);
