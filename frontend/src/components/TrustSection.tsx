@@ -26,6 +26,56 @@ export function TrustSection({ variant = 'full' }: TrustSectionProps) {
 
   return (
     <section className="space-y-6">
+      <div
+        className={cn(
+          'rounded-2xl border border-border/80 bg-surface/90 p-5 shadow-sm backdrop-blur-md',
+          !stacked && 'mx-auto max-w-2xl text-center',
+        )}
+      >
+        <div className={cn('mb-3 flex', stacked ? '' : 'justify-center')}>
+          <PoweredByJupiter variant="wordmark" />
+        </div>
+        <p className="text-sm font-medium text-foreground">{t('info.jupiterShort')}</p>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t('info.jupiterLong')}</p>
+        <p
+          className={cn(
+            'mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground',
+            stacked ? 'items-start' : 'items-center justify-center',
+          )}
+        >
+          <a
+            href="https://lock.jup.ag"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 transition-colors hover:text-accent"
+          >
+            {t('info.aboutJupiter')}
+            <ExternalLink className="h-3 w-3" />
+          </a>
+          <span aria-hidden>·</span>
+          <a
+            href={`https://solscan.io/account/${JUPITER_LOCK_PROGRAM_ID.toBase58()}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono transition-colors hover:text-accent"
+          >
+            {t('info.programOnSolscan')}
+          </a>
+        </p>
+      </div>
+
+      <div className={cn('grid gap-4', stacked ? 'grid-cols-1' : 'sm:grid-cols-3')}>
+        {REASSURANCE.map(({ titleKey, bodyKey }) => (
+          <div
+            key={titleKey}
+            className="rounded-2xl border border-border/80 bg-surface/90 p-5 shadow-sm backdrop-blur-md"
+          >
+            <h3 className="font-semibold">{t(titleKey)}</h3>
+            <p className="mt-1 text-sm text-muted-foreground">{t(bodyKey)}</p>
+          </div>
+        ))}
+      </div>
+
       <div>
         <h2
           className={cn(
@@ -49,18 +99,6 @@ export function TrustSection({ variant = 'full' }: TrustSectionProps) {
             </li>
           ))}
         </ol>
-      </div>
-
-      <div className={cn('grid gap-4', stacked ? 'grid-cols-1' : 'sm:grid-cols-3')}>
-        {REASSURANCE.map(({ titleKey, bodyKey }) => (
-          <div
-            key={titleKey}
-            className="rounded-2xl border border-border/80 bg-surface/90 p-5 shadow-sm backdrop-blur-md"
-          >
-            <h3 className="font-semibold">{t(titleKey)}</h3>
-            <p className="mt-1 text-sm text-muted-foreground">{t(bodyKey)}</p>
-          </div>
-        ))}
       </div>
 
       <div
@@ -107,44 +145,6 @@ export function TrustSection({ variant = 'full' }: TrustSectionProps) {
           >
             {t('info.openSourceUnlock')}
             <ExternalLink className="h-3 w-3" />
-          </a>
-        </p>
-      </div>
-
-      <div
-        className={cn(
-          'rounded-2xl border border-border/80 bg-surface/90 p-5 shadow-sm backdrop-blur-md',
-          !stacked && 'mx-auto max-w-2xl text-center',
-        )}
-      >
-        <div className={cn('mb-3 flex', stacked ? '' : 'justify-center')}>
-          <PoweredByJupiter variant="wordmark" />
-        </div>
-        <p className="text-sm font-medium text-foreground">{t('info.jupiterShort')}</p>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t('info.jupiterLong')}</p>
-        <p
-          className={cn(
-            'mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground',
-            stacked ? 'items-start' : 'items-center justify-center',
-          )}
-        >
-          <a
-            href="https://lock.jup.ag"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 transition-colors hover:text-accent"
-          >
-            {t('info.aboutJupiter')}
-            <ExternalLink className="h-3 w-3" />
-          </a>
-          <span aria-hidden>·</span>
-          <a
-            href={`https://solscan.io/account/${JUPITER_LOCK_PROGRAM_ID.toBase58()}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono transition-colors hover:text-accent"
-          >
-            {t('info.programOnSolscan')}
           </a>
         </p>
       </div>
