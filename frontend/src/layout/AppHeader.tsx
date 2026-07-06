@@ -89,6 +89,7 @@ export function AppHeader() {
           >
             GitHub
           </a>
+          <span>· open source</span>
           <span aria-hidden>·</span>
           <span>non-custodial · decentralized</span>
           <span aria-hidden>·</span>
