@@ -53,6 +53,12 @@ export const ja = {
     lockedToast: 'ロック完了 — 𝕏 で Flex',
     duration5m: '5分',
     duration1y: '1年',
+    preset1m: '1ヶ月',
+    preset2m: '2ヶ月',
+    preset4m: '4ヶ月',
+    preset6m: '6ヶ月',
+    preset8m: '8ヶ月',
+    preset1y: '1年',
   },
   bull: {
     lockedIn: 'ロックイン中',

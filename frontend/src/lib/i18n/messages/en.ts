@@ -53,6 +53,12 @@ export const en = {
     lockedToast: 'Locked — flex on 𝕏',
     duration5m: '5m',
     duration1y: '1y',
+    preset1m: '1m',
+    preset2m: '2m',
+    preset4m: '4m',
+    preset6m: '6m',
+    preset8m: '8m',
+    preset1y: '1yr',
   },
   bull: {
     lockedIn: 'You are Locked In',

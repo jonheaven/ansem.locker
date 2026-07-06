@@ -2,12 +2,16 @@ import { MAX_LOCK_DAYS, MIN_LOCK_MINUTES, X_SYMBOL } from '@/config/constants';
 
 export { MIN_LOCK_MINUTES };
 
+const DAYS_PER_MONTH = 30;
+const MINUTES_PER_DAY = 24 * 60;
+
 export const LOCK_PRESETS = [
-  { label: '15m', minutes: 15 },
-  { label: '1h', minutes: 60 },
-  { label: '1d', minutes: 60 * 24 },
-  { label: '7d', minutes: 60 * 24 * 7 },
-  { label: '30d', minutes: 60 * 24 * 30 },
+  { labelKey: 'lock.preset1m', minutes: 1 * DAYS_PER_MONTH * MINUTES_PER_DAY },
+  { labelKey: 'lock.preset2m', minutes: 2 * DAYS_PER_MONTH * MINUTES_PER_DAY },
+  { labelKey: 'lock.preset4m', minutes: 4 * DAYS_PER_MONTH * MINUTES_PER_DAY },
+  { labelKey: 'lock.preset6m', minutes: 6 * DAYS_PER_MONTH * MINUTES_PER_DAY },
+  { labelKey: 'lock.preset8m', minutes: 8 * DAYS_PER_MONTH * MINUTES_PER_DAY },
+  { labelKey: 'lock.preset1y', minutes: MAX_LOCK_DAYS * MINUTES_PER_DAY },
 ] as const;
 
 export function toDatetimeLocalValue(date: Date): string {

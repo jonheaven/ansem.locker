@@ -375,14 +375,14 @@ export function LockPanel() {
             <span>{t('lock.duration1y')}</span>
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
-            {LOCK_PRESETS.map(({ label, minutes }) => (
+            {LOCK_PRESETS.map(({ labelKey, minutes }) => (
               <button
-                key={label}
+                key={labelKey}
                 type="button"
                 onClick={() => applyPreset(minutes)}
                 className="rounded-full border border-border px-4 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:border-border-strong hover:bg-surface-elevated hover:text-foreground"
               >
-                {label}
+                {t(labelKey)}
               </button>
             ))}
           </div>
