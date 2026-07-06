@@ -80,6 +80,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       linkedAt: Date.now(),
       flexTweetUrl: existing?.flexTweetUrl,
       flexVerifiedAt: existing?.flexVerifiedAt,
+      flexTxSig: existing?.flexTxSig,
     };
     store.set(wallet, link);
     await saveXLinkStore(store);

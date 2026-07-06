@@ -9,6 +9,8 @@ export type XLinkRecord = {
   /** Verified flex / lock share post — earns Locker List spot. */
   flexTweetUrl?: string;
   flexVerifiedAt?: number;
+  /** Solscan tx sig extracted from verified flex post. */
+  flexTxSig?: string;
 };
 
 const X_LINKS_BLOB_PATH = 'ansem-locker-x-links.json';

@@ -10,7 +10,9 @@ export function openTweet(text: string) {
 }
 
 export function buildLockShareUrl(amount: string, durationLabel: string, txSig?: string): string {
-  const proof = txSig ? `\n\nhttps://solscan.io/tx/${txSig}` : '';
+  const proof = txSig
+    ? `\n\nLock proof: https://solscan.io/tx/${txSig}`
+    : '\n\nInclude your lock Solscan tx link when you verify on ansem.locker.';
   const text = `Just locked ${amount} $ANSEM for ${durationLabel} on ansem.locker. Diamond hooves only.\n\nWho's next? Live Diamond Hooves Rank:\n${SITE_URL}/#leaderboard\n\nFlex posted? Paste the link back to join the Locker List.${proof}\n\n#ANSEM`;
   return tweetIntent(text);
 }
@@ -38,9 +40,13 @@ export function buildConvictionShare(
   amount: string,
   timeRemaining: string,
   xHandle?: string,
+  txSig?: string,
 ) {
   const who = xHandle ? `@${xHandle.replace(/^@/, '')}` : 'I';
-  const text = `${who} ${xHandle ? 'has' : 'have'} ${amount} $ANSEM locked on ansem.locker (${timeRemaining}). Diamond hooves.\n\n${SITE_URL}/#leaderboard\n\n#ANSEM`;
+  const proof = txSig
+    ? `\n\nLock proof: https://solscan.io/tx/${txSig}`
+    : '\n\n(Add your Solscan lock tx link to verify on ansem.locker.)';
+  const text = `${who} ${xHandle ? 'has' : 'have'} ${amount} $ANSEM locked on ansem.locker (${timeRemaining}). Diamond hooves.${proof}\n\n${SITE_URL}/#leaderboard\n\n#ANSEM`;
   return tweetIntent(text);
 }
 
@@ -48,9 +54,10 @@ export function openConvictionShare(
   amount: bigint,
   timeRemaining: string,
   xHandle?: string,
+  txSig?: string,
 ) {
   window.open(
-    buildConvictionShare(formatAnsemAmount(amount), timeRemaining, xHandle),
+    buildConvictionShare(formatAnsemAmount(amount), timeRemaining, xHandle, txSig),
     '_blank',
     'noopener,noreferrer',
   );

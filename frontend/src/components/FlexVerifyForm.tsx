@@ -38,8 +38,11 @@ export function FlexVerifyForm({ wallet, onSuccess, className, compact }: FlexVe
         <>
           <p className="text-sm font-semibold text-foreground">{t('flex.verifyTitle')}</p>
           <p className="text-xs leading-relaxed text-muted-foreground">{t('flex.verifyHint')}</p>
+          <p className="text-xs font-medium text-accent/90">{t('flex.verifySolscanNote')}</p>
         </>
-      ) : null}
+      ) : (
+        <p className="text-xs font-medium text-accent/90">{t('flex.verifySolscanNote')}</p>
+      )}
       <div className="flex flex-wrap gap-2 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
         <span>{t('flex.step1')}</span>
         <span aria-hidden>→</span>

@@ -97,6 +97,9 @@ export const ja = {
     shareRank: 'ランク {rank} を 𝕏 でシェア',
     unlocksOn: '{date} にアンロック',
     verifiedFlex: 'Flex 検証済み',
+    verifiedOnly: '検証済み Flex のみ',
+    verifiedOnlyEmpty:
+      'まだ検証済み Flex がありません。ロック → Solscan tx リンク付きでシェア → 投稿 URL を貼り付け。',
     lockerListTitle: 'The Locker List',
     lockerListBody:
       'ロック → 𝕏 で Flex → 投稿 URL を貼り付け。検証されたロッカーがここに表示されます。本気のブルズの可視性（報酬保証なし）。',
@@ -142,7 +145,8 @@ export const ja = {
     flexOnX: '𝕏 で Flex',
     verifyTitle: 'Flex を証明 → Locker List',
     verifyHint:
-      '𝕏 でロック Flex を投稿（上のボタン）、公開投稿 URL を貼り付け。𝕏 oEmbed で検証 — ウォレット連携と同じフロー。',
+      '𝕏 でロック Flex を投稿（Solscan tx リンクを含める）、公開投稿 URL を貼り付け。oEmbed + オンチェーン tx で検証。',
+    verifySolscanNote: 'Flex 投稿に https://solscan.io/tx/… （ロック tx）が必要です。',
     verifyPlaceholder: 'https://x.com/you/status/…',
     verifySubmit: '検証して Locker List に参加',
     verifySuccess: 'Locker List に登録されました',

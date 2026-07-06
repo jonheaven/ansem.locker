@@ -8,6 +8,7 @@ export type LockerListEntry = {
   linkedAt: number;
   flexTweetUrl?: string;
   flexVerifiedAt?: number;
+  flexTxSig?: string;
 };
 
 type LockerListResponse = {

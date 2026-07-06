@@ -59,12 +59,17 @@ export function LeaderboardTable({
   const { data, isLoading, isError, error } = useLeaderboard();
   const { data: xLinks } = useXLinks();
   const [sort, setSort] = useState<LeaderboardSort>(initialSort);
+  const [verifiedOnly, setVerifiedOnly] = useState(false);
   const { t } = useI18n();
   const { formatTimeRemaining } = useLocalizedFormat();
   const { data: lockerList = [] } = useLockerList();
   const verifiedWallets = new Set(lockerList.map((e) => e.wallet));
 
-  const sorted = sortLocks(data ?? [], sort).slice(0, limit);
+  const allSorted = sortLocks(data ?? [], sort);
+  const filtered = verifiedOnly
+    ? allSorted.filter((entry) => verifiedWallets.has(entry.owner))
+    : allSorted;
+  const sorted = filtered.slice(0, limit);
   const nowSec = Math.floor(Date.now() / 1000);
 
   return (
@@ -96,7 +101,7 @@ export function LeaderboardTable({
           ) : null}
         </div>
         {showSortTabs && (
-          <div className="mt-4 flex gap-2">
+          <div className="mt-4 flex flex-wrap items-center gap-2">
             {(
               [
                 ['score', 'leaderboard.sortScore'],
@@ -118,6 +123,19 @@ export function LeaderboardTable({
                 {t(labelKey)}
               </button>
             ))}
+            <span className="mx-1 hidden h-4 w-px bg-border sm:inline" aria-hidden />
+            <button
+              type="button"
+              onClick={() => setVerifiedOnly((v) => !v)}
+              className={cn(
+                'rounded-lg px-3 py-1.5 text-xs font-medium transition-colors',
+                verifiedOnly
+                  ? 'bg-accent/15 text-accent'
+                  : 'text-muted-foreground hover:text-foreground',
+              )}
+            >
+              {t('leaderboard.verifiedOnly')}
+            </button>
           </div>
         )}
       </CardHeader>
@@ -139,10 +157,12 @@ export function LeaderboardTable({
         )}
         {!isLoading && !isError && sorted.length === 0 && (
           <p className="py-8 text-center text-sm text-muted-foreground">
-            {t('leaderboard.empty')}{' '}
-            <Link to="/" className="text-accent hover:underline">
-              {t('leaderboard.lockCta')}
-            </Link>
+            {verifiedOnly ? t('leaderboard.verifiedOnlyEmpty') : t('leaderboard.empty')}{' '}
+            {!verifiedOnly ? (
+              <Link to="/" className="text-accent hover:underline">
+                {t('leaderboard.lockCta')}
+              </Link>
+            ) : null}
           </p>
         )}
         {sorted.length > 0 && (

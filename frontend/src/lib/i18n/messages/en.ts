@@ -97,6 +97,8 @@ export const en = {
     shareRank: 'Share rank {rank} on 𝕏',
     unlocksOn: 'unlocks {date}',
     verifiedFlex: 'Verified flex',
+    verifiedOnly: 'Verified flex only',
+    verifiedOnlyEmpty: 'No verified flex posts yet. Lock, share with your Solscan tx link, then paste the post URL.',
     lockerListTitle: 'The Locker List',
     lockerListBody:
       'Lock, post your flex on 𝕏, paste the link back — verified lockers get a public spot here. Visibility for the most committed bulls (no guarantees, but this is how you get on radar).',
@@ -142,7 +144,8 @@ export const en = {
     flexOnX: 'Flex on 𝕏',
     verifyTitle: 'Prove your flex → Locker List',
     verifyHint:
-      'Post your lock flex on 𝕏 (use the button above), then paste the public post URL here. We verify via 𝕏 oEmbed — same flow as wallet linking.',
+      'Post your lock flex on 𝕏 (use the button above — include the Solscan tx link), then paste the public post URL here. We verify via 𝕏 oEmbed and confirm the lock tx on-chain.',
+    verifySolscanNote: 'Your flex post must include https://solscan.io/tx/… from your lock.',
     verifyPlaceholder: 'https://x.com/you/status/…',
     verifySubmit: 'Verify & join Locker List',
     verifySuccess: 'You\'re on the Locker List',

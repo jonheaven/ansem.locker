@@ -7,6 +7,7 @@ import {
 } from './_shared/x-link-store';
 import { isBase58Address, loadSolanaWeb3 } from './_shared/solana';
 import { walletHasActiveLock } from './_shared/wallet-lock-index';
+import { requireSolscanTxInPost, verifyLockTxForWallet } from './_shared/verify-flex-tx';
 import {
   INDEXER_TIMEOUT_MS,
   missingRpcMessage,
@@ -82,6 +83,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const { xHandle, haystack } = await fetchTweetOembed(flexTweetUrl);
     verifyFlexPostContent(haystack);
+    const flexTxSig = requireSolscanTxInPost(haystack);
+    await verifyLockTxForWallet(rpcUrl, flexTxSig, wallet);
 
     const existing = store.get(wallet);
     if (existing?.xHandle && existing.xHandle.toLowerCase() !== xHandle.toLowerCase()) {
@@ -98,6 +101,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       linkedAt: existing?.linkedAt ?? now,
       flexTweetUrl,
       flexVerifiedAt: now,
+      flexTxSig,
     };
 
     store.set(wallet, entry);
