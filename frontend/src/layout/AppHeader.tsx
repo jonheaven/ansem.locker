@@ -3,9 +3,11 @@ import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { PoweredByJupiter } from '@/components/PoweredByJupiter';
+import { LocaleCurrencySelector } from '@/components/LocaleCurrencySelector';
 import { XMenuButton } from '@/components/XMenuButton';
 import { BUILDER_WALLET, BUILDER_X, BUILDER_X_URL, GITHUB_URL } from '@/config/constants';
 import { useHasActiveLock } from '@/hooks/useHasActiveLock';
+import { useI18n } from '@/lib/i18n/i18n-context';
 import { shortenAddress } from '@/lib/format';
 import { cn } from '@/lib/cn';
 
@@ -21,15 +23,16 @@ function HeaderActions() {
 export function AppHeader() {
   const [copied, setCopied] = useState(false);
   const committed = useHasActiveLock();
+  const { t } = useI18n();
 
   const copyWallet = async () => {
     try {
       await navigator.clipboard.writeText(BUILDER_WALLET);
       setCopied(true);
-      toast.success('Wallet copied');
+      toast.success(t('common.walletCopied'));
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error('Could not copy wallet');
+      toast.error(t('common.walletCopyFailed'));
     }
   };
 
@@ -65,7 +68,7 @@ export function AppHeader() {
       <div className="border-t border-border/50 px-4 py-1.5 text-center text-[11px] text-muted-foreground">
         <span className="inline-flex flex-wrap items-center justify-center gap-x-1 gap-y-0.5">
           <span>
-            Built by{' '}
+            {t('common.builtBy')}{' '}
             <a
               href={BUILDER_X_URL}
               target="_blank"
@@ -77,7 +80,7 @@ export function AppHeader() {
           </span>
           <span aria-hidden>·</span>
           <span>
-            Tip builder{' '}
+            {t('common.tipBuilder')}{' '}
             <button
               type="button"
               onClick={copyWallet}
@@ -95,11 +98,13 @@ export function AppHeader() {
             rel="noopener noreferrer"
             className="transition-colors hover:text-foreground"
           >
-            GitHub
+            {t('common.github')}
           </a>
-          <span>· open source</span>
+          <span>· {t('common.openSource')}</span>
           <span aria-hidden>·</span>
-          <span>non-custodial · decentralized</span>
+          <span>{t('common.nonCustodial')}</span>
+          <span aria-hidden>·</span>
+          <LocaleCurrencySelector />
           <span aria-hidden>·</span>
           <PoweredByJupiter />
         </span>

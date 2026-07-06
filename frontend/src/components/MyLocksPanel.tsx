@@ -3,12 +3,15 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { PublicKey, Transaction } from '@solana/web3.js';
 import { Loader2, Unlock } from 'lucide-react';
 import { toast } from 'sonner';
+import { AnsemFiatValue } from '@/components/AnsemFiatValue';
 import { LockFlexBanner } from '@/components/LockFlexBanner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useLocalizedFormat } from '@/hooks/useLocalizedFormat';
 import { useMyLocks } from '@/hooks/useLocks';
 import { buildClaimAnsemInstructions } from '@/lib/bonfida';
-import { formatAnsemAmount, formatTimeRemaining, formatUnlockDate } from '@/lib/format';
+import { formatAnsemAmount } from '@/lib/format';
+import { useI18n } from '@/lib/i18n/i18n-context';
 import { clearJustLocked, readJustLocked, type JustLockedPayload } from '@/lib/just-locked';
 
 export function MyLocksPanel() {
@@ -17,6 +20,8 @@ export function MyLocksPanel() {
   const { locks, isLoading, refetch } = useMyLocks();
   const [unlocking, setUnlocking] = useState<string | null>(null);
   const [flexPrompt, setFlexPrompt] = useState<JustLockedPayload | null>(() => readJustLocked());
+  const { t } = useI18n();
+  const { formatTimeRemaining, formatUnlockDate } = useLocalizedFormat();
 
   useEffect(() => {
     setFlexPrompt(readJustLocked());
@@ -53,16 +58,16 @@ export function MyLocksPanel() {
         'confirmed',
       );
 
-      toast.success('Unlocked on-chain', {
+      toast.success(t('locks.unlockedToast'), {
         action: {
-          label: 'Solscan',
+          label: t('common.solscan'),
           onClick: () =>
             window.open(`https://solscan.io/tx/${sig}`, '_blank', 'noopener,noreferrer'),
         },
       });
       refetch();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Unlock failed');
+      toast.error(err instanceof Error ? err.message : t('locks.unlockFailed'));
     } finally {
       setUnlocking(null);
     }
@@ -72,8 +77,8 @@ export function MyLocksPanel() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Your locks</CardTitle>
-          <CardDescription>Connect a wallet to see and unlock your $ANSEM.</CardDescription>
+          <CardTitle>{t('locks.title')}</CardTitle>
+          <CardDescription>{t('locks.disconnected')}</CardDescription>
         </CardHeader>
       </Card>
     );
@@ -93,16 +98,14 @@ export function MyLocksPanel() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Your locks</CardTitle>
-          <CardDescription>Active locks for your wallet.</CardDescription>
+          <CardTitle>{t('locks.title')}</CardTitle>
+          <CardDescription>{t('locks.description')}</CardDescription>
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <p className="text-sm text-muted-foreground">Loading from chain…</p>
+            <p className="text-sm text-muted-foreground">{t('locks.loading')}</p>
           ) : locks.length === 0 ? (
-            <p className="text-sm text-muted-foreground">
-              No active $ANSEM locks for this wallet yet.
-            </p>
+            <p className="text-sm text-muted-foreground">{t('locks.empty')}</p>
           ) : (
             <ul className="space-y-3">
               {locks.map((lock) => {
@@ -116,12 +119,17 @@ export function MyLocksPanel() {
                     <div>
                       <p className="font-mono text-xl font-bold sm:text-2xl">
                         {formatAnsemAmount(lock.remainingInVault)}{' '}
-                        <span className="text-accent">$ANSEM</span>
+                        <span className="text-accent">{t('common.ansem')}</span>
                       </p>
+                      <AnsemFiatValue
+                        raw={lock.remainingInVault}
+                        inline={false}
+                        className="mt-0.5 text-sm"
+                      />
                       <p className="mt-1 text-sm font-medium text-muted-foreground sm:text-base">
                         {unlocked
-                          ? 'Cliff passed — ready to unlock'
-                          : `${formatTimeRemaining(lock.unlockTs, nowSec)} · unlocks ${formatUnlockDate(lock.unlockTs)}`}
+                          ? t('locks.cliffPassed')
+                          : `${formatTimeRemaining(lock.unlockTs, nowSec)} · ${t('leaderboard.unlocksOn', { date: formatUnlockDate(lock.unlockTs) })}`}
                       </p>
                       <a
                         href={`https://solscan.io/account/${lock.vestingAccount}`}
@@ -129,7 +137,9 @@ export function MyLocksPanel() {
                         rel="noopener noreferrer"
                         className="text-[10px] text-muted-foreground transition-colors hover:text-accent"
                       >
-                        {lock.vestingAccount.slice(0, 8)}… on Solscan
+                        {t('locks.solscanAccount', {
+                          short: lock.vestingAccount.slice(0, 8),
+                        })}
                       </a>
                     </div>
                     {unlocked && (
@@ -146,7 +156,7 @@ export function MyLocksPanel() {
                         ) : (
                           <Unlock className="h-4 w-4" />
                         )}
-                        Unlock
+                        {t('common.unlock')}
                       </Button>
                     )}
                   </li>

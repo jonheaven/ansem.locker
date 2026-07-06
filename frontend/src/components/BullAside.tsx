@@ -1,4 +1,5 @@
 import { useHasActiveLock } from '@/hooks/useHasActiveLock';
+import { useI18n } from '@/lib/i18n/i18n-context';
 import { cn } from '@/lib/cn';
 
 const BULL_SRC = '/blackbull.png';
@@ -11,6 +12,7 @@ type BullAsideProps = {
 /** Bull art — sits left of the tabbed UI, always visible on sm+ screens. */
 export function BullAside({ className }: BullAsideProps) {
   const committed = useHasActiveLock();
+  const { t } = useI18n();
 
   const bullClass = cn(
     'mx-auto w-full object-contain',
@@ -26,7 +28,7 @@ export function BullAside({ className }: BullAsideProps) {
     >
       {committed ? (
         <p className="text-center text-sm font-bold uppercase tracking-[0.22em] text-accent sm:text-base">
-          You are Locked In
+          {t('bull.lockedIn')}
         </p>
       ) : null}
       <img

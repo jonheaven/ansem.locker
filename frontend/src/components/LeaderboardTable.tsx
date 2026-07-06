@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { Medal, Share2, Trophy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { AnsemFiatValue } from '@/components/AnsemFiatValue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLeaderboard, sortLocks, type LeaderboardSort } from '@/hooks/useLocks';
+import { useLocalizedFormat } from '@/hooks/useLocalizedFormat';
 import { useXLinks } from '@/hooks/useXLinks';
-import { X_SYMBOL } from '@/config/constants';
-import { formatAnsemAmount, formatTimeRemaining, shortenAddress } from '@/lib/format';
+import { formatAnsemAmount, shortenAddress } from '@/lib/format';
+import { useI18n } from '@/lib/i18n/i18n-context';
 import { openLeaderboardEntryShare, openLeaderboardHypeShare } from '@/lib/share-x';
 import { cn } from '@/lib/cn';
 
@@ -51,6 +53,8 @@ export function LeaderboardTable({
   const { data, isLoading, isError, error } = useLeaderboard();
   const { data: xLinks } = useXLinks();
   const [sort, setSort] = useState<LeaderboardSort>(initialSort);
+  const { t } = useI18n();
+  const { formatTimeRemaining } = useLocalizedFormat();
 
   const sorted = sortLocks(data ?? [], sort).slice(0, limit);
   const nowSec = Math.floor(Date.now() / 1000);
@@ -62,11 +66,9 @@ export function LeaderboardTable({
           <div>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="h-5 w-5 text-accent" />
-              Leaderboard
+              {t('leaderboard.title')}
             </CardTitle>
-            <CardDescription>
-              Active $ANSEM locks ranked by amount × days remaining
-            </CardDescription>
+            <CardDescription>{t('leaderboard.description')}</CardDescription>
           </div>
           {sorted.length > 0 ? (
             <Button
@@ -76,7 +78,7 @@ export function LeaderboardTable({
               onClick={() => openLeaderboardHypeShare()}
             >
               <Share2 className="h-3.5 w-3.5" />
-              Share ranks
+              {t('leaderboard.shareRanks')}
             </Button>
           ) : null}
         </div>
@@ -84,11 +86,11 @@ export function LeaderboardTable({
           <div className="mt-4 flex gap-2">
             {(
               [
-                ['score', 'Score'],
-                ['amount', 'Amount'],
-                ['duration', 'Duration'],
+                ['score', 'leaderboard.sortScore'],
+                ['amount', 'leaderboard.sortAmount'],
+                ['duration', 'leaderboard.sortDuration'],
               ] as const
-            ).map(([key, label]) => (
+            ).map(([key, labelKey]) => (
               <button
                 key={key}
                 type="button"
@@ -100,7 +102,7 @@ export function LeaderboardTable({
                     : 'text-muted-foreground hover:text-foreground',
                 )}
               >
-                {label}
+                {t(labelKey)}
               </button>
             ))}
           </div>
@@ -108,33 +110,25 @@ export function LeaderboardTable({
       </CardHeader>
       <CardContent>
         {isLoading && (
-          <p className="py-8 text-center text-sm text-muted-foreground">Loading locks…</p>
+          <p className="py-8 text-center text-sm text-muted-foreground">
+            {t('leaderboard.loading')}
+          </p>
         )}
         {isError && (
           <div className="mx-auto max-w-md py-8 text-center text-sm">
             <p className="text-destructive">
-              {error instanceof Error ? error.message : 'Could not load leaderboard'}
+              {error instanceof Error ? error.message : t('leaderboard.loadError')}
             </p>
             <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-              The leaderboard needs a dedicated Solana RPC on Vercel (
-              <code className="text-foreground">SOLANA_RPC_URL</code>). Free tier at{' '}
-              <a
-                href="https://helius.dev"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-accent hover:underline"
-              >
-                helius.dev
-              </a>{' '}
-              works. Redeploy after adding the env var.
+              {t('leaderboard.rpcHint')}
             </p>
           </div>
         )}
         {!isLoading && !isError && sorted.length === 0 && (
           <p className="py-8 text-center text-sm text-muted-foreground">
-            No active locks yet.{' '}
+            {t('leaderboard.empty')}{' '}
             <Link to="/" className="text-accent hover:underline">
-              Lock $ANSEM
+              {t('leaderboard.lockCta')}
             </Link>
           </p>
         )}
@@ -149,7 +143,7 @@ export function LeaderboardTable({
               const timeRemaining =
                 entry.unlockTs > nowSec
                   ? formatTimeRemaining(entry.unlockTs, nowSec)
-                  : 'Unlock available';
+                  : t('leaderboard.unlockAvailable');
               const isSelf = wallet === entry.owner;
 
               return (
@@ -194,16 +188,21 @@ export function LeaderboardTable({
                       <p className="font-mono font-semibold tabular-nums">
                         {formatAnsemAmount(entry.remainingInVault)}
                       </p>
+                      <AnsemFiatValue
+                        raw={entry.remainingInVault}
+                        inline={false}
+                        className="text-[10px]"
+                      />
                       <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                        $ANSEM
+                        {t('common.ansem')}
                       </p>
                     </div>
                     <Button
                       size="sm"
                       variant="ghost"
                       className="h-8 w-8 shrink-0 p-0"
-                      title={`Share #${rank} on ${X_SYMBOL}`}
-                      aria-label={`Share rank ${rank} on ${X_SYMBOL}`}
+                      title={t('leaderboard.shareRank', { rank })}
+                      aria-label={t('leaderboard.shareRank', { rank })}
                       onClick={() =>
                         openLeaderboardEntryShare({
                           rank,

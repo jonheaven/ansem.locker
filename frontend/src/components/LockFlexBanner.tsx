@@ -1,5 +1,5 @@
-import { X_SYMBOL } from '@/config/constants';
 import { clearJustLocked, type JustLockedPayload } from '@/lib/just-locked';
+import { useI18n } from '@/lib/i18n/i18n-context';
 import { openLockShare } from '@/lib/share-x';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
@@ -11,6 +11,8 @@ type LockFlexBannerProps = {
 };
 
 export function LockFlexBanner({ payload, onDismiss, className }: LockFlexBannerProps) {
+  const { t } = useI18n();
+
   const handleFlex = () => {
     openLockShare(
       BigInt(payload.amountRaw),
@@ -27,18 +29,16 @@ export function LockFlexBanner({ payload, onDismiss, className }: LockFlexBanner
       )}
     >
       <p className="text-sm font-bold uppercase tracking-[0.14em] text-accent">
-        You are locked in
+        {t('bull.youAreLockedIn')}
       </p>
       <p className="mt-2 text-base font-semibold text-foreground">
-        {payload.amountDisplay} $ANSEM · {payload.durationLabel}
+        {payload.amountDisplay} {t('common.ansem')} · {payload.durationLabel}
       </p>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Flex on {X_SYMBOL} now — show the trenches who&apos;s diamond hooving.
-      </p>
+      <p className="mt-1 text-sm text-muted-foreground">{t('bull.flexNow')}</p>
       <div className="mt-4 flex flex-wrap gap-2">
         <Button size="sm" className="gap-2" onClick={handleFlex}>
           <img src="/x.png" alt="" className="h-3.5 w-3.5 invert" aria-hidden />
-          Flex on {X_SYMBOL}
+          {t('flex.flexOnX')}
         </Button>
         <Button
           size="sm"
@@ -48,7 +48,7 @@ export function LockFlexBanner({ payload, onDismiss, className }: LockFlexBanner
             onDismiss();
           }}
         >
-          Dismiss
+          {t('common.dismiss')}
         </Button>
       </div>
     </div>

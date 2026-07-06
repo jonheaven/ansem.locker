@@ -5,18 +5,18 @@ import { Transaction } from '@solana/web3.js';
 import { Loader2, Lock } from 'lucide-react';
 import { toast } from 'sonner';
 import { BullSlider } from '@/components/BullSlider';
+import { AnsemFiatValue } from '@/components/AnsemFiatValue';
 import { PoweredByJupiter } from '@/components/PoweredByJupiter';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAnsemBalance } from '@/hooks/useAnsemBalance';
+import { useLocalizedFormat } from '@/hooks/useLocalizedFormat';
 import { buildLockAnsemInstructions } from '@/lib/bonfida';
-import { COPY } from '@/lib/copy';
-import { formatAnsemAmount, formatUnlockDate, parseAnsemAmount } from '@/lib/format';
+import { formatAnsemAmount, parseAnsemAmount } from '@/lib/format';
+import { useI18n } from '@/lib/i18n/i18n-context';
 import {
   defaultUnlockLocal,
-  formatDurationAhead,
   formatLockLength,
-  getBullishFlexLabel,
   LOCK_PRESETS,
   maxUnlockLocal,
   minUnlockLocal,
@@ -27,9 +27,7 @@ import {
   sliderValueToBullishness,
   sliderValueToMinutes,
   unlockLocalToMinutes,
-  validateUnlockTs,
 } from '@/lib/lock-duration';
-import { X_SYMBOL } from '@/config/constants';
 import { saveJustLocked } from '@/lib/just-locked';
 import { openLockShare } from '@/lib/share-x';
 import { cn } from '@/lib/cn';
@@ -55,6 +53,13 @@ export function LockPanel() {
   const { connection } = useConnection();
   const balance = useAnsemBalance();
   const queryClient = useQueryClient();
+  const { t } = useI18n();
+  const {
+    formatUnlockDate,
+    formatDurationAhead,
+    validateUnlockTs,
+    getBullishFlexLabel,
+  } = useLocalizedFormat();
 
   const maxRaw = balance.data?.raw ?? 0n;
 
@@ -78,9 +83,12 @@ export function LockPanel() {
   );
 
   const unlockTs = useMemo(() => parseUnlockLocal(unlockAt), [unlockAt]);
-  const validationError = useMemo(() => validateUnlockTs(unlockTs), [unlockTs]);
+  const validationError = useMemo(() => validateUnlockTs(unlockTs), [unlockTs, validateUnlockTs]);
   const durationLabel = useMemo(() => formatLockLength(unlockTs), [unlockTs]);
-  const durationAhead = useMemo(() => formatDurationAhead(unlockTs), [unlockTs]);
+  const durationAhead = useMemo(
+    () => formatDurationAhead(unlockTs),
+    [unlockTs, formatDurationAhead],
+  );
   const amountBullishness = sliderPositionToBullIntensity(
     amountSlider / AMOUNT_SLIDER_STEPS,
   );
@@ -155,18 +163,18 @@ export function LockPanel() {
 
   const handleLock = async () => {
     if (!publicKey || !signTransaction) {
-      toast.error('Connect your wallet first');
+      toast.error(t('lock.connectFirst'));
       return;
     }
 
     const raw = amountRaw;
     if (raw <= 0n) {
-      toast.error('Choose an amount to lock');
+      toast.error(t('lock.chooseAmount'));
       return;
     }
 
     if (balance.data && raw > balance.data.raw) {
-      toast.error('Insufficient balance');
+      toast.error(t('lock.insufficientBalance'));
       return;
     }
 
@@ -206,11 +214,11 @@ export function LockPanel() {
         'confirmed',
       );
 
-      toast.success('Locked — flex on ' + X_SYMBOL, {
-        description: `${formatAnsemAmount(raw)} $ANSEM · unlocks ${formatUnlockDate(unlockTs)}`,
+      toast.success(t('lock.lockedToast'), {
+        description: `${formatAnsemAmount(raw)} ${t('common.ansem')} · ${formatUnlockDate(unlockTs)}`,
         duration: 12_000,
         action: {
-          label: `Flex on ${X_SYMBOL}`,
+          label: t('flex.flexOnX'),
           onClick: () => openLockShare(raw, durationLabel, sig),
         },
       });
@@ -241,8 +249,8 @@ export function LockPanel() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Lock $ANSEM</CardTitle>
-          <CardDescription>{COPY.lockPanelDisconnected}</CardDescription>
+          <CardTitle>{t('lock.title')}</CardTitle>
+          <CardDescription>{t('lock.disconnected')}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center gap-3 pt-0">
           <PoweredByJupiter />
@@ -258,7 +266,7 @@ export function LockPanel() {
       <CardContent className="space-y-7 pt-6">
         <div className="rounded-2xl border border-border/70 bg-surface-elevated/90 px-5 py-5 text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-            Your balance
+            {t('lock.yourBalance')}
           </p>
           <p className="mt-2 font-mono text-4xl font-bold tracking-tight tabular-nums text-foreground sm:text-5xl">
             {balance.isLoading
@@ -267,16 +275,20 @@ export function LockPanel() {
                 ? '—'
                 : formatAnsemAmount(maxRaw)}
           </p>
-          {balance.isError ? (
-            <p className="mt-2 text-sm text-destructive">Could not load balance. Try again shortly.</p>
+          {!balance.isLoading && !balance.isError && maxRaw > 0n ? (
+            <AnsemFiatValue raw={maxRaw} inline={false} className="mt-1 text-sm" />
           ) : null}
-          <p className="mt-1 text-xl font-semibold text-accent">$ANSEM</p>
+          {balance.isError ? (
+            <p className="mt-2 text-sm text-destructive">{t('lock.balanceError')}</p>
+          ) : null}
+          <p className="mt-1 text-xl font-semibold text-accent">{t('common.ansem')}</p>
         </div>
 
         <div>
           <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <span className="text-base font-semibold text-foreground">Lock amount</span>
-            <div className="flex items-baseline justify-end gap-2">
+            <span className="text-base font-semibold text-foreground">{t('lock.lockAmount')}</span>
+            <div className="flex flex-col items-end gap-0.5">
+              <div className="flex items-baseline justify-end gap-2">
               <input
                 type="text"
                 inputMode="decimal"
@@ -290,13 +302,19 @@ export function LockPanel() {
                 onChange={(e) => handleAmountInputChange(e.target.value)}
                 onBlur={handleAmountInputBlur}
                 className="w-36 rounded-xl border border-border bg-surface-elevated px-3 py-2 text-right font-mono text-2xl font-bold tabular-nums text-foreground outline-none transition-colors focus:border-accent sm:w-44 sm:text-3xl"
-                aria-label="Amount to lock"
+                aria-label={t('lock.lockAmount')}
               />
-              <span className="text-base font-semibold text-muted-foreground sm:text-lg">$ANSEM</span>
+              <span className="text-base font-semibold text-muted-foreground sm:text-lg">
+                {t('common.ansem')}
+              </span>
+              </div>
+              {amountRaw > 0n ? (
+                <AnsemFiatValue raw={amountRaw} inline={false} className="text-xs" />
+              ) : null}
             </div>
           </div>
           <BullSlider
-            ariaLabel="Amount to lock"
+            ariaLabel={t('lock.lockAmount')}
             min={0}
             max={AMOUNT_SLIDER_STEPS}
             step={1}
@@ -317,17 +335,17 @@ export function LockPanel() {
                   setAmountInput(formatAnsemAmount(maxRaw));
                 }}
               >
-                Max
+                {t('common.max')}
               </button>
             ) : (
-              <span>Max</span>
+              <span>{t('common.max')}</span>
             )}
           </div>
         </div>
 
         <div>
           <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <span className="text-base font-semibold text-foreground">Lock until</span>
+            <span className="text-base font-semibold text-foreground">{t('lock.lockUntil')}</span>
             <div className="sm:text-right">
               <p className="text-base font-medium text-foreground sm:text-lg">
                 {formatUnlockDate(unlockTs)}
@@ -338,7 +356,7 @@ export function LockPanel() {
             </div>
           </div>
           <BullSlider
-            ariaLabel="Lock duration"
+            ariaLabel={t('lock.lockUntil')}
             min={0}
             max={1000}
             step={1}
@@ -357,8 +375,8 @@ export function LockPanel() {
             </p>
           ) : null}
           <div className="mt-2 flex justify-between text-sm font-semibold text-muted-foreground">
-            <span>5m</span>
-            <span>1y</span>
+            <span>{t('lock.duration5m')}</span>
+            <span>{t('lock.duration1y')}</span>
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
             {LOCK_PRESETS.map(({ label, minutes }) => (
@@ -397,19 +415,19 @@ export function LockPanel() {
           {pending ? (
             <>
               <Loader2 className="h-5 w-5 animate-spin" />
-              Confirm in wallet…
+              {t('common.confirmInWallet')}
             </>
           ) : (
             <>
               <Lock className="h-5 w-5" />
-              Lock $ANSEM
+              {t('lock.lockButton')}
             </>
           )}
         </Button>
 
         <div className="flex flex-col items-center gap-2 pt-1">
           <PoweredByJupiter />
-          <p className="text-center text-[11px] text-muted-foreground">{COPY.lockFooter}</p>
+          <p className="text-center text-[11px] text-muted-foreground">{t('lock.footer')}</p>
         </div>
       </CardContent>
     </Card>

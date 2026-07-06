@@ -4,22 +4,23 @@ import { LockPanel } from '@/components/LockPanel';
 import { LeaderboardTable } from '@/components/LeaderboardTable';
 import { MyLocksPanel } from '@/components/MyLocksPanel';
 import { TrustSection } from '@/components/TrustSection';
-import { APP_VIEWS, type AppView, useAppView } from '@/hooks/useAppView';
+import { APP_VIEWS, useAppView } from '@/hooks/useAppView';
 import { useHasActiveLock } from '@/hooks/useHasActiveLock';
 import { GITHUB_URL, JUPITER_LOCK_PROGRAM_ID } from '@/config/constants';
-import { COPY } from '@/lib/copy';
+import { useI18n } from '@/lib/i18n/i18n-context';
 import { cn } from '@/lib/cn';
 
-const TABS: { id: AppView; label: string; icon: typeof Lock }[] = [
-  { id: 'lock', label: 'Lock', icon: Lock },
-  { id: 'leaderboard', label: 'Ranks', icon: Trophy },
-  { id: 'locks', label: 'Yours', icon: Wallet },
-  { id: 'info', label: 'Info', icon: Info },
+const TAB_IDS = [
+  { id: 'lock' as const, labelKey: 'tabs.lock', icon: Lock },
+  { id: 'leaderboard' as const, labelKey: 'tabs.ranks', icon: Trophy },
+  { id: 'locks' as const, labelKey: 'tabs.yours', icon: Wallet },
+  { id: 'info' as const, labelKey: 'tabs.info', icon: Info },
 ];
 
 export function AppCarousel() {
   const { view, setView, index } = useAppView();
   const committed = useHasActiveLock();
+  const { t } = useI18n();
 
   return (
     <div className="flex w-full max-w-5xl flex-col items-stretch gap-6 sm:flex-row sm:items-start sm:gap-8 lg:gap-10">
@@ -34,7 +35,7 @@ export function AppCarousel() {
             committed ? 'bg-surface' : 'bg-surface/80',
           )}
         >
-        {TABS.map(({ id, label, icon: Icon }) => (
+        {TAB_IDS.map(({ id, labelKey, icon: Icon }) => (
           <button
             key={id}
             type="button"
@@ -49,7 +50,7 @@ export function AppCarousel() {
             )}
           >
             <Icon className="h-4 w-4 shrink-0" aria-hidden />
-            <span className="truncate">{label}</span>
+            <span className="truncate">{t(labelKey)}</span>
           </button>
         ))}
         </div>
@@ -76,10 +77,10 @@ export function AppCarousel() {
                     )}
                   >
                     <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                      {COPY.headline}
+                      {t('home.headline')}
                     </h1>
                     <p className="mt-2 text-base leading-relaxed text-muted-foreground sm:text-lg">
-                      {COPY.tagline}
+                      {t('home.tagline')}
                     </p>
                   </div>
                   <LockPanel />
@@ -101,7 +102,7 @@ export function AppCarousel() {
                       rel="noopener noreferrer"
                       className="font-mono transition-colors hover:text-accent"
                     >
-                      Program
+                      {t('info.program')}
                     </a>
                     {' · '}
                     <a
@@ -110,11 +111,11 @@ export function AppCarousel() {
                       rel="noopener noreferrer"
                       className="transition-colors hover:text-accent"
                     >
-                      Security
+                      {t('info.security')}
                     </a>
                     {' · '}
                     <a href={GITHUB_URL} className="transition-colors hover:text-accent">
-                      Source
+                      {t('info.source')}
                     </a>
                   </p>
                 </div>
