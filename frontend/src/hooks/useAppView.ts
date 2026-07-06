@@ -1,10 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 
-export const APP_VIEWS = ['lock', 'leaderboard', 'locks', 'info'] as const;
+export const APP_VIEWS = ['lock', 'leaderboard', 'why', 'how', 'locks'] as const;
 export type AppView = (typeof APP_VIEWS)[number];
+
+const VIEW_ALIASES: Record<string, AppView> = {
+  info: 'how',
+};
 
 function parseView(hash: string): AppView {
   const id = hash.replace(/^#/, '').toLowerCase();
+  if (id in VIEW_ALIASES) return VIEW_ALIASES[id]!;
   return APP_VIEWS.includes(id as AppView) ? (id as AppView) : 'lock';
 }
 

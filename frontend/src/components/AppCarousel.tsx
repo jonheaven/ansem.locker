@@ -1,4 +1,4 @@
-import { Diamond, Info, Lock, Wallet } from 'lucide-react';
+import { Diamond, HelpCircle, Info, Lock, Wallet } from 'lucide-react';
 import { BullAside } from '@/components/BullAside';
 import { LockPanel } from '@/components/LockPanel';
 import { LeaderboardTable } from '@/components/LeaderboardTable';
@@ -14,14 +14,19 @@ import { cn } from '@/lib/cn';
 const TAB_IDS = [
   { id: 'lock' as const, labelKey: 'tabs.lock', icon: Lock },
   { id: 'leaderboard' as const, labelKey: 'tabs.ranks', icon: Diamond },
-  { id: 'locks' as const, labelKey: 'tabs.yours', icon: Wallet },
-  { id: 'info' as const, labelKey: 'tabs.info', icon: Info },
-];
+  { id: 'why' as const, labelKey: 'tabs.why', icon: HelpCircle },
+  { id: 'how' as const, labelKey: 'tabs.how', icon: Info },
+  { id: 'locks' as const, labelKey: 'tabs.myLocks', icon: Wallet },
+] as const;
 
 export function AppCarousel() {
   const { view, setView, index } = useAppView();
   const committed = useHasActiveLock();
   const { t } = useI18n();
+
+  const scrollPanelClass = cn(
+    !committed && 'app-scroll max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain',
+  );
 
   return (
     <div className="flex w-full max-w-5xl flex-col items-stretch gap-4 sm:flex-row sm:items-start sm:gap-6 lg:gap-8">
@@ -31,7 +36,7 @@ export function AppCarousel() {
         <div
           role="tablist"
           aria-label="ansem.locker views"
-          className="mb-4 flex rounded-full border border-border/80 bg-surface/80 p-1.5 shadow-sm backdrop-blur-md"
+          className="mb-4 flex rounded-full border border-border/80 bg-surface/80 p-1 shadow-sm backdrop-blur-md"
         >
           {TAB_IDS.map(({ id, labelKey, icon: Icon }) => (
             <button
@@ -41,13 +46,13 @@ export function AppCarousel() {
               aria-selected={view === id}
               onClick={() => setView(id)}
               className={cn(
-                'flex flex-1 items-center justify-center gap-2 rounded-full py-2.5 text-sm font-semibold transition-all sm:text-base',
+                'flex flex-1 items-center justify-center gap-1 rounded-full px-1 py-2 text-xs font-semibold transition-all sm:gap-1.5 sm:px-2 sm:py-2.5 sm:text-sm',
                 view === id
                   ? 'bg-foreground text-background shadow-sm'
                   : 'text-muted-foreground hover:text-foreground',
               )}
             >
-              <Icon className="h-4 w-4 shrink-0" aria-hidden />
+              <Icon className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" aria-hidden />
               <span className="truncate">{t(labelKey)}</span>
             </button>
           ))}
@@ -79,23 +84,17 @@ export function AppCarousel() {
                   </div>
                 )}
                 {id === 'leaderboard' && (
-                  <div
-                    className={cn(
-                      !committed && 'app-scroll max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain',
-                    )}
-                  >
+                  <div className={scrollPanelClass}>
                     <LeaderboardTable showSortTabs limit={25} />
                   </div>
                 )}
-                {id === 'locks' && <MyLocksPanel />}
-                {id === 'info' && (
-                  <div
-                    className={cn(
-                      'space-y-4',
-                      !committed && 'app-scroll max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain',
-                    )}
-                  >
+                {id === 'why' && (
+                  <div className={scrollPanelClass}>
                     <WhyLockSection />
+                  </div>
+                )}
+                {id === 'how' && (
+                  <div className={cn('space-y-4', scrollPanelClass)}>
                     <TrustSection variant="stacked" />
                     <p className="text-center text-[11px] text-muted-foreground">
                       <a
@@ -122,6 +121,7 @@ export function AppCarousel() {
                     </p>
                   </div>
                 )}
+                {id === 'locks' && <MyLocksPanel />}
               </div>
             ))}
           </div>

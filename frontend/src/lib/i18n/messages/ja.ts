@@ -28,8 +28,9 @@ export const ja = {
   tabs: {
     lock: 'ロック',
     ranks: 'フーフ',
-    yours: 'マイロック',
-    info: 'Why & How',
+    why: 'Why',
+    how: 'How',
+    myLocks: 'マイロック',
   },
   home: {
     headline: 'ダイヤモンドフーフを証明',

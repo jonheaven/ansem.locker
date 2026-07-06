@@ -28,8 +28,9 @@ export const en = {
   tabs: {
     lock: 'Lock',
     ranks: 'Hooves',
-    yours: 'Yours',
-    info: 'Why & How',
+    why: 'Why',
+    how: 'How',
+    myLocks: 'My Locks',
   },
   home: {
     headline: 'Prove your diamond hooves',
@@ -66,7 +67,7 @@ export const en = {
     youAreLockedIn: 'You are locked in',
   },
   locks: {
-    title: 'Your locks',
+    title: 'My Locks',
     disconnected: 'Connect a wallet to see and unlock your $ANSEM.',
     description: 'Active locks for your wallet.',
     loading: 'Loading from chain…',
