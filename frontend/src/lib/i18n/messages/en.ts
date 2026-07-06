@@ -102,6 +102,9 @@ export const en = {
       'Lock, post your flex on 𝕏, paste the link back — verified lockers get a public spot here. Visibility for the most committed bulls (no guarantees, but this is how you get on radar).',
     lockerListEmpty: 'No verified flex posts yet. Lock, share, paste your post URL.',
     lockerListJoin: 'Join the Locker List',
+    copyWallet: 'Copy wallet address',
+    tipHint:
+      'Copy any wallet — airdroppers and supporters can send SOL or tokens directly. No guarantees, but these bulls earned visibility.',
   },
   info: {
     howItWorks: 'How it works',

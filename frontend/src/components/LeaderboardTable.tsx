@@ -3,6 +3,7 @@ import { Medal, Share2, Trophy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { AnsemFiatValue } from '@/components/AnsemFiatValue';
+import { CopyWalletButton } from '@/components/CopyWalletButton';
 import { FlexVerifyForm } from '@/components/FlexVerifyForm';
 import { LockerListPanel } from '@/components/LockerListPanel';
 import { Button } from '@/components/ui/button';
@@ -78,6 +79,9 @@ export function LeaderboardTable({
               {t('leaderboard.title')}
             </CardTitle>
             <CardDescription>{t('leaderboard.description')}</CardDescription>
+            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+              {t('leaderboard.tipHint')}
+            </p>
           </div>
           {sorted.length > 0 ? (
             <Button
@@ -226,6 +230,7 @@ export function LeaderboardTable({
                         {t('common.ansem')}
                       </p>
                     </div>
+                    <CopyWalletButton address={entry.owner} />
                     <Button
                       size="sm"
                       variant="ghost"

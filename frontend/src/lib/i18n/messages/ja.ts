@@ -102,6 +102,9 @@ export const ja = {
       'ロック → 𝕏 で Flex → 投稿 URL を貼り付け。検証されたロッカーがここに表示されます。本気のブルズの可視性（報酬保証なし）。',
     lockerListEmpty: 'まだ検証済み Flex がありません。ロック、シェア、URL を貼り付け。',
     lockerListJoin: 'Locker List に参加',
+    copyWallet: 'ウォレットアドレスをコピー',
+    tipHint:
+      'ウォレットをコピー — エアドロップや支援者が SOL やトークンを直接送れます。報酬保証はありませんが、可視性を得たブルズです。',
   },
   info: {
     howItWorks: '使い方',

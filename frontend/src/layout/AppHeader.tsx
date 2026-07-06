@@ -1,14 +1,11 @@
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { Check, Copy } from 'lucide-react';
-import { useState } from 'react';
-import { toast } from 'sonner';
 import { PoweredByJupiter } from '@/components/PoweredByJupiter';
+import { CopyWalletButton } from '@/components/CopyWalletButton';
 import { LocaleCurrencySelector } from '@/components/LocaleCurrencySelector';
 import { XMenuButton } from '@/components/XMenuButton';
 import { BUILDER_WALLET, BUILDER_X, BUILDER_X_URL, GITHUB_URL } from '@/config/constants';
 import { useHasActiveLock } from '@/hooks/useHasActiveLock';
 import { useI18n } from '@/lib/i18n/i18n-context';
-import { shortenAddress } from '@/lib/format';
 import { cn } from '@/lib/cn';
 
 function HeaderActions() {
@@ -21,20 +18,8 @@ function HeaderActions() {
 }
 
 export function AppHeader() {
-  const [copied, setCopied] = useState(false);
   const committed = useHasActiveLock();
   const { t } = useI18n();
-
-  const copyWallet = async () => {
-    try {
-      await navigator.clipboard.writeText(BUILDER_WALLET);
-      setCopied(true);
-      toast.success(t('common.walletCopied'));
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      toast.error(t('common.walletCopyFailed'));
-    }
-  };
 
   return (
     <header
@@ -81,15 +66,7 @@ export function AppHeader() {
           <span aria-hidden>·</span>
           <span>
             {t('common.tipBuilder')}{' '}
-            <button
-              type="button"
-              onClick={copyWallet}
-              className="inline-flex items-center gap-1 font-mono transition-colors hover:text-foreground"
-              title={BUILDER_WALLET}
-            >
-              {shortenAddress(BUILDER_WALLET, 4)}
-              {copied ? <Check className="h-3 w-3 text-accent" /> : <Copy className="h-3 w-3" />}
-            </button>
+            <CopyWalletButton address={BUILDER_WALLET} variant="inline" />
           </span>
           <span aria-hidden>·</span>
           <a
