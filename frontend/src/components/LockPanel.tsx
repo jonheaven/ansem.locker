@@ -252,7 +252,7 @@ export function LockPanel() {
           <CardTitle>{t('lock.title')}</CardTitle>
           <CardDescription>{t('lock.disconnected')}</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col items-center gap-3 pt-0">
+        <CardContent className="flex flex-col items-start pt-4">
           <PoweredByJupiter />
         </CardContent>
       </Card>
@@ -421,7 +421,7 @@ export function LockPanel() {
           )}
         </Button>
 
-        <div className="flex flex-col items-center gap-2 pt-1">
+        <div className="flex flex-col items-center gap-2 pt-6">
           <PoweredByJupiter />
           <p className="text-center text-[11px] text-muted-foreground">{t('lock.footer')}</p>
         </div>
