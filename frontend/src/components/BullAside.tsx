@@ -2,7 +2,7 @@ import { useHasActiveLock } from '@/hooks/useHasActiveLock';
 import { cn } from '@/lib/cn';
 
 const BULL_SRC = '/blackbull.png';
-const BULL_HOVER_SRC = '/blackbullhover.png';
+const BULL_HAPPY_SRC = '/blackbullhover.png';
 
 type BullAsideProps = {
   className?: string;
@@ -13,7 +13,7 @@ export function BullAside({ className }: BullAsideProps) {
   const committed = useHasActiveLock();
 
   const bullClass = cn(
-    'relative z-10 mx-auto w-full object-contain transition-opacity duration-200',
+    'relative z-10 mx-auto w-full object-contain',
     committed ? 'max-h-[min(52vh,440px)] opacity-90' : 'max-h-[min(58vh,520px)]',
   );
 
@@ -25,7 +25,7 @@ export function BullAside({ className }: BullAsideProps) {
       )}
       aria-hidden
     >
-      <div className="group relative w-full">
+      <div className="relative w-full">
         {committed ? (
           <>
             <img
@@ -36,15 +36,12 @@ export function BullAside({ className }: BullAsideProps) {
             <div className="absolute inset-0 rounded-2xl bg-black/30" />
           </>
         ) : null}
-        <div className="relative">
-          <img src={BULL_SRC} alt="" draggable={false} className={cn(bullClass, 'group-hover:opacity-0')} />
-          <img
-            src={BULL_HOVER_SRC}
-            alt=""
-            draggable={false}
-            className={cn(bullClass, 'absolute inset-0 opacity-0 group-hover:opacity-100')}
-          />
-        </div>
+        <img
+          src={committed ? BULL_HAPPY_SRC : BULL_SRC}
+          alt=""
+          draggable={false}
+          className={bullClass}
+        />
       </div>
     </div>
   );
