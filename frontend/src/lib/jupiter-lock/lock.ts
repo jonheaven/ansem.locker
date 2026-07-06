@@ -140,10 +140,10 @@ export function buildClaimAnsemInstructions(
     keys: [
       { pubkey: escrow, isSigner: false, isWritable: true },
       { pubkey: ANSEM_MINT, isSigner: false, isWritable: false },
-      { pubkey: MEMO_PROGRAM_ID, isSigner: false, isWritable: false },
       { pubkey: escrowToken, isSigner: false, isWritable: true },
       { pubkey: recipient, isSigner: true, isWritable: true },
       { pubkey: recipientToken, isSigner: false, isWritable: true },
+      { pubkey: MEMO_PROGRAM_ID, isSigner: false, isWritable: false },
       { pubkey: ANSEM_TOKEN_PROGRAM, isSigner: false, isWritable: false },
       { pubkey: eventAuthority, isSigner: false, isWritable: false },
       { pubkey: JUPITER_LOCK_PROGRAM_ID, isSigner: false, isWritable: false },

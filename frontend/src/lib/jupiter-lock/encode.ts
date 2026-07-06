@@ -1,8 +1,12 @@
 import { Buffer } from 'buffer';
 
-/** Anchor instruction discriminators for Jupiter Lock (sha256("global:<name>")[0..8]) */
-const CREATE_VESTING_ESCROW_V2_DISC = Buffer.from([234, 83, 9, 71, 80, 149, 39, 120]);
-const CLAIM_V2_DISC = Buffer.from([85, 145, 88, 119, 61, 220, 110, 69]);
+/** sha256("global:create_vesting_escrow_v2")[0..8] — from jup-lock IDL */
+const CREATE_VESTING_ESCROW_V2_DISC = Buffer.from([181, 155, 104, 183, 182, 128, 35, 47]);
+/** sha256("global:claim_v2")[0..8] — from jup-lock IDL */
+const CLAIM_V2_DISC = Buffer.from([229, 87, 46, 162, 21, 157, 231, 114]);
+
+/** Option::Some(RemainingAccountsInfo { slices: [] }) */
+const EMPTY_REMAINING_ACCOUNTS_INFO = Buffer.from([1, 0, 0, 0, 0]);
 
 export type CliffLockParams = {
   vestingStartTime: number;
@@ -15,7 +19,7 @@ export type CliffLockParams = {
   cancelMode: number;
 };
 
-/** Borsh: CreateVestingEscrowParameters + Option::None remaining accounts */
+/** Borsh: CreateVestingEscrowParameters + Option<RemainingAccountsInfo> */
 export function encodeCreateVestingEscrowV2Data(params: CliffLockParams): Buffer {
   const body = Buffer.alloc(50);
   body.writeBigUInt64LE(BigInt(params.vestingStartTime), 0);
@@ -26,13 +30,12 @@ export function encodeCreateVestingEscrowV2Data(params: CliffLockParams): Buffer
   body.writeBigUInt64LE(params.numberOfPeriod, 40);
   body.writeUInt8(params.updateRecipientMode, 48);
   body.writeUInt8(params.cancelMode, 49);
-  return Buffer.concat([CREATE_VESTING_ESCROW_V2_DISC, body, Buffer.from([0])]);
+  return Buffer.concat([CREATE_VESTING_ESCROW_V2_DISC, body, EMPTY_REMAINING_ACCOUNTS_INFO]);
 }
 
-/** Borsh: u64 maxAmount + Option::None remaining accounts */
+/** Borsh: u64 maxAmount + Option<RemainingAccountsInfo> */
 export function encodeClaimV2Data(maxAmount: bigint): Buffer {
-  const body = Buffer.alloc(9);
-  body.writeBigUInt64LE(maxAmount, 0);
-  body.writeUInt8(0, 8);
-  return Buffer.concat([CLAIM_V2_DISC, body]);
+  const amount = Buffer.alloc(8);
+  amount.writeBigUInt64LE(maxAmount, 0);
+  return Buffer.concat([CLAIM_V2_DISC, amount, EMPTY_REMAINING_ACCOUNTS_INFO]);
 }
