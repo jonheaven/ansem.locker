@@ -1,0 +1,403 @@
+import { useWallet } from '@solana/wallet-adapter-react';
+import {
+  ChevronRight,
+  ExternalLink,
+  Link2,
+  Loader2,
+  Share2,
+  Trophy,
+  Unlink,
+  User,
+} from 'lucide-react';
+import { useEffect, useId, useRef, useState, type ComponentType } from 'react';
+import { toast } from 'sonner';
+import { useLeaderboard, sortLocks, useMyLocks } from '@/hooks/useLocks';
+import {
+  useLinkXAccount,
+  useUnlinkXAccount,
+  useXLinkForWallet,
+} from '@/hooks/useXLinks';
+import { X_SYMBOL } from '@/config/constants';
+import { cn } from '@/lib/cn';
+import { formatAnsemAmount, formatTimeRemaining } from '@/lib/format';
+import {
+  buildVerificationTweet,
+  openConvictionShare,
+  openLeaderboardShare,
+  openSiteShare,
+  openVerificationTweet,
+  X_PROFILES,
+} from '@/lib/share-x';
+import { buildVerificationCode } from '@/lib/x-link-store';
+
+type Panel = 'menu' | 'link';
+
+function MenuRow({
+  icon: Icon,
+  label,
+  description,
+  onClick,
+  disabled,
+  trailing,
+}: {
+  icon: ComponentType<{ className?: string }>;
+  label: string;
+  description?: string;
+  onClick?: () => void;
+  disabled?: boolean;
+  trailing?: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className={cn(
+        'flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors',
+        disabled
+          ? 'cursor-not-allowed opacity-50'
+          : 'hover:bg-surface-hover active:bg-surface-hover',
+      )}
+    >
+      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-elevated">
+        <Icon className="h-4 w-4 text-foreground" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-sm font-medium text-foreground">{label}</span>
+        {description ? (
+          <span className="mt-0.5 block text-xs leading-relaxed text-muted-foreground">
+            {description}
+          </span>
+        ) : null}
+      </span>
+      {trailing ?? <ChevronRight className="mt-2 h-4 w-4 shrink-0 text-muted-foreground" />}
+    </button>
+  );
+}
+
+function Divider() {
+  return <div className="my-1 h-px bg-border/80" />;
+}
+
+export function XMenuButton() {
+  const menuId = useId();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const [panel, setPanel] = useState<Panel>('menu');
+  const [tweetUrl, setTweetUrl] = useState('');
+  const [verificationCode, setVerificationCode] = useState<string | null>(null);
+
+  const { publicKey } = useWallet();
+  const wallet = publicKey?.toBase58();
+  const linked = useXLinkForWallet(wallet);
+  const { locks } = useMyLocks();
+  const { data: leaderboard } = useLeaderboard();
+  const linkMutation = useLinkXAccount();
+  const unlinkMutation = useUnlinkXAccount();
+
+  const topLock = locks[0];
+  const rankEntry =
+    wallet && leaderboard
+      ? sortLocks(leaderboard, 'score').findIndex((entry) => entry.owner === wallet)
+      : -1;
+  const rank = rankEntry >= 0 ? rankEntry + 1 : null;
+  const rankLock = rankEntry >= 0 ? sortLocks(leaderboard ?? [], 'score')[rankEntry] : null;
+
+  useEffect(() => {
+    if (!open) {
+      setPanel('menu');
+      setTweetUrl('');
+      setVerificationCode(null);
+    }
+  }, [open]);
+
+  useEffect(() => {
+    function onPointerDown(event: MouseEvent) {
+      if (!rootRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') setOpen(false);
+    }
+    if (open) {
+      document.addEventListener('mousedown', onPointerDown);
+      document.addEventListener('keydown', onKeyDown);
+    }
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [open]);
+
+  const startLink = () => {
+    if (!wallet) {
+      toast.error('Connect your wallet first');
+      return;
+    }
+    setVerificationCode(buildVerificationCode(wallet));
+    setPanel('link');
+  };
+
+  const submitLink = async () => {
+    if (!wallet || !verificationCode) return;
+    try {
+      const result = await linkMutation.mutateAsync({
+        wallet,
+        code: verificationCode,
+        tweetUrl,
+      });
+      toast.success(`Linked @${result.xHandle}`);
+      setOpen(false);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : `Could not link ${X_SYMBOL}`);
+    }
+  };
+
+  const handleUnlink = async () => {
+    if (!wallet) return;
+    try {
+      await unlinkMutation.mutateAsync(wallet);
+      toast.success(`${X_SYMBOL} account unlinked`);
+      setOpen(false);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Could not unlink');
+    }
+  };
+
+  const xHandle = linked?.xHandle;
+
+  return (
+    <div ref={rootRef} className="relative">
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-haspopup="menu"
+        aria-controls={menuId}
+        onClick={() => setOpen((value) => !value)}
+        className={cn(
+          'inline-flex h-9 items-center gap-2 rounded-full border border-border bg-surface px-3 text-sm font-medium text-foreground transition-colors hover:bg-surface-hover',
+          open && 'bg-surface-hover',
+        )}
+      >
+        <img src="/x.png" alt="" className="h-4 w-4" aria-hidden />
+        <span className="hidden sm:inline">
+          {linked ? `@${linked.xHandle}` : X_SYMBOL}
+        </span>
+      </button>
+
+      {open ? (
+        <div
+          id={menuId}
+          role="menu"
+          className="absolute right-0 z-[60] mt-2 w-[min(100vw-2rem,22rem)] overflow-hidden rounded-2xl border border-border/80 bg-background/95 p-2 shadow-xl backdrop-blur-2xl backdrop-saturate-150"
+        >
+          {panel === 'menu' ? (
+            <>
+              <div className="px-3 py-2">
+                <div className="flex items-center gap-2">
+                  <img src="/xai.svg" alt="" className="h-4 w-4 invert" aria-hidden />
+                  <p className="text-sm font-semibold text-foreground">{X_SYMBOL}</p>
+                </div>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                  {linked
+                    ? `Wallet linked to @${linked.xHandle} for leaderboard social proof.`
+                    : wallet
+                      ? `Link your wallet to a ${X_SYMBOL} account, or share without linking.`
+                      : `Share on ${X_SYMBOL} anytime. Connect a wallet to link your profile.`}
+                </p>
+              </div>
+
+              <Divider />
+
+              {linked ? (
+                <>
+                  <MenuRow
+                    icon={User}
+                    label={`@${linked.xHandle}`}
+                    description="View your linked profile"
+                    onClick={() =>
+                      window.open(
+                        `https://x.com/${linked.xHandle}`,
+                        '_blank',
+                        'noopener,noreferrer',
+                      )
+                    }
+                    trailing={<ExternalLink className="mt-2 h-4 w-4 shrink-0 text-muted-foreground" />}
+                  />
+                  <MenuRow
+                    icon={Unlink}
+                    label={`Unlink ${X_SYMBOL} account`}
+                    description={`Remove wallet ↔ ${X_SYMBOL} mapping`}
+                    onClick={handleUnlink}
+                    disabled={unlinkMutation.isPending}
+                    trailing={
+                      unlinkMutation.isPending ? (
+                        <Loader2 className="mt-2 h-4 w-4 animate-spin text-muted-foreground" />
+                      ) : undefined
+                    }
+                  />
+                </>
+              ) : (
+                <MenuRow
+                  icon={Link2}
+                  label={`Link ${X_SYMBOL} account`}
+                  description={
+                    wallet
+                      ? 'Verify with a public post — shows on leaderboard'
+                      : 'Connect wallet first'
+                  }
+                  onClick={startLink}
+                  disabled={!wallet}
+                />
+              )}
+
+              <Divider />
+
+              <p className="px-3 pb-1 pt-2 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                Share
+              </p>
+
+              <MenuRow
+                icon={Share2}
+                label="Share ansem.locker"
+                description="Spread the word — no linking required"
+                onClick={() => {
+                  openSiteShare(xHandle);
+                  setOpen(false);
+                }}
+                trailing={null}
+              />
+
+              <MenuRow
+                icon={Trophy}
+                label="Share leaderboard"
+                description={
+                  rank && rankLock
+                    ? `You're #${rank} — flex your conviction`
+                    : 'Invite others to compete'
+                }
+                onClick={() => {
+                  if (rank && rankLock) {
+                    openLeaderboardShare(rank, rankLock.remainingInVault, xHandle);
+                  } else {
+                    openSiteShare(xHandle);
+                  }
+                  setOpen(false);
+                }}
+                trailing={null}
+              />
+
+              {topLock ? (
+                <MenuRow
+                  icon={Share2}
+                  label="Share my lock"
+                  description={`${formatAnsemAmount(topLock.remainingInVault)} $ANSEM · ${formatTimeRemaining(topLock.unlockTs)}`}
+                  onClick={() => {
+                    openConvictionShare(
+                      topLock.remainingInVault,
+                      formatTimeRemaining(topLock.unlockTs),
+                      xHandle,
+                    );
+                    setOpen(false);
+                  }}
+                  trailing={null}
+                />
+              ) : null}
+
+              <Divider />
+
+              <p className="px-3 pb-1 pt-2 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                Follow
+              </p>
+
+              {X_PROFILES.map(({ handle, label }) => (
+                <MenuRow
+                  key={handle}
+                  icon={ExternalLink}
+                  label={handle}
+                  description={`Follow ${label}`}
+                  onClick={() => {
+                    window.open(
+                      `https://x.com/${handle.replace(/^@/, '')}`,
+                      '_blank',
+                      'noopener,noreferrer',
+                    );
+                    setOpen(false);
+                  }}
+                  trailing={<ExternalLink className="mt-2 h-4 w-4 shrink-0 text-muted-foreground" />}
+                />
+              ))}
+            </>
+          ) : (
+            <div className="p-3">
+              <button
+                type="button"
+                onClick={() => setPanel('menu')}
+                className="mb-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                ← Back
+              </button>
+
+              <p className="text-sm font-semibold text-foreground">Link {X_SYMBOL} account</p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                Post the verification tweet, then paste the post URL below. We read it via {X_SYMBOL}
+                oEmbed — no OAuth app required.
+              </p>
+
+              {wallet && verificationCode ? (
+                <div className="mt-4 space-y-3">
+                  <div className="rounded-xl border border-border bg-surface-elevated p-3">
+                    <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                      Code
+                    </p>
+                    <p className="mt-1 font-mono text-sm text-foreground">{verificationCode}</p>
+                    <p className="mt-3 whitespace-pre-wrap text-xs leading-relaxed text-muted-foreground">
+                      {buildVerificationTweet(wallet, verificationCode)}
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => openVerificationTweet(wallet, verificationCode)}
+                    className="flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-4 py-2.5 text-sm font-medium text-background transition-colors hover:bg-black"
+                  >
+                    <img src="/x.png" alt="" className="h-4 w-4 invert" aria-hidden />
+                    Post verification on {X_SYMBOL}
+                  </button>
+
+                  <div>
+                    <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
+                      Post URL
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://x.com/you/status/…"
+                      value={tweetUrl}
+                      onChange={(e) => setTweetUrl(e.target.value)}
+                      className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-2.5 text-sm outline-none ring-accent/40 focus:ring-2"
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    disabled={!tweetUrl || linkMutation.isPending}
+                    onClick={submitLink}
+                    className="flex w-full items-center justify-center gap-2 rounded-full bg-accent px-4 py-2.5 text-sm font-medium text-white transition-colors hover:brightness-95 disabled:opacity-50"
+                  >
+                    {linkMutation.isPending ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Link2 className="h-4 w-4" />
+                    )}
+                    Verify &amp; link
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          )}
+        </div>
+      ) : null}
+    </div>
+  );
+}

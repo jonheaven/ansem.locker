@@ -1,0 +1,28 @@
+node_modules/
+frontend/dist/
+target/
+.anchor/
+test-ledger/
+.vercel
+
+.env
+.env.local
+.env.*.local
+
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+*.so
+deploy/
+
+*.tsbuildinfo
+frontend/vite.config.js
+
+# Internal planning notes (product docs live in docs/)
+goal.md
+
+# Solana keypairs
+id.json
+*-keypair.json

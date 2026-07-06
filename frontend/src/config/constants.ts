@@ -1,0 +1,37 @@
+import { PublicKey } from '@solana/web3.js';
+import { TOKEN_2022_PROGRAM_ID } from '@solana/spl-token';
+
+/** $ANSEM — The Black Bull (pump.fun) */
+export const ANSEM_MINT = new PublicKey(
+  '9cRCn9rGT8V2imeM2BaKs13yhMEais3ruM3rPvTGpump',
+);
+
+/** pump.fun $ANSEM uses Token-2022, not legacy SPL Token. */
+export const ANSEM_TOKEN_PROGRAM = TOKEN_2022_PROGRAM_ID;
+
+/** SPL decimals for pump.fun tokens */
+export const ANSEM_DECIMALS = 6;
+
+export {
+  BONFIDA_VESTING_PROGRAM_ID,
+  BONFIDA_VESTING_UI,
+} from '@/lib/bonfida/constants';
+export { JUPITER_LOCK_PROGRAM_ID, JUPITER_LOCK_UI } from '@/lib/jupiter-lock/constants';
+
+export const RPC_ENDPOINT =
+  import.meta.env.VITE_SOLANA_RPC_URL ?? 'https://api.mainnet-beta.solana.com';
+
+export const MIN_LOCK_MINUTES = 5;
+export const MAX_LOCK_DAYS = 365;
+
+export const GITHUB_URL = 'https://github.com/jonheaven/ansem.locker';
+export const SITE_URL = 'https://ansem.locker';
+export const BUILDER_X = '@jontype';
+export const BUILDER_X_URL = 'https://x.com/jontype';
+export const BUILDER_WALLET = 'FUcz2E5vecFVDKXV6XirhfuDXGeq8EcuetLpMjhJWUFo';
+export const ANSEM_X = '@blknoiz06';
+
+/** Display name for the X platform in UI copy */
+export const X_SYMBOL = '𝕏';
+
+export const COMMITMENT = 'confirmed' as const;

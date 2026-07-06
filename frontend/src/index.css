@@ -1,0 +1,132 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #1d1d1f;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #f5f5f7;
+  --color-surface-hover: #e8e8ed;
+  --color-border: #d2d2d7;
+  --color-border-strong: #86868b;
+  --color-muted-foreground: #6e6e73;
+  --color-accent: #ab9ff2;
+  --color-accent-muted: #ab9ff2;
+  --color-bull-ember: #ab9ff2;
+  --color-bull-crimson: #9945ff;
+  --color-destructive: #ff3b30;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+[data-committed='true'] {
+  color-scheme: dark;
+  --color-background: #000000;
+  --color-foreground: #f5f5f7;
+  --color-surface: rgb(28 28 30 / 0.88);
+  --color-surface-elevated: #2c2c2e;
+  --color-surface-hover: #3a3a3c;
+  --color-border: #48484a;
+  --color-border-strong: #636366;
+  --color-muted-foreground: #aeaeb2;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.5;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color 0.7s ease,
+    color 0.7s ease;
+}
+
+/* Isometric block tile — adapted from dogepatterns gold-blocks (pattern 2) */
+.bg-gold-blocks-pattern {
+  background-color: var(--color-background);
+  background-image: url('/gold-blocks-tile.svg');
+  background-repeat: repeat;
+  background-size: 80px 160px;
+  background-position: center top;
+}
+
+[data-committed='true'] .bg-gold-blocks-pattern {
+  background-color: #0a0a0a;
+  background-blend-mode: luminosity;
+}
+
+/* Duration slider bull — shake / scale ramps with lock length */
+@keyframes bull-thumb-charge {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(calc(1 + var(--bull-intensity, 0) * 0.04));
+  }
+  12% {
+    transform: translateY(calc(var(--bull-intensity, 0) * -5px))
+      rotate(calc(var(--bull-intensity, 0) * -7deg))
+      scale(calc(1 + var(--bull-intensity, 0) * 0.16));
+  }
+  28% {
+    transform: translateY(calc(var(--bull-intensity, 0) * 3px))
+      rotate(calc(var(--bull-intensity, 0) * 5deg))
+      scale(calc(1 + var(--bull-intensity, 0) * 0.1));
+  }
+  44% {
+    transform: translateY(calc(var(--bull-intensity, 0) * -4px))
+      rotate(calc(var(--bull-intensity, 0) * -4deg))
+      scale(calc(1 + var(--bull-intensity, 0) * 0.18));
+  }
+  60% {
+    transform: translateY(calc(var(--bull-intensity, 0) * 2px))
+      rotate(calc(var(--bull-intensity, 0) * 6deg))
+      scale(calc(1 + var(--bull-intensity, 0) * 0.12));
+  }
+  76% {
+    transform: translateY(calc(var(--bull-intensity, 0) * -3px))
+      rotate(calc(var(--bull-intensity, 0) * -5deg))
+      scale(calc(1 + var(--bull-intensity, 0) * 0.15));
+  }
+}
+
+.bull-thumb-charge {
+  animation: bull-thumb-charge linear infinite;
+  animation-duration: calc(0.52s - var(--bull-intensity, 0) * 0.36s);
+  transform-origin: center bottom;
+  will-change: transform;
+}
+
+/* Wallet adapter overrides */
+.wallet-adapter-button {
+  font-family: inherit !important;
+  background: #1d1d1f !important;
+  border-radius: 980px !important;
+  height: 2.25rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+}
+
+.wallet-adapter-button:hover {
+  background: #000000 !important;
+}
+
+.wallet-adapter-modal-wrapper {
+  z-index: 10000 !important;
+}
