@@ -68,13 +68,20 @@ body {
   background-position: center top;
 }
 
-/* Locked state — fit locker art in content area without over-scaling */
-.locker-content-bg {
+html[data-committed='true'],
+html[data-committed='true'] body,
+html[data-committed='true'] #root {
+  overflow: hidden;
+  height: 100%;
+}
+
+/* Locked state — full-viewport locker art behind floating UI */
+.locker-page-bg {
   background-color: #050505;
   background-image: url('/lockerbg.jpg');
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: contain;
+  background-size: cover;
 }
 
 /* Slider bull — shake / scale ramps with amount & lock length */

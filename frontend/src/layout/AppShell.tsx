@@ -8,25 +8,31 @@ export function AppShell() {
   const committed = useHasActiveLock();
 
   return (
-    <div className="relative min-h-screen text-foreground transition-colors duration-700">
+    <div
+      className={cn(
+        'relative text-foreground transition-colors duration-700',
+        committed ? 'flex h-screen max-h-screen flex-col overflow-hidden' : 'min-h-screen',
+      )}
+    >
       <AppBackground />
 
-      <div className="relative z-10 flex min-h-screen flex-col">
+      <div
+        className={cn(
+          'relative z-10 flex flex-col',
+          committed ? 'min-h-0 flex-1 overflow-hidden' : 'min-h-screen',
+        )}
+      >
         <AppHeader />
 
         <main
           className={cn(
-            'relative flex flex-1 flex-col items-center overflow-y-auto px-4 py-6 sm:px-6 sm:py-8',
-            committed && 'locker-content-bg',
+            'relative flex flex-1 flex-col items-center px-4 sm:px-6',
+            committed
+              ? 'min-h-0 justify-center overflow-hidden py-4 sm:py-5'
+              : 'overflow-y-auto py-6 sm:py-8',
           )}
         >
-          {committed ? (
-            <div
-              className="pointer-events-none absolute inset-0 bg-black/58 transition-colors duration-700"
-              aria-hidden
-            />
-          ) : null}
-          <div className="relative z-10 flex w-full flex-1 flex-col items-center">
+          <div className="relative z-10 flex w-full min-h-0 flex-1 flex-col items-center justify-center">
             <Outlet />
           </div>
         </main>

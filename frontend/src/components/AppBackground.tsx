@@ -11,7 +11,10 @@ export function AppBackground({ className }: AppBackgroundProps) {
   return (
     <div className={cn('pointer-events-none fixed inset-0 z-0', className)} aria-hidden>
       {committed ? (
-        <div className="absolute inset-0 bg-black transition-colors duration-700" />
+        <>
+          <div className="locker-page-bg absolute inset-0" />
+          <div className="absolute inset-0 bg-black/55 transition-colors duration-700" />
+        </>
       ) : (
         <div className="bg-gold-blocks-pattern absolute inset-0">
           <div className="absolute inset-0 bg-background/25 transition-colors duration-700" />

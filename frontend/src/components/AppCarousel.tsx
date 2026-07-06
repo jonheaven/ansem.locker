@@ -24,10 +24,15 @@ export function AppCarousel() {
   const { t } = useI18n();
 
   return (
-    <div className="flex w-full max-w-5xl flex-col items-stretch gap-6 sm:flex-row sm:items-start sm:gap-8 lg:gap-10">
-      <BullAside className="sm:sticky sm:top-24" />
+    <div
+      className={cn(
+        'flex w-full max-w-5xl flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:gap-6 lg:gap-8',
+        committed && 'min-h-0',
+      )}
+    >
+      <BullAside className={committed ? undefined : 'sm:sticky sm:top-24'} />
 
-      <div className="min-w-0 flex-1">
+      <div className={cn('flex min-h-0 min-w-0 flex-1 flex-col', committed && 'max-h-[calc(100dvh-11rem)]')}>
         <div
           role="tablist"
           aria-label="ansem.locker views"
@@ -56,7 +61,7 @@ export function AppCarousel() {
         ))}
         </div>
 
-        <div className="overflow-hidden">
+        <div className={cn('min-h-0 flex-1 overflow-hidden', committed && 'overflow-y-auto overscroll-contain')}>
         <div
           className="flex transition-transform duration-300 ease-out motion-reduce:transition-none"
           style={{ transform: `translateX(-${index * 100}%)` }}
@@ -88,13 +93,23 @@ export function AppCarousel() {
                 </div>
               )}
               {id === 'leaderboard' && (
-                <div className="max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain">
+                <div
+                  className={cn(
+                    'overflow-y-auto overscroll-contain',
+                    committed ? 'max-h-[calc(100dvh-13rem)]' : 'max-h-[min(58vh,520px)]',
+                  )}
+                >
                   <LeaderboardTable showSortTabs limit={25} />
                 </div>
               )}
               {id === 'locks' && <MyLocksPanel />}
               {id === 'info' && (
-                <div className="space-y-4">
+                <div
+                  className={cn(
+                    'space-y-4 overflow-y-auto overscroll-contain',
+                    committed && 'max-h-[calc(100dvh-13rem)]',
+                  )}
+                >
                   <WhyLockSection />
                   <TrustSection variant="stacked" />
                   <p className="text-center text-[11px] text-muted-foreground">

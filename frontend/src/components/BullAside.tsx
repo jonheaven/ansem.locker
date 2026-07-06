@@ -16,7 +16,7 @@ export function BullAside({ className }: BullAsideProps) {
 
   const bullClass = cn(
     'mx-auto w-full object-contain',
-    committed ? 'max-h-[min(48vh,400px)] opacity-95' : 'max-h-[min(58vh,520px)]',
+    committed ? 'max-h-[min(36vh,300px)] opacity-95' : 'max-h-[min(58vh,520px)]',
   );
 
   return (
