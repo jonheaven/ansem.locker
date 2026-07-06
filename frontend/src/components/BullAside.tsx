@@ -13,23 +13,28 @@ export function BullAside({ className }: BullAsideProps) {
   const committed = useHasActiveLock();
 
   const bullClass = cn(
-    'relative z-10 mx-auto w-full object-contain',
-    committed ? 'max-h-[min(52vh,440px)] opacity-95' : 'max-h-[min(58vh,520px)]',
+    'mx-auto w-full object-contain',
+    committed ? 'max-h-[min(48vh,400px)] opacity-95' : 'max-h-[min(58vh,520px)]',
   );
 
   return (
     <div
       className={cn(
-        'relative mx-auto flex w-full max-w-[300px] shrink-0 items-center justify-center sm:mx-0 sm:w-[38%] sm:max-w-[360px] lg:max-w-[400px]',
+        'relative mx-auto flex w-full max-w-[300px] shrink-0 flex-col items-center justify-center gap-3 sm:mx-0 sm:w-[38%] sm:max-w-[360px] lg:max-w-[400px]',
         className,
       )}
-      aria-hidden
     >
+      {committed ? (
+        <p className="text-center text-sm font-bold uppercase tracking-[0.22em] text-accent sm:text-base">
+          You are Locked In
+        </p>
+      ) : null}
       <img
         src={committed ? BULL_HAPPY_SRC : BULL_SRC}
         alt=""
         draggable={false}
         className={bullClass}
+        aria-hidden
       />
     </div>
   );

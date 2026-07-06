@@ -23,6 +23,7 @@ import { formatAnsemAmount, formatTimeRemaining } from '@/lib/format';
 import {
   buildVerificationTweet,
   openConvictionShare,
+  openLeaderboardHypeShare,
   openLeaderboardShare,
   openSiteShare,
   openVerificationTweet,
@@ -281,7 +282,7 @@ export function XMenuButton() {
                   if (rank && rankLock) {
                     openLeaderboardShare(rank, rankLock.remainingInVault, xHandle);
                   } else {
-                    openSiteShare(xHandle);
+                    openLeaderboardHypeShare();
                   }
                   setOpen(false);
                 }}

@@ -29,6 +29,8 @@ import {
   unlockLocalToMinutes,
   validateUnlockTs,
 } from '@/lib/lock-duration';
+import { X_SYMBOL } from '@/config/constants';
+import { saveJustLocked } from '@/lib/just-locked';
 import { openLockShare } from '@/lib/share-x';
 import { cn } from '@/lib/cn';
 
@@ -204,16 +206,22 @@ export function LockPanel() {
         'confirmed',
       );
 
-      toast.success('Locked', {
+      toast.success('Locked — flex on ' + X_SYMBOL, {
         description: `${formatAnsemAmount(raw)} $ANSEM · unlocks ${formatUnlockDate(unlockTs)}`,
+        duration: 12_000,
         action: {
-          label: 'Solscan',
-          onClick: () =>
-            window.open(`https://solscan.io/tx/${sig}`, '_blank', 'noopener,noreferrer'),
+          label: `Flex on ${X_SYMBOL}`,
+          onClick: () => openLockShare(raw, durationLabel, sig),
         },
       });
 
       openLockShare(raw, durationLabel, sig);
+      saveJustLocked({
+        amountRaw: raw,
+        amountDisplay: formatAnsemAmount(raw),
+        durationLabel,
+        txSig: sig,
+      });
       setAmountSlider(0);
       setAmountRawExact(null);
       setAmountInput('');

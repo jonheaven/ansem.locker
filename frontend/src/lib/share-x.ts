@@ -10,8 +10,8 @@ export function openTweet(text: string) {
 }
 
 export function buildLockShareUrl(amount: string, durationLabel: string, txSig?: string): string {
-  const proof = txSig ? `\n\nTx: https://solscan.io/tx/${txSig}` : '';
-  const text = `Locked ${amount} $ANSEM for ${durationLabel} on ansem.locker.\n\n${SITE_URL}${proof}\n\n#ANSEM`;
+  const proof = txSig ? `\n\nhttps://solscan.io/tx/${txSig}` : '';
+  const text = `Just locked ${amount} $ANSEM for ${durationLabel} on ansem.locker. Diamond hooves only.\n\nWho's next? Live conviction leaderboard:\n${SITE_URL}/#leaderboard${proof}\n\n#ANSEM`;
   return tweetIntent(text);
 }
 
@@ -26,7 +26,7 @@ export function openLockShare(
 
 export function buildSiteShareUrl(xHandle?: string) {
   const tag = xHandle ? `\n\nVerified: @${xHandle.replace(/^@/, '')}` : '';
-  const text = `Lock $ANSEM on-chain until a date you choose.\n\n${SITE_URL}${tag}\n\n#ANSEM`;
+  const text = `Lock $ANSEM on-chain until a date you choose. Prove conviction on the live leaderboard.\n\n${SITE_URL}${tag}\n\n#ANSEM`;
   return tweetIntent(text);
 }
 
@@ -40,7 +40,7 @@ export function buildConvictionShare(
   xHandle?: string,
 ) {
   const who = xHandle ? `@${xHandle.replace(/^@/, '')}` : 'I';
-  const text = `${who} ${xHandle ? 'has' : 'have'} ${amount} $ANSEM locked on ansem.locker (${timeRemaining}).\n\n${SITE_URL}\n\n#ANSEM`;
+  const text = `${who} ${xHandle ? 'has' : 'have'} ${amount} $ANSEM locked on ansem.locker (${timeRemaining}). Diamond hooves.\n\n${SITE_URL}/#leaderboard\n\n#ANSEM`;
   return tweetIntent(text);
 }
 
@@ -58,7 +58,7 @@ export function openConvictionShare(
 
 export function buildLeaderboardShareUrl(rank: number, amount: string, xHandle?: string) {
   const who = xHandle ? `@${xHandle.replace(/^@/, '')}` : 'I';
-  const text = `${who} ${xHandle ? 'is' : 'am'} #${rank} on the ansem.locker leaderboard (${amount} $ANSEM locked).\n\n${SITE_URL}/#leaderboard\n\n#ANSEM`;
+  const text = `${who} ${xHandle ? 'is' : 'am'} #${rank} on the ansem.locker conviction leaderboard (${amount} $ANSEM locked).\n\nSee who's diamond hooving: ${SITE_URL}/#leaderboard\n\n#ANSEM`;
   return tweetIntent(text);
 }
 
@@ -68,6 +68,46 @@ export function openLeaderboardShare(rank: number, amount: bigint, xHandle?: str
     '_blank',
     'noopener,noreferrer',
   );
+}
+
+export function buildLeaderboardEntryShareUrl(input: {
+  rank: number;
+  amount: string;
+  whoLabel: string;
+  timeRemaining: string;
+  isSelf?: boolean;
+}) {
+  const { rank, amount, whoLabel, timeRemaining, isSelf } = input;
+  const text = isSelf
+    ? `I'm #${rank} on the ansem.locker $ANSEM conviction leaderboard — ${amount} locked (${timeRemaining}). Diamond hooves.\n\n${SITE_URL}/#leaderboard\n\n#ANSEM`
+    : `${whoLabel} is #${rank} on the ansem.locker leaderboard — ${amount} $ANSEM locked (${timeRemaining}).\n\nSee who's flexing: ${SITE_URL}/#leaderboard\n\n#ANSEM`;
+  return tweetIntent(text);
+}
+
+export function openLeaderboardEntryShare(input: {
+  rank: number;
+  amount: bigint;
+  whoLabel: string;
+  timeRemaining: string;
+  isSelf?: boolean;
+}) {
+  window.open(
+    buildLeaderboardEntryShareUrl({
+      ...input,
+      amount: formatAnsemAmount(input.amount),
+    }),
+    '_blank',
+    'noopener,noreferrer',
+  );
+}
+
+export function buildLeaderboardHypeShareUrl() {
+  const text = `The ansem.locker conviction leaderboard is live — see who's diamond hooving $ANSEM on-chain.\n\n${SITE_URL}/#leaderboard\n\n#ANSEM`;
+  return tweetIntent(text);
+}
+
+export function openLeaderboardHypeShare() {
+  window.open(buildLeaderboardHypeShareUrl(), '_blank', 'noopener,noreferrer');
 }
 
 export function buildVerificationTweet(wallet: string, code: string) {
