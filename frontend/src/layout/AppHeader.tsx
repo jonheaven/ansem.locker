@@ -4,9 +4,7 @@ import { CopyWalletButton } from '@/components/CopyWalletButton';
 import { LocaleCurrencySelector } from '@/components/LocaleCurrencySelector';
 import { XMenuButton } from '@/components/XMenuButton';
 import { BUILDER_WALLET, BUILDER_X, BUILDER_X_URL, GITHUB_URL } from '@/config/constants';
-import { useHasActiveLock } from '@/hooks/useHasActiveLock';
 import { useI18n } from '@/lib/i18n/i18n-context';
-import { cn } from '@/lib/cn';
 
 function HeaderActions() {
   return (
@@ -18,16 +16,10 @@ function HeaderActions() {
 }
 
 export function AppHeader() {
-  const committed = useHasActiveLock();
   const { t } = useI18n();
 
   return (
-    <header
-      className={cn(
-        'sticky top-0 z-50 shrink-0 border-b backdrop-blur-2xl backdrop-saturate-150 transition-colors duration-700',
-        committed ? 'app-header-bar border-white/8' : 'border-border/80 bg-background/72',
-      )}
-    >
+    <header className="sticky top-0 z-50 shrink-0 border-b border-border/80 bg-background/72 backdrop-blur-2xl backdrop-saturate-150 transition-colors duration-700">
       <div className="mx-auto flex w-full max-w-5xl flex-col px-4 py-3 sm:flex-row sm:items-center sm:gap-8 sm:px-6 lg:gap-10">
         <div className="relative flex w-full items-center justify-center sm:w-[38%] sm:max-w-[360px] sm:shrink-0 lg:max-w-[400px]">
           <a
@@ -41,18 +33,10 @@ export function AppHeader() {
             <img
               src="/blackbull4.png"
               alt=""
-              className={cn(
-                'h-8 w-auto transition-transform duration-300 group-hover:scale-105',
-                committed && 'drop-shadow-[0_0_12px_rgba(167,139,250,0.5)]',
-              )}
+              className="h-8 w-auto transition-transform duration-300 group-hover:scale-105"
               draggable={false}
             />
-            <p
-              className={cn(
-                'app-logo-text text-base font-semibold tracking-tight text-foreground',
-                committed && 'app-logo-text',
-              )}
-            >
+            <p className="text-base font-semibold tracking-tight text-foreground">
               ansem.locker
             </p>
           </a>
@@ -65,14 +49,7 @@ export function AppHeader() {
           <HeaderActions />
         </div>
       </div>
-      <div
-        className={cn(
-          'border-t px-4 py-1.5 text-center text-[11px]',
-          committed
-            ? 'app-header-meta border-white/6'
-            : 'border-border/50 text-muted-foreground',
-        )}
-      >
+      <div className="border-t border-border/50 px-4 py-1.5 text-center text-[11px] text-muted-foreground">
         <span className="inline-flex flex-wrap items-center justify-center gap-x-1 gap-y-0.5">
           <span>
             {t('common.builtBy')}{' '}
@@ -85,16 +62,12 @@ export function AppHeader() {
               {BUILDER_X}
             </a>
           </span>
-          <span aria-hidden className={committed ? 'text-white/30' : undefined}>
-            ·
-          </span>
+          <span aria-hidden>·</span>
           <span>
             {t('common.tipBuilder')}{' '}
             <CopyWalletButton address={BUILDER_WALLET} variant="inline" />
           </span>
-          <span aria-hidden className={committed ? 'text-white/30' : undefined}>
-            ·
-          </span>
+          <span aria-hidden>·</span>
           <a
             href={GITHUB_URL}
             target="_blank"
@@ -104,17 +77,11 @@ export function AppHeader() {
             {t('common.github')}
           </a>
           <span>· {t('common.openSource')}</span>
-          <span aria-hidden className={committed ? 'text-white/30' : undefined}>
-            ·
-          </span>
+          <span aria-hidden>·</span>
           <span>{t('common.nonCustodial')}</span>
-          <span aria-hidden className={committed ? 'text-white/30' : undefined}>
-            ·
-          </span>
+          <span aria-hidden>·</span>
           <LocaleCurrencySelector />
-          <span aria-hidden className={committed ? 'text-white/30' : undefined}>
-            ·
-          </span>
+          <span aria-hidden>·</span>
           <PoweredByJupiter />
         </span>
       </div>

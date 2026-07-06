@@ -21,21 +21,6 @@
   color-scheme: light;
 }
 
-/* Locked-in — full dark palette (html prefix beats :root @theme) */
-html[data-committed='true'] {
-  color-scheme: dark;
-  --color-background: #050508;
-  --color-foreground: #f5f5f7;
-  --color-surface: #12121a;
-  --color-surface-elevated: #1c1c28;
-  --color-surface-hover: #2a2a38;
-  --color-border: rgba(255, 255, 255, 0.14);
-  --color-border-strong: rgba(255, 255, 255, 0.28);
-  --color-muted-foreground: rgba(255, 255, 255, 0.62);
-  --color-accent: #c4b5fd;
-  --color-accent-muted: #a78bfa;
-}
-
 *,
 *::before,
 *::after {
@@ -113,119 +98,9 @@ html[data-committed='true'] #root > * {
   background-position: center top;
 }
 
-/* ── Locked-in glass UI ── */
-html[data-committed='true'] .app-card {
-  background: rgba(12, 12, 18, 0.88);
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(20px) saturate(140%);
-}
-
-html[data-committed='true'] .app-glass {
-  background: rgba(8, 8, 12, 0.55);
-  border-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(16px) saturate(150%);
-}
-
-html[data-committed='true'] .app-glass-elevated {
-  background: rgba(18, 18, 26, 0.72);
-  border-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-}
-
-html[data-committed='true'] .app-header-bar {
-  background: rgba(0, 0, 0, 0.55);
-  border-color: rgba(255, 255, 255, 0.08);
-}
-
-html[data-committed='true'] .app-header-meta {
-  background: rgba(0, 0, 0, 0.35);
-  border-color: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.72);
-}
-
-html[data-committed='true'] .app-header-meta a,
-html[data-committed='true'] .app-header-meta button {
-  color: rgba(255, 255, 255, 0.82);
-}
-
-html[data-committed='true'] .app-header-meta a:hover,
-html[data-committed='true'] .app-header-meta button:hover {
-  color: var(--color-accent);
-}
-
-html[data-committed='true'] .app-logo-text {
-  color: #ffffff;
-  text-shadow: 0 0 24px rgba(196, 181, 253, 0.35);
-}
-
-html[data-committed='true'] .app-tab-rail {
-  background: rgba(8, 8, 14, 0.65);
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
-}
-
-html[data-committed='true'] .app-tab-active {
-  background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
-  color: #ffffff !important;
-  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.45);
-}
-
-html[data-committed='true'] .app-tab-idle {
-  color: rgba(255, 255, 255, 0.55);
-}
-
-html[data-committed='true'] .app-tab-idle:hover {
-  color: rgba(255, 255, 255, 0.92);
-}
-
-html[data-committed='true'] .app-chip {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.88);
-}
-
-html[data-committed='true'] .app-chip:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(196, 181, 253, 0.35);
-}
-
-html[data-committed='true'] .locked-in-glow {
-  color: var(--color-accent);
-  text-shadow:
-    0 0 20px rgba(167, 139, 250, 0.65),
-    0 0 40px rgba(124, 58, 237, 0.25);
-}
-
-html[data-committed='true'] .app-row-glass {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.08);
-}
-
-html[data-committed='true'] .app-row-glass:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(196, 181, 253, 0.2);
-}
-
-html[data-committed='true'] select.app-select {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.14);
-  color: #ffffff;
-}
-
-html[data-committed='true'] .jupiter-brand img.jup-logo {
-  filter: brightness(0) invert(1);
-  opacity: 0.92;
-}
-
-html[data-committed='true'] .jupiter-brand .jup-label {
-  color: rgba(255, 255, 255, 0.75);
-}
-
-html[data-committed='true'] .jupiter-brand .jup-name {
-  color: #ffffff;
+.locked-in-glow {
+  color: var(--color-bull-crimson);
+  text-shadow: 0 0 20px rgba(153, 69, 255, 0.35);
 }
 
 /* Slider bull — shake / scale ramps with amount & lock length */
@@ -300,32 +175,6 @@ html[data-committed='true'] .jupiter-brand .jup-name {
   background: #000000 !important;
 }
 
-html[data-committed='true'] .wallet-adapter-button {
-  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%) !important;
-  color: #ffffff !important;
-  box-shadow: 0 4px 14px rgba(109, 40, 217, 0.45) !important;
-}
-
-html[data-committed='true'] .wallet-adapter-button:hover {
-  filter: brightness(1.08) !important;
-  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%) !important;
-}
-
 .wallet-adapter-modal-wrapper {
   z-index: 10000 !important;
-}
-
-/* Scrollbars — subtle in locked mode */
-html[data-committed='true'] ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-html[data-committed='true'] ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-}
-
-html[data-committed='true'] ::-webkit-scrollbar-track {
-  background: transparent;
 }

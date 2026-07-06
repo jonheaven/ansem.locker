@@ -24,118 +24,108 @@ export function AppCarousel() {
   const { t } = useI18n();
 
   return (
-    <div
-      className={cn(
-        'flex w-full max-w-5xl flex-col items-stretch gap-4 sm:flex-row sm:items-start sm:gap-6 lg:gap-8',
-      )}
-    >
-      <BullAside className={committed ? undefined : 'sm:sticky sm:top-24'} />
+    <div className="flex w-full max-w-5xl flex-col items-stretch gap-4 sm:flex-row sm:items-start sm:gap-6 lg:gap-8">
+      <BullAside className="sm:sticky sm:top-24" />
 
       <div className="flex min-w-0 flex-1 flex-col">
         <div
           role="tablist"
           aria-label="ansem.locker views"
-          className={cn(
-            'mb-4 flex rounded-full border p-1.5 shadow-sm backdrop-blur-md',
-            committed
-              ? 'app-tab-rail border-white/12'
-              : 'border-border/80 bg-surface/80',
-          )}
+          className="mb-4 flex rounded-full border border-border/80 bg-surface/80 p-1.5 shadow-sm backdrop-blur-md"
         >
-        {TAB_IDS.map(({ id, labelKey, icon: Icon }) => (
-          <button
-            key={id}
-            type="button"
-            role="tab"
-            aria-selected={view === id}
-            onClick={() => setView(id)}
-            className={cn(
-              'flex flex-1 items-center justify-center gap-2 rounded-full py-2.5 text-sm font-semibold transition-all sm:text-base',
-              view === id
-                ? committed
-                  ? 'app-tab-active'
-                  : 'bg-foreground text-background shadow-sm'
-                : committed
-                  ? 'app-tab-idle'
+          {TAB_IDS.map(({ id, labelKey, icon: Icon }) => (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={view === id}
+              onClick={() => setView(id)}
+              className={cn(
+                'flex flex-1 items-center justify-center gap-2 rounded-full py-2.5 text-sm font-semibold transition-all sm:text-base',
+                view === id
+                  ? 'bg-foreground text-background shadow-sm'
                   : 'text-muted-foreground hover:text-foreground',
-            )}
-          >
-            <Icon className="h-4 w-4 shrink-0" aria-hidden />
-            <span className="truncate">{t(labelKey)}</span>
-          </button>
-        ))}
+              )}
+            >
+              <Icon className="h-4 w-4 shrink-0" aria-hidden />
+              <span className="truncate">{t(labelKey)}</span>
+            </button>
+          ))}
         </div>
 
         <div className="overflow-x-hidden">
-        <div
-          className="flex transition-transform duration-300 ease-out motion-reduce:transition-none"
-          style={{ transform: `translateX(-${index * 100}%)` }}
-        >
-          {APP_VIEWS.map((id) => (
-            <div
-              key={id}
-              className="w-full shrink-0 px-0.5"
-              role="tabpanel"
-              aria-hidden={view !== id}
-            >
-              {id === 'lock' && (
-                <div className="space-y-4">
+          <div
+            className="flex transition-transform duration-300 ease-out motion-reduce:transition-none"
+            style={{ transform: `translateX(-${index * 100}%)` }}
+          >
+            {APP_VIEWS.map((id) => (
+              <div
+                key={id}
+                className="w-full shrink-0 px-0.5"
+                role="tabpanel"
+                aria-hidden={view !== id}
+              >
+                {id === 'lock' && (
+                  <div className="space-y-4">
+                    <div className="text-left">
+                      <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+                        {t('home.headline')}
+                      </h1>
+                      <p className="mt-2 text-base leading-relaxed text-muted-foreground sm:text-lg">
+                        {t('home.tagline')}
+                      </p>
+                    </div>
+                    <LockPanel />
+                  </div>
+                )}
+                {id === 'leaderboard' && (
                   <div
                     className={cn(
-                      'text-left',
-                      committed &&
-                        'app-glass rounded-2xl border px-4 py-4 shadow-sm sm:px-5',
+                      !committed && 'max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain',
                     )}
                   >
-                    <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                      {t('home.headline')}
-                    </h1>
-                    <p className="mt-2 text-base leading-relaxed text-muted-foreground sm:text-lg">
-                      {t('home.tagline')}
+                    <LeaderboardTable showSortTabs limit={25} />
+                  </div>
+                )}
+                {id === 'locks' && <MyLocksPanel />}
+                {id === 'info' && (
+                  <div
+                    className={cn(
+                      'space-y-4',
+                      !committed && 'max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain',
+                    )}
+                  >
+                    <WhyLockSection />
+                    <TrustSection variant="stacked" />
+                    <p className="text-center text-[11px] text-muted-foreground">
+                      <a
+                        href={`https://solscan.io/account/${JUPITER_LOCK_PROGRAM_ID.toBase58()}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-mono transition-colors hover:text-accent"
+                      >
+                        {t('info.program')}
+                      </a>
+                      {' · '}
+                      <a
+                        href={`${GITHUB_URL}/blob/main/docs/SECURITY.md`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="transition-colors hover:text-accent"
+                      >
+                        {t('info.security')}
+                      </a>
+                      {' · '}
+                      <a href={GITHUB_URL} className="transition-colors hover:text-accent">
+                        {t('info.source')}
+                      </a>
                     </p>
                   </div>
-                  <LockPanel />
-                </div>
-              )}
-              {id === 'leaderboard' && (
-                <div className={cn(!committed && 'max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain')}>
-                  <LeaderboardTable showSortTabs limit={25} />
-                </div>
-              )}
-              {id === 'locks' && <MyLocksPanel />}
-              {id === 'info' && (
-                <div className={cn('space-y-4', !committed && 'max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain')}>
-                  <WhyLockSection />
-                  <TrustSection variant="stacked" />
-                  <p className="text-center text-[11px] text-muted-foreground">
-                    <a
-                      href={`https://solscan.io/account/${JUPITER_LOCK_PROGRAM_ID.toBase58()}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-mono transition-colors hover:text-accent"
-                    >
-                      {t('info.program')}
-                    </a>
-                    {' · '}
-                    <a
-                      href={`${GITHUB_URL}/blob/main/docs/SECURITY.md`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="transition-colors hover:text-accent"
-                    >
-                      {t('info.security')}
-                    </a>
-                    {' · '}
-                    <a href={GITHUB_URL} className="transition-colors hover:text-accent">
-                      {t('info.source')}
-                    </a>
-                  </p>
-                </div>
-              )}
-            </div>
-          ))}
+                )}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
       </div>
     </div>
   );

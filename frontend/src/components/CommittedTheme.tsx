@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useHasActiveLock } from '@/hooks/useHasActiveLock';
 
-/** Syncs document theme: light by default, dark once wallet has active locks. */
+/** Syncs layout-only document state when wallet has active locks (scroll + bg). */
 export function CommittedTheme() {
   const committed = useHasActiveLock();
 

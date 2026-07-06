@@ -14,11 +14,6 @@ export function BullAside({ className }: BullAsideProps) {
   const committed = useHasActiveLock();
   const { t } = useI18n();
 
-  const bullClass = cn(
-    'mx-auto w-full object-contain',
-    committed ? 'max-h-[min(36vh,300px)] opacity-95' : 'max-h-[min(58vh,520px)]',
-  );
-
   return (
     <div
       className={cn(
@@ -35,7 +30,7 @@ export function BullAside({ className }: BullAsideProps) {
         src={committed ? BULL_HAPPY_SRC : BULL_SRC}
         alt=""
         draggable={false}
-        className={bullClass}
+        className="mx-auto w-full max-h-[min(58vh,520px)] object-contain"
         aria-hidden
       />
     </div>

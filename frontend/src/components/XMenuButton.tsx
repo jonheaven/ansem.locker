@@ -19,7 +19,6 @@ import {
   useUnlinkXAccount,
   useXLinkForWallet,
 } from '@/hooks/useXLinks';
-import { useHasActiveLock } from '@/hooks/useHasActiveLock';
 import { X_SYMBOL } from '@/config/constants';
 import { cn } from '@/lib/cn';
 import { formatAnsemAmount, formatTimeRemaining } from '@/lib/format';
@@ -171,7 +170,6 @@ export function XMenuButton() {
   };
 
   const xHandle = linked?.xHandle;
-  const committed = useHasActiveLock();
 
   return (
     <div ref={rootRef} className="relative">
@@ -182,11 +180,8 @@ export function XMenuButton() {
         aria-controls={menuId}
         onClick={() => setOpen((value) => !value)}
         className={cn(
-          'inline-flex h-9 items-center gap-2 rounded-full border px-3 text-sm font-medium transition-colors',
-          committed
-            ? 'app-chip border-white/12 bg-white/6 text-white hover:bg-white/10'
-            : 'border-border bg-surface text-foreground hover:bg-surface-hover',
-          open && (committed ? 'bg-white/10' : 'bg-surface-hover'),
+          'inline-flex h-9 items-center gap-2 rounded-full border border-border bg-surface px-3 text-sm font-medium text-foreground transition-colors hover:bg-surface-hover',
+          open && 'bg-surface-hover',
         )}
       >
         <img src="/x.png" alt="" className="h-4 w-4" aria-hidden />
@@ -199,12 +194,7 @@ export function XMenuButton() {
         <div
           id={menuId}
           role="menu"
-          className={cn(
-            'absolute right-0 z-[60] mt-2 w-[min(100vw-2rem,22rem)] overflow-hidden rounded-2xl border p-2 shadow-xl backdrop-blur-2xl backdrop-saturate-150',
-            committed
-              ? 'app-card border-white/12 bg-[rgba(12,12,18,0.95)]'
-              : 'border-border/80 bg-background/95',
-          )}
+          className="absolute right-0 z-[60] mt-2 w-[min(100vw-2rem,22rem)] overflow-hidden rounded-2xl border border-border/80 bg-background/95 p-2 shadow-xl backdrop-blur-2xl backdrop-saturate-150"
         >
           {panel === 'menu' ? (
             <>
