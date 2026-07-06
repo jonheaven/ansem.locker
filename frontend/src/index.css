@@ -68,6 +68,15 @@ body {
   background-position: center top;
 }
 
+/* Locked state — locker art fills main content area at native aspect ratio */
+.locker-content-bg {
+  background-color: #0a0a0a;
+  background-image: url('/lockerbg.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
 /* Slider bull — shake / scale ramps with amount & lock length */
 @keyframes bull-thumb-charge {
   0%,
