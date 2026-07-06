@@ -30,6 +30,8 @@ export function BullSlider({
   const span = max - min;
   const percent = span > 0 ? ((value - min) / span) * 100 : 0;
   const intensity = Math.min(1, Math.max(0, bullishness));
+  /** Push CSS past 1.0 at max so the bull goes extra feral */
+  const cssIntensity = intensity <= 0 ? 0 : intensity * (1 + intensity * 0.85);
 
   return (
     <div className={cn('bull-slider', disabled && 'pointer-events-none opacity-50', className)}>
@@ -54,11 +56,12 @@ export function BullSlider({
             draggable={false}
             className={cn(
               'h-10 w-auto max-w-none select-none sm:h-12',
-              intensity > 0.08 && 'bull-thumb-charge',
+              intensity > 0.03 && 'bull-thumb-charge',
+              intensity > 0.72 && 'bull-thumb-rage',
             )}
             style={
               {
-                '--bull-intensity': intensity,
+                '--bull-intensity': cssIntensity,
               } as CSSProperties
             }
           />

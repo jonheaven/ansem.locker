@@ -22,6 +22,7 @@ import {
   minutesToSliderValue,
   minutesToUnlockLocal,
   parseUnlockLocal,
+  sliderPositionToBullIntensity,
   sliderValueToBullishness,
   sliderValueToMinutes,
   unlockLocalToMinutes,
@@ -77,6 +78,9 @@ export function LockPanel() {
   const validationError = useMemo(() => validateUnlockTs(unlockTs), [unlockTs]);
   const durationLabel = useMemo(() => formatLockLength(unlockTs), [unlockTs]);
   const durationAhead = useMemo(() => formatDurationAhead(unlockTs), [unlockTs]);
+  const amountBullishness = sliderPositionToBullIntensity(
+    amountSlider / AMOUNT_SLIDER_STEPS,
+  );
   const bullishness = sliderValueToBullishness(durationSlider);
   const flexLabel = getBullishFlexLabel(durationSlider);
 
@@ -287,6 +291,7 @@ export function LockPanel() {
             value={amountSlider}
             onChange={handleAmountSlider}
             disabled={!hasBalance || balance.isLoading}
+            bullishness={amountBullishness}
           />
           <div className="mt-2 flex items-center justify-between text-sm font-semibold text-muted-foreground">
             <span className="font-mono text-base">0</span>

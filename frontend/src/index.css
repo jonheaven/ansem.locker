@@ -73,44 +73,62 @@ body {
   background-blend-mode: luminosity;
 }
 
-/* Duration slider bull — shake / scale ramps with lock length */
+/* Slider bull — shake / scale ramps with amount & lock length */
 @keyframes bull-thumb-charge {
   0%,
   100% {
-    transform: translateY(0) rotate(0deg) scale(calc(1 + var(--bull-intensity, 0) * 0.04));
+    transform: translateY(0) rotate(0deg) skewX(0deg)
+      scale(calc(1 + var(--bull-intensity, 0) * 0.08));
   }
-  12% {
-    transform: translateY(calc(var(--bull-intensity, 0) * -5px))
-      rotate(calc(var(--bull-intensity, 0) * -7deg))
-      scale(calc(1 + var(--bull-intensity, 0) * 0.16));
+  8% {
+    transform: translateY(calc(var(--bull-intensity, 0) * -14px))
+      rotate(calc(var(--bull-intensity, 0) * -18deg))
+      skewX(calc(var(--bull-intensity, 0) * -6deg))
+      scale(calc(1 + var(--bull-intensity, 0) * 0.38));
   }
-  28% {
-    transform: translateY(calc(var(--bull-intensity, 0) * 3px))
-      rotate(calc(var(--bull-intensity, 0) * 5deg))
-      scale(calc(1 + var(--bull-intensity, 0) * 0.1));
+  22% {
+    transform: translateY(calc(var(--bull-intensity, 0) * 9px))
+      rotate(calc(var(--bull-intensity, 0) * 14deg))
+      skewX(calc(var(--bull-intensity, 0) * 5deg))
+      scale(calc(1 + var(--bull-intensity, 0) * 0.22));
   }
-  44% {
-    transform: translateY(calc(var(--bull-intensity, 0) * -4px))
-      rotate(calc(var(--bull-intensity, 0) * -4deg))
-      scale(calc(1 + var(--bull-intensity, 0) * 0.18));
+  38% {
+    transform: translateY(calc(var(--bull-intensity, 0) * -11px))
+      rotate(calc(var(--bull-intensity, 0) * -12deg))
+      skewX(calc(var(--bull-intensity, 0) * -4deg))
+      scale(calc(1 + var(--bull-intensity, 0) * 0.42));
   }
-  60% {
-    transform: translateY(calc(var(--bull-intensity, 0) * 2px))
-      rotate(calc(var(--bull-intensity, 0) * 6deg))
-      scale(calc(1 + var(--bull-intensity, 0) * 0.12));
+  52% {
+    transform: translateY(calc(var(--bull-intensity, 0) * 7px))
+      rotate(calc(var(--bull-intensity, 0) * 16deg))
+      skewX(calc(var(--bull-intensity, 0) * 7deg))
+      scale(calc(1 + var(--bull-intensity, 0) * 0.28));
   }
-  76% {
-    transform: translateY(calc(var(--bull-intensity, 0) * -3px))
-      rotate(calc(var(--bull-intensity, 0) * -5deg))
-      scale(calc(1 + var(--bull-intensity, 0) * 0.15));
+  68% {
+    transform: translateY(calc(var(--bull-intensity, 0) * -9px))
+      rotate(calc(var(--bull-intensity, 0) * -15deg))
+      skewX(calc(var(--bull-intensity, 0) * -5deg))
+      scale(calc(1 + var(--bull-intensity, 0) * 0.35));
+  }
+  84% {
+    transform: translateY(calc(var(--bull-intensity, 0) * 6px))
+      rotate(calc(var(--bull-intensity, 0) * 11deg))
+      skewX(calc(var(--bull-intensity, 0) * 4deg))
+      scale(calc(1 + var(--bull-intensity, 0) * 0.3));
   }
 }
 
 .bull-thumb-charge {
   animation: bull-thumb-charge linear infinite;
-  animation-duration: calc(0.52s - var(--bull-intensity, 0) * 0.36s);
+  animation-duration: calc(0.58s - min(var(--bull-intensity, 0) * 0.46s, 0.48s));
   transform-origin: center bottom;
   will-change: transform;
+  filter: drop-shadow(0 0 calc(var(--bull-intensity, 0) * 10px) rgb(212 175 55 / 35%));
+}
+
+.bull-thumb-rage {
+  animation-duration: calc(0.34s - min(var(--bull-intensity, 0) * 0.22s, 0.24s));
+  filter: drop-shadow(0 0 calc(var(--bull-intensity, 0) * 14px) rgb(212 175 55 / 55%));
 }
 
 /* Wallet adapter overrides */

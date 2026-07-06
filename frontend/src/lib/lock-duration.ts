@@ -114,13 +114,20 @@ export function sliderValueToMinutes(slider: number): number {
   return Math.round(Math.exp(logMin + t * (logMax - logMin)));
 }
 
+/** Maps 0–1 slider position → bull animation intensity (calm low, unhinged at max). */
+export function sliderPositionToBullIntensity(linear: number): number {
+  const t = Math.min(1, Math.max(0, linear));
+  if (t <= 0) return 0;
+  return Math.pow(t, 1.28);
+}
+
 /** 0 = short test lock, 1 = max duration — drives bull shake / flex copy. */
 export function sliderValueToBullishness(slider: number): number {
-  return Math.min(1, Math.max(0, slider / 1000));
+  return sliderPositionToBullIntensity(slider / 1000);
 }
 
 export function getBullishFlexLabel(slider: number): string | null {
-  const t = sliderValueToBullishness(slider);
+  const t = Math.min(1, Math.max(0, slider / 1000));
   if (t < 0.12) return null;
   if (t < 0.28) return 'Warming up…';
   if (t < 0.45) return 'Getting bullish';
