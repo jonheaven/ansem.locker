@@ -5,13 +5,13 @@ import {
   Link2,
   Loader2,
   Share2,
-  Diamond,
   Unlink,
   User,
 } from 'lucide-react';
 import { useEffect, useId, useRef, useState, type ComponentType } from 'react';
 import { toast } from 'sonner';
 import { FlexVerifyForm } from '@/components/FlexVerifyForm';
+import { DiamondHoovesMenuIcon } from '@/components/DiamondHoovesIcon';
 import { useFlexVerifiedForWallet } from '@/hooks/useLockerList';
 import { useLeaderboard, sortLocks, useMyLocks } from '@/hooks/useLocks';
 import {
@@ -274,7 +274,7 @@ export function XMenuButton() {
               />
 
               <MenuRow
-                icon={Diamond}
+                icon={DiamondHoovesMenuIcon}
                 label="Share leaderboard"
                 description={
                   rank && rankLock
@@ -311,14 +311,14 @@ export function XMenuButton() {
 
               {wallet && topLock && !flexVerified ? (
                 <MenuRow
-                  icon={Diamond}
+                  icon={DiamondHoovesMenuIcon}
                   label="Join Locker List"
                   description="Paste your flex post URL after sharing"
                   onClick={() => setPanel('flex')}
                 />
               ) : flexVerified ? (
                 <MenuRow
-                  icon={Diamond}
+                  icon={DiamondHoovesMenuIcon}
                   label="On the Locker List"
                   description="Flex verified — you're visible to the community"
                   disabled

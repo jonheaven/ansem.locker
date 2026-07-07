@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Diamond, Medal, Share2 } from 'lucide-react';
+import { Medal, Share2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { AnsemAmountDisplay } from '@/components/AnsemFiatValue';
 import { CopyWalletButton } from '@/components/CopyWalletButton';
+import { DiamondHoovesIcon } from '@/components/DiamondHoovesIcon';
 import { FlexVerifyForm } from '@/components/FlexVerifyForm';
 import { LockerListPanel } from '@/components/LockerListPanel';
 import { Button } from '@/components/ui/button';
@@ -80,7 +81,7 @@ export function LeaderboardTable({
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <CardTitle className="flex items-center gap-2">
-              <Diamond className="h-5 w-5 text-accent" />
+              <DiamondHoovesIcon />
               {t('leaderboard.title')}
             </CardTitle>
             <CardDescription>{t('leaderboard.description')}</CardDescription>

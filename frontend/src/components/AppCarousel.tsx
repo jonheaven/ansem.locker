@@ -1,5 +1,6 @@
-import { Diamond, HelpCircle, Info, Lock, Wallet } from 'lucide-react';
+import { HelpCircle, Info, Lock, Wallet } from 'lucide-react';
 import { BullAside } from '@/components/BullAside';
+import { DiamondHoovesIcon } from '@/components/DiamondHoovesIcon';
 import { LockPanel } from '@/components/LockPanel';
 import { LeaderboardTable } from '@/components/LeaderboardTable';
 import { MyLocksPanel } from '@/components/MyLocksPanel';
@@ -13,7 +14,7 @@ import { cn } from '@/lib/cn';
 
 const TAB_IDS = [
   { id: 'lock' as const, labelKey: 'tabs.lock', icon: Lock },
-  { id: 'leaderboard' as const, labelKey: 'tabs.ranks', icon: Diamond },
+  { id: 'leaderboard' as const, labelKey: 'tabs.ranks' },
   { id: 'why' as const, labelKey: 'tabs.why', icon: HelpCircle },
   { id: 'how' as const, labelKey: 'tabs.how', icon: Info },
   { id: 'locks' as const, labelKey: 'tabs.myLocks', icon: Wallet },
@@ -38,7 +39,10 @@ export function AppCarousel() {
           aria-label="ansem.locker views"
           className="mb-4 flex rounded-full border border-border/80 bg-surface/80 p-1 shadow-sm backdrop-blur-md"
         >
-          {TAB_IDS.map(({ id, labelKey, icon: Icon }) => (
+          {TAB_IDS.map((tab) => {
+            const { id, labelKey } = tab;
+            const Icon = 'icon' in tab ? tab.icon : undefined;
+            return (
             <button
               key={id}
               type="button"
@@ -52,10 +56,18 @@ export function AppCarousel() {
                   : 'text-muted-foreground hover:text-foreground',
               )}
             >
-              <Icon className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" aria-hidden />
+              {id === 'leaderboard' ? (
+                <DiamondHoovesIcon
+                  size="sm"
+                  className={view === id ? 'text-background' : undefined}
+                />
+              ) : Icon ? (
+                <Icon className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" aria-hidden />
+              ) : null}
               <span className="truncate">{t(labelKey)}</span>
             </button>
-          ))}
+            );
+          })}
         </div>
 
         <div className="overflow-x-hidden">
