@@ -2,19 +2,11 @@ import { useMemo, useState } from 'react';
 import { ArrowDownUp, Loader2 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ANSEM_DECIMALS } from '@/config/constants';
-import { useCurrency, type FiatCurrency } from '@/lib/currency/currency-context';
+import { useCurrency } from '@/lib/currency/currency-context';
 import { formatAnsemAmount, parseAnsemAmount } from '@/lib/format';
 import { useI18n } from '@/lib/i18n/i18n-context';
+import { CURRENCY_SYMBOL } from '@/lib/locale/catalog';
 import { cn } from '@/lib/cn';
-
-const CURRENCY_SYMBOL: Record<FiatCurrency, string> = {
-  USD: '$',
-  EUR: '€',
-  GBP: '£',
-  JPY: '¥',
-  AUD: 'A$',
-  CAD: 'C$',
-};
 
 const ANSEM_PRESETS = [1_000, 10_000, 100_000, 1_000_000] as const;
 

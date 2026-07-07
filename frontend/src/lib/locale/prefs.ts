@@ -5,7 +5,19 @@ export const LOCALE_KEY = 'ansem-locker-preferred-locale';
 export const FIAT_KEY = 'ansem-locker-preferred-fiat';
 
 const LOCALE_SET = new Set<string>(SUPPORTED_LOCALES);
-const FIAT_CODES = new Set<FiatCurrency>(['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD']);
+const FIAT_CODES = new Set<FiatCurrency>([
+  'USD',
+  'EUR',
+  'GBP',
+  'INR',
+  'BRL',
+  'KRW',
+  'JPY',
+  'TRY',
+  'IDR',
+  'AUD',
+  'CAD',
+]);
 
 export function readStoredLocale(): SupportedLocale | null {
   try {

@@ -1,27 +1,13 @@
 import { CircleDollarSign, Languages } from 'lucide-react';
 import { HeaderIconPicker } from '@/components/HeaderIconPicker';
-import { useI18n, type SupportedLocale } from '@/lib/i18n/i18n-context';
-import { useCurrency, type FiatCurrency } from '@/lib/currency/currency-context';
+import { useI18n } from '@/lib/i18n/i18n-context';
+import { useCurrency } from '@/lib/currency/currency-context';
+import {
+  CURRENCY_SYMBOL,
+  FIAT_OPTIONS,
+  LOCALE_OPTIONS,
+} from '@/lib/locale/catalog';
 import { cn } from '@/lib/cn';
-
-const LOCALES: { code: SupportedLocale; labelKey: string }[] = [
-  { code: 'en', labelKey: 'locale.en' },
-  { code: 'ja', labelKey: 'locale.ja' },
-  { code: 'es', labelKey: 'locale.es' },
-  { code: 'ru', labelKey: 'locale.ru' },
-  { code: 'zh', labelKey: 'locale.zh' },
-];
-
-const CURRENCIES: FiatCurrency[] = ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD'];
-
-const CURRENCY_SYMBOL: Record<FiatCurrency, string> = {
-  USD: '$',
-  EUR: '€',
-  GBP: '£',
-  JPY: '¥',
-  AUD: 'A$',
-  CAD: 'C$',
-};
 
 type LocaleCurrencySelectorProps = {
   className?: string;
@@ -37,7 +23,7 @@ export function LocaleCurrencySelector({ className }: LocaleCurrencySelectorProp
         ariaLabel={t('common.language')}
         value={locale}
         onChange={setLocale}
-        options={LOCALES.map((opt) => ({
+        options={LOCALE_OPTIONS.map((opt) => ({
           value: opt.code,
           label: t(opt.labelKey),
         }))}
@@ -52,7 +38,7 @@ export function LocaleCurrencySelector({ className }: LocaleCurrencySelectorProp
         ariaLabel={t('common.currency')}
         value={currency}
         onChange={setCurrency}
-        options={CURRENCIES.map((code) => ({
+        options={FIAT_OPTIONS.map((code) => ({
           value: code,
           label: code,
         }))}

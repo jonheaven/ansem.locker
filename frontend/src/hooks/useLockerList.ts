@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useWallet } from '@solana/wallet-adapter-react';
 import { apiErrorMessage, fetchJson } from '@/lib/fetch-json';
-import { signWalletAuthRequest } from '@/lib/wallet-auth';
+import { useWalletAuthSign } from '@/hooks/useWalletAuthSign';
 
 export type LockerListEntry = {
   wallet: string;
@@ -39,11 +38,14 @@ export function useFlexVerifiedForWallet(wallet?: string) {
 
 export function useVerifyFlexPost() {
   const queryClient = useQueryClient();
-  const { signMessage } = useWallet();
+  const { signAuth } = useWalletAuthSign();
 
   return useMutation({
     mutationFn: async (input: { wallet: string; flexTweetUrl: string }) => {
-      const auth = await signWalletAuthRequest(signMessage, input.wallet, 'flex-verify');
+      const auth = await signAuth('flex-verify');
+      if (auth.message.split(':')[2] !== input.wallet) {
+        throw new Error('Connected wallet does not match');
+      }
       const result = await fetchJson<{ error?: string; entry?: LockerListEntry }>(
         '/api/flex-verify',
         {

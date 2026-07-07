@@ -47,9 +47,14 @@ export const ja = {
   },
   locale: {
     en: 'English',
+    hi: 'हिन्दी',
+    pt: 'Português',
+    ko: '한국어',
     ja: '日本語',
     es: 'Español',
     ru: 'Русский',
+    tr: 'Türkçe',
+    id: 'Bahasa Indonesia',
     zh: '中文',
   },
   tabs: {

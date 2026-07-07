@@ -1,8 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useWallet } from '@solana/wallet-adapter-react';
 import { apiErrorMessage, fetchJson } from '@/lib/fetch-json';
 import { X_SYMBOL } from '@/config/constants';
-import { signWalletAuthRequest } from '@/lib/wallet-auth';
+import { useWalletAuthSign } from '@/hooks/useWalletAuthSign';
 import { useXLinkStore } from '@/lib/x-link-store';
 
 export type XLinkRecord = {
@@ -77,11 +76,14 @@ export function useXLinkForWallet(wallet?: string) {
 export function useLinkXAccount() {
   const queryClient = useQueryClient();
   const setLocalLink = useXLinkStore((s) => s.setLink);
-  const { signMessage } = useWallet();
+  const { signAuth } = useWalletAuthSign();
 
   return useMutation({
     mutationFn: async (input: { wallet: string; code: string; tweetUrl: string }) => {
-      const auth = await signWalletAuthRequest(signMessage, input.wallet, 'link');
+      const auth = await signAuth('link');
+      if (auth.message.split(':')[2] !== input.wallet) {
+        throw new Error('Connected wallet does not match');
+      }
       const result = await fetchJson<{ error?: string; link?: XLinkRecord }>('/api/x-links', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -106,11 +108,14 @@ export function useLinkXAccount() {
 export function useUnlinkXAccount() {
   const queryClient = useQueryClient();
   const removeLocal = useXLinkStore((s) => s.removeLink);
-  const { signMessage } = useWallet();
+  const { signAuth } = useWalletAuthSign();
 
   return useMutation({
     mutationFn: async (wallet: string) => {
-      const auth = await signWalletAuthRequest(signMessage, wallet, 'unlink');
+      const auth = await signAuth('unlink');
+      if (auth.message.split(':')[2] !== wallet) {
+        throw new Error('Connected wallet does not match');
+      }
       const result = await fetchJson<{ error?: string }>('/api/x-links', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },

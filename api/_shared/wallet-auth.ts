@@ -43,7 +43,12 @@ export async function verifyWalletSignature(
   }
 
   const { PublicKey } = await loadSolanaWeb3();
-  const nacl = await import('tweetnacl');
+  const naclModule = await import('tweetnacl');
+  const nacl = (naclModule as { default?: typeof naclModule }).default ?? naclModule;
+
+  if (!nacl.sign?.detached?.verify) {
+    throw new Error('Signature verification unavailable');
+  }
 
   const pubkey = new PublicKey(wallet).toBytes();
   const payload = new TextEncoder().encode(message);

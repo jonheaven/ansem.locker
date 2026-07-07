@@ -1,28 +1,14 @@
 import { Check, ChevronLeft, CircleDollarSign, Languages, Settings } from 'lucide-react';
 import { useState } from 'react';
 import { HeaderFlyoutItem, HeaderFlyoutMenu } from '@/components/HeaderFlyoutMenu';
-import { useI18n, type SupportedLocale } from '@/lib/i18n/i18n-context';
-import { useCurrency, type FiatCurrency } from '@/lib/currency/currency-context';
+import { useI18n } from '@/lib/i18n/i18n-context';
+import { useCurrency } from '@/lib/currency/currency-context';
+import {
+  CURRENCY_SYMBOL,
+  FIAT_OPTIONS,
+  LOCALE_OPTIONS,
+} from '@/lib/locale/catalog';
 import { cn } from '@/lib/cn';
-
-const LOCALES: { code: SupportedLocale; labelKey: string }[] = [
-  { code: 'en', labelKey: 'locale.en' },
-  { code: 'ja', labelKey: 'locale.ja' },
-  { code: 'es', labelKey: 'locale.es' },
-  { code: 'ru', labelKey: 'locale.ru' },
-  { code: 'zh', labelKey: 'locale.zh' },
-];
-
-const CURRENCIES: FiatCurrency[] = ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD'];
-
-const CURRENCY_SYMBOL: Record<FiatCurrency, string> = {
-  USD: '$',
-  EUR: '€',
-  GBP: '£',
-  JPY: '¥',
-  AUD: 'A$',
-  CAD: 'C$',
-};
 
 type Panel = 'menu' | 'language' | 'currency';
 
@@ -31,7 +17,7 @@ export function SettingsNavMenu() {
   const { currency, setCurrency } = useCurrency();
   const [panel, setPanel] = useState<Panel>('menu');
 
-  const currentLocaleLabel = t(LOCALES.find((l) => l.code === locale)?.labelKey ?? 'locale.en');
+  const currentLocaleLabel = t(LOCALE_OPTIONS.find((l) => l.code === locale)?.labelKey ?? 'locale.en');
 
   return (
     <HeaderFlyoutMenu
@@ -53,7 +39,7 @@ export function SettingsNavMenu() {
                 {t('xMenu.back')}
               </button>
               {panel === 'language'
-                ? LOCALES.map((opt) => {
+                ? LOCALE_OPTIONS.map((opt) => {
                     const selected = opt.code === locale;
                     return (
                       <button
@@ -79,7 +65,7 @@ export function SettingsNavMenu() {
                       </button>
                     );
                   })
-                : CURRENCIES.map((code) => {
+                : FIAT_OPTIONS.map((code) => {
                     const selected = code === currency;
                     return (
                       <button

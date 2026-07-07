@@ -1,5 +1,16 @@
-export type GeoLocale = 'en' | 'ja' | 'es' | 'ru' | 'zh';
-export type GeoCurrency = 'USD' | 'EUR' | 'GBP' | 'JPY' | 'AUD' | 'CAD';
+export type GeoLocale = 'en' | 'hi' | 'pt' | 'ko' | 'ja' | 'es' | 'ru' | 'tr' | 'id' | 'zh';
+export type GeoCurrency =
+  | 'USD'
+  | 'EUR'
+  | 'GBP'
+  | 'INR'
+  | 'BRL'
+  | 'KRW'
+  | 'JPY'
+  | 'TRY'
+  | 'IDR'
+  | 'AUD'
+  | 'CAD';
 
 export type GeoPrefs = {
   country: string;
@@ -18,6 +29,16 @@ export function geoPrefsFromCountry(countryCode: string | null | undefined): Geo
   const country = (countryCode ?? 'US').toUpperCase().slice(0, 2);
 
   switch (country) {
+    case 'IN':
+      return { country, locale: 'hi', currency: 'INR' };
+    case 'BR':
+      return { country, locale: 'pt', currency: 'BRL' };
+    case 'KR':
+      return { country, locale: 'ko', currency: 'KRW' };
+    case 'TR':
+      return { country, locale: 'tr', currency: 'TRY' };
+    case 'ID':
+      return { country, locale: 'id', currency: 'IDR' };
     case 'JP':
       return { country, locale: 'ja', currency: 'JPY' };
     case 'GB':
@@ -38,6 +59,8 @@ export function geoPrefsFromCountry(countryCode: string | null | undefined): Geo
       return { country, locale: 'zh', currency: 'USD' };
     case 'ES':
       return { country, locale: 'es', currency: 'EUR' };
+    case 'PT':
+      return { country, locale: 'pt', currency: 'EUR' };
     case 'US':
       return { country, locale: 'en', currency: 'USD' };
     default:

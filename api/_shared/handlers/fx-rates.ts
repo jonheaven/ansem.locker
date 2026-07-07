@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-const FIAT = ['EUR', 'GBP', 'JPY', 'AUD', 'CAD'] as const;
+const FIAT = ['EUR', 'GBP', 'INR', 'BRL', 'KRW', 'JPY', 'TRY', 'IDR', 'AUD', 'CAD'] as const;
 
 export default async function handler(_req: VercelRequest, res: VercelResponse) {
   const ac = new AbortController();

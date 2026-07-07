@@ -39,9 +39,14 @@ function interpolate(text: string, vars?: Record<string, string | number>): stri
 function normalizeLocale(raw: string | null | undefined): SupportedLocale | null {
   if (!raw) return null;
   const normalized = raw.trim().toLowerCase();
+  if (normalized === 'hi' || normalized.startsWith('hi-')) return 'hi';
+  if (normalized === 'pt' || normalized.startsWith('pt-')) return 'pt';
+  if (normalized === 'ko' || normalized.startsWith('ko-')) return 'ko';
   if (normalized === 'ja' || normalized.startsWith('ja-')) return 'ja';
   if (normalized === 'es' || normalized.startsWith('es-')) return 'es';
   if (normalized === 'ru' || normalized.startsWith('ru-')) return 'ru';
+  if (normalized === 'tr' || normalized.startsWith('tr-')) return 'tr';
+  if (normalized === 'id' || normalized.startsWith('id-')) return 'id';
   if (normalized === 'zh' || normalized.startsWith('zh-')) return 'zh';
   if (normalized === 'en' || normalized.startsWith('en')) return 'en';
   return null;

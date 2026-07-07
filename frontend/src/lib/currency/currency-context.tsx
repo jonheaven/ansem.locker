@@ -4,7 +4,18 @@ import { ANSEM_DECIMALS } from '@/config/constants';
 import { fetchAnsemQuoteClient } from '@/lib/ansem-price/ansem-market-client';
 import { FIAT_KEY, readStoredCurrency } from '@/lib/locale/prefs';
 
-export type FiatCurrency = 'USD' | 'EUR' | 'GBP' | 'JPY' | 'AUD' | 'CAD';
+export type FiatCurrency =
+  | 'USD'
+  | 'EUR'
+  | 'GBP'
+  | 'INR'
+  | 'BRL'
+  | 'KRW'
+  | 'JPY'
+  | 'TRY'
+  | 'IDR'
+  | 'AUD'
+  | 'CAD';
 
 type CurrencyContextValue = {
   currency: FiatCurrency;
@@ -23,7 +34,12 @@ const FALLBACK_FX_FROM_USD: Record<FiatCurrency, number> = {
   USD: 1,
   EUR: 0.92,
   GBP: 0.79,
+  INR: 83,
+  BRL: 5.0,
+  KRW: 1350,
   JPY: 150,
+  TRY: 32,
+  IDR: 16_000,
   AUD: 1.55,
   CAD: 1.36,
 };
@@ -35,6 +51,11 @@ function detectDefaultCurrency(): FiatCurrency {
   if (lang.startsWith('en-AU')) return 'AUD';
   if (lang.startsWith('en-CA') || lang.startsWith('fr-CA')) return 'CAD';
   if (lang.startsWith('ja')) return 'JPY';
+  if (lang.startsWith('ko')) return 'KRW';
+  if (lang.startsWith('hi')) return 'INR';
+  if (lang.startsWith('pt')) return 'BRL';
+  if (lang.startsWith('tr')) return 'TRY';
+  if (lang.startsWith('id')) return 'IDR';
   if (lang.startsWith('ru')) return 'USD';
   if (lang.startsWith('zh')) return 'USD';
   if (lang.startsWith('es')) return lang.includes('-ES') || lang === 'es' ? 'EUR' : 'USD';
