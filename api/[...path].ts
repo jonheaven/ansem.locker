@@ -18,9 +18,21 @@ const ROUTES: Record<string, () => Promise<{ default: RouteHandler }>> = {
   'aster-position': () => import('./_shared/handlers/aster-position'),
 };
 
+function resolveApiPath(req: VercelRequest): string {
+  const q = req.query as Record<string, string | string[] | undefined>;
+  // Non-Next Vercel catch-all uses the literal key "...path", not "path".
+  const raw = q.path ?? q['...path'];
+  if (raw != null && raw !== '') {
+    return Array.isArray(raw) ? raw.join('/') : String(raw);
+  }
+
+  const pathname = (req.url ?? '').split('?')[0] ?? '';
+  const match = pathname.match(/\/api\/(.+)$/);
+  return match?.[1] ? decodeURIComponent(match[1]) : '';
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const raw = req.query.path;
-  const path = Array.isArray(raw) ? raw.join('/') : String(raw ?? '');
+  const path = resolveApiPath(req);
 
   const load = ROUTES[path];
   if (!load) {
