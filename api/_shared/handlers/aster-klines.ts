@@ -3,7 +3,7 @@ import {
   ASTER_ANSEM_SYMBOL,
   asterFetch,
   isAsterKlineInterval,
-} from './_shared/aster';
+} from '../aster';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') {

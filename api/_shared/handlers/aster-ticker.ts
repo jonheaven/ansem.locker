@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { ASTER_ANSEM_SYMBOL, asterFetch } from './_shared/aster';
+import { ASTER_ANSEM_SYMBOL, asterFetch } from '../aster';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') {

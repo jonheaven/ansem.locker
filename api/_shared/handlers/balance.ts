@@ -1,10 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { ANSEM_MINT_ID, isBase58Address, loadSolanaWeb3 } from './_shared/solana';
+import { ANSEM_MINT_ID, isBase58Address, loadSolanaWeb3 } from '../solana';
 import {
   missingRpcMessage,
   resolveServerRpcUrl,
   validateServerRpcUrl,
-} from './_shared/rpc';
+} from '../rpc';
 
 const ANSEM_DECIMALS = 6;
 

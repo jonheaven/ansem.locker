@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { missingRpcMessage, resolveServerRpcUrl, validateServerRpcUrl } from './_shared/rpc';
+import { missingRpcMessage, resolveServerRpcUrl, validateServerRpcUrl } from '../rpc';
 
 function rpcHost(url: string): string {
   try {

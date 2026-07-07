@@ -1,13 +1,13 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { indexWalletLocks } from './_shared/wallet-lock-index';
-import { isBase58Address, loadSolanaWeb3 } from './_shared/solana';
+import { indexWalletLocks } from '../wallet-lock-index';
+import { isBase58Address, loadSolanaWeb3 } from '../solana';
 import {
   INDEXER_TIMEOUT_MS,
   missingRpcMessage,
   resolveServerRpcUrl,
   validateServerRpcUrl,
   withTimeout,
-} from './_shared/rpc';
+} from '../rpc';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') {

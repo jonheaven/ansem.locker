@@ -3,10 +3,10 @@ import {
   loadXLinkStore,
   saveXLinkStore,
   type XLinkRecord,
-} from './_shared/x-link-store';
-import { isBase58Address } from './_shared/solana';
-import { fetchTweetOembed, assertTweetUrl } from './_shared/twitter-oembed';
-import { verifyWalletSignature } from './_shared/wallet-auth';
+} from '../x-link-store';
+import { isBase58Address } from '../solana';
+import { fetchTweetOembed, assertTweetUrl } from '../twitter-oembed';
+import { verifyWalletSignature } from '../wallet-auth';
 
 export type { XLinkRecord };
 

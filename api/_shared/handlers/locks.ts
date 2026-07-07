@@ -4,13 +4,13 @@ import {
   JUPITER_LOCK_PROGRAM_ID,
   parseVestingEscrow,
   VESTING_ESCROW_DATA_LEN,
-} from './_shared/jupiter-lock';
+} from '../jupiter-lock';
 import {
   ANSEM_MINT_ID,
   ANSEM_TOKEN_PROGRAM_ID,
   loadSolanaWeb3,
   loadSplToken,
-} from './_shared/solana';
+} from '../solana';
 import {
   getMultipleAccountsChunked,
   INDEXER_TIMEOUT_MS,
@@ -18,7 +18,7 @@ import {
   resolveServerRpcUrl,
   validateServerRpcUrl,
   withTimeout,
-} from './_shared/rpc';
+} from '../rpc';
 
 type LockDto = {
   vestingAccount: string;

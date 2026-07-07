@@ -1,21 +1,21 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { assertTweetUrl, fetchTweetOembed } from './_shared/twitter-oembed';
+import { assertTweetUrl, fetchTweetOembed } from '../twitter-oembed';
 import {
   loadXLinkStore,
   saveXLinkStore,
   type XLinkRecord,
-} from './_shared/x-link-store';
-import { isBase58Address, loadSolanaWeb3 } from './_shared/solana';
-import { walletHasActiveLock } from './_shared/wallet-lock-index';
-import { requireSolscanTxInPost, verifyLockTxForWallet } from './_shared/verify-flex-tx';
-import { verifyWalletSignature } from './_shared/wallet-auth';
+} from '../x-link-store';
+import { isBase58Address, loadSolanaWeb3 } from '../solana';
+import { walletHasActiveLock } from '../wallet-lock-index';
+import { requireSolscanTxInPost, verifyLockTxForWallet } from '../verify-flex-tx';
+import { verifyWalletSignature } from '../wallet-auth';
 import {
   INDEXER_TIMEOUT_MS,
   missingRpcMessage,
   resolveServerRpcUrl,
   validateServerRpcUrl,
   withTimeout,
-} from './_shared/rpc';
+} from '../rpc';
 
 export type { XLinkRecord };
 

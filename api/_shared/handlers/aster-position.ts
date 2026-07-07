@@ -1,10 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { ASTER_ANSEM_SYMBOL } from './_shared/aster';
+import { ASTER_ANSEM_SYMBOL } from '../aster';
 import {
   extractChainSymbolPosition,
   fetchAsterChainBalance,
-} from './_shared/aster-chain';
-import { fetchSignedPositionRisk, readAsterApiCredentials } from './_shared/aster-auth';
+} from '../aster-chain';
+import { fetchSignedPositionRisk, readAsterApiCredentials } from '../aster-auth';
 
 const DEFAULT_BUILDER_WALLET = 'FUcz2E5vecFVDKXV6XirhfuDXGeq8EcuetLpMjhJWUFo';
 

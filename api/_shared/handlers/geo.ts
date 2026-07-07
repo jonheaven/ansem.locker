@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { geoPrefsFromCountry } from './_shared/geo-prefs';
+import { geoPrefsFromCountry } from '../geo-prefs';
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
   const country =
