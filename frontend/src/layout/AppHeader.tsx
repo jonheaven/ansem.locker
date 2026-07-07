@@ -8,12 +8,10 @@ import { useI18n } from '@/lib/i18n/i18n-context';
 
 function HeaderActions() {
   return (
-    <div className="flex flex-col items-end gap-1.5">
-      <LocaleCurrencySelector layout="stacked" />
-      <div className="flex items-center gap-2">
-        <XMenuButton />
-        <AppWalletButton />
-      </div>
+    <div className="flex items-center gap-2">
+      <LocaleCurrencySelector />
+      <XMenuButton />
+      <AppWalletButton />
     </div>
   );
 }
