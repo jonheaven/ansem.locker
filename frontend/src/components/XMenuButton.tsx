@@ -11,7 +11,6 @@ import {
 import { useEffect, useId, useRef, useState, type ComponentType } from 'react';
 import { toast } from 'sonner';
 import { FlexVerifyForm } from '@/components/FlexVerifyForm';
-import { HoverTooltip } from '@/components/HoverTooltip';
 import { DiamondHoovesMenuIcon } from '@/components/DiamondHoovesIcon';
 import { useFlexVerifiedForWallet } from '@/hooks/useLockerList';
 import { useLeaderboard, sortLocks, useMyLocks } from '@/hooks/useLocks';
@@ -178,9 +177,8 @@ export function XMenuButton() {
   const xHandle = linked?.xHandle;
 
   return (
-    <HoverTooltip label={t('xMenu.tooltip')} hidden={open}>
-      <div ref={rootRef} className="relative inline-flex">
-        <button
+    <div ref={rootRef} className="relative inline-flex">
+      <button
           type="button"
           aria-expanded={open}
           aria-haspopup="menu"
@@ -456,6 +454,5 @@ export function XMenuButton() {
         </div>
       ) : null}
       </div>
-    </HoverTooltip>
   );
 }

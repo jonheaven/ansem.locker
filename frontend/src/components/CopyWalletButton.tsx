@@ -1,7 +1,6 @@
 import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { HoverTooltip } from '@/components/HoverTooltip';
 import { Button } from '@/components/ui/button';
 import { useI18n } from '@/lib/i18n/i18n-context';
 import { shortenAddress } from '@/lib/format';
@@ -37,26 +36,23 @@ export function CopyWalletButton({
 
   if (variant === 'inline') {
     return (
-      <HoverTooltip label={address} multiline>
-        <button
-          type="button"
-          onClick={copy}
-          aria-label={t('leaderboard.copyWallet')}
-          className={cn(
-            'inline-flex items-center gap-1 font-mono transition-colors hover:text-accent',
-            className,
-          )}
-        >
-          {shortenAddress(address, chars)}
-          {copied ? <Check className="h-3 w-3 text-accent" /> : <Copy className="h-3 w-3" />}
-        </button>
-      </HoverTooltip>
+      <button
+        type="button"
+        onClick={copy}
+        aria-label={t('leaderboard.copyWallet')}
+        className={cn(
+          'inline-flex items-center gap-1 font-mono transition-colors hover:text-accent',
+          className,
+        )}
+      >
+        {shortenAddress(address, chars)}
+        {copied ? <Check className="h-3 w-3 text-accent" /> : <Copy className="h-3 w-3" />}
+      </button>
     );
   }
 
   return (
-    <HoverTooltip label={t('leaderboard.copyWallet')}>
-      <Button
+    <Button
         type="button"
         size="sm"
         variant="ghost"
@@ -66,6 +62,5 @@ export function CopyWalletButton({
       >
         {copied ? <Check className="h-4 w-4 text-accent" /> : <Copy className="h-4 w-4" />}
       </Button>
-    </HoverTooltip>
   );
 }

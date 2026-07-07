@@ -34,7 +34,6 @@ export function LocaleCurrencySelector({ className }: LocaleCurrencySelectorProp
   return (
     <div className={cn('flex items-center gap-1', className)}>
       <HeaderIconPicker
-        tooltip={t('common.language')}
         ariaLabel={t('common.language')}
         value={locale}
         onChange={setLocale}
@@ -50,7 +49,6 @@ export function LocaleCurrencySelector({ className }: LocaleCurrencySelectorProp
         }
       />
       <HeaderIconPicker
-        tooltip={t('common.currency')}
         ariaLabel={t('common.currency')}
         value={currency}
         onChange={setCurrency}

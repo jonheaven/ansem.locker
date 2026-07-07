@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { AnsemAmountDisplay } from '@/components/AnsemFiatValue';
 import { CopyWalletButton } from '@/components/CopyWalletButton';
-import { HoverTooltip } from '@/components/HoverTooltip';
 import { DiamondHoovesIcon } from '@/components/DiamondHoovesIcon';
 import { FlexVerifyForm } from '@/components/FlexVerifyForm';
 import { LockerListPanel } from '@/components/LockerListPanel';
@@ -304,25 +303,23 @@ export function LeaderboardTable({
                       />
                       <div className="flex items-center gap-1">
                       <CopyWalletButton address={entry.owner} className="h-11 w-11" />
-                      <HoverTooltip label={t('leaderboard.shareRank', { rank })}>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="h-11 w-11 shrink-0 p-0"
-                          aria-label={t('leaderboard.shareRank', { rank })}
-                          onClick={() =>
-                            openLeaderboardEntryShare({
-                              rank,
-                              amount: entry.remainingInVault,
-                              whoLabel,
-                              timeRemaining,
-                              isSelf,
-                            })
-                          }
-                        >
-                          <Share2 className="h-4 w-4" />
-                        </Button>
-                      </HoverTooltip>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-11 w-11 shrink-0 p-0"
+                        aria-label={t('leaderboard.shareRank', { rank })}
+                        onClick={() =>
+                          openLeaderboardEntryShare({
+                            rank,
+                            amount: entry.remainingInVault,
+                            whoLabel,
+                            timeRemaining,
+                            isSelf,
+                          })
+                        }
+                      >
+                        <Share2 className="h-4 w-4" />
+                      </Button>
                       </div>
                     </div>
                   </div>

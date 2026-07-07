@@ -1,5 +1,4 @@
 import { ANSEM_MINT } from '@/config/constants';
-import { HoverTooltip } from '@/components/HoverTooltip';
 import { useCurrency } from '@/lib/currency/currency-context';
 import { useI18n } from '@/lib/i18n/i18n-context';
 import { cn } from '@/lib/cn';
@@ -31,18 +30,17 @@ export function AnsemPriceTicker({ className }: AnsemPriceTickerProps) {
     : t('price.tickerAriaNoChange', { price });
 
   return (
-    <HoverTooltip label={tooltip} multiline>
-      <a
-        href={DEXSCREENER_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={cn(
-          'inline-flex max-w-full items-center gap-1.5 rounded-md tabular-nums transition-colors hover:text-accent',
-          className,
-        )}
-        aria-label={tooltip}
-        onClick={(e) => e.stopPropagation()}
-      >
+    <a
+      href={DEXSCREENER_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={cn(
+        'inline-flex max-w-full items-center gap-1.5 rounded-md tabular-nums transition-colors hover:text-accent',
+        className,
+      )}
+      aria-label={tooltip}
+      onClick={(e) => e.stopPropagation()}
+    >
       <span className="truncate text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
         {t('common.ansem')}
       </span>
@@ -59,7 +57,6 @@ export function AnsemPriceTicker({ className }: AnsemPriceTickerProps) {
           {changeLabel}
         </span>
       ) : null}
-      </a>
-    </HoverTooltip>
+    </a>
   );
 }

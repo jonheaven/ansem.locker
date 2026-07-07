@@ -1,10 +1,8 @@
 import { Check } from 'lucide-react';
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
-import { HoverTooltip } from '@/components/HoverTooltip';
 import { cn } from '@/lib/cn';
 
 type HeaderIconPickerProps<T extends string> = {
-  tooltip: string;
   ariaLabel: string;
   value: T;
   onChange: (value: T) => void;
@@ -14,7 +12,6 @@ type HeaderIconPickerProps<T extends string> = {
 };
 
 export function HeaderIconPicker<T extends string>({
-  tooltip,
   ariaLabel,
   value,
   onChange,
@@ -47,8 +44,7 @@ export function HeaderIconPicker<T extends string>({
   }, [open]);
 
   return (
-    <HoverTooltip label={tooltip} hidden={open} className={className}>
-      <div ref={rootRef} className="relative inline-flex">
+    <div ref={rootRef} className={cn('relative inline-flex', className)}>
         <button
           type="button"
           aria-label={ariaLabel}
@@ -99,7 +95,6 @@ export function HeaderIconPicker<T extends string>({
             })}
           </div>
         ) : null}
-      </div>
-    </HoverTooltip>
+    </div>
   );
 }

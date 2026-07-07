@@ -1,5 +1,4 @@
 import { useI18n } from '@/lib/i18n/i18n-context';
-import { HoverTooltip } from '@/components/HoverTooltip';
 import { JUPITER_LOCK_UI } from '@/lib/jupiter-lock/constants';
 import { X_SYMBOL } from '@/config/constants';
 import { cn } from '@/lib/cn';
@@ -21,7 +20,6 @@ type PartnerBadgeProps = {
   logoClassName?: string;
   large?: boolean;
   ariaLabel: string;
-  tooltipSide?: 'bottom' | 'top';
 };
 
 function PartnerBadge({
@@ -31,17 +29,15 @@ function PartnerBadge({
   logoClassName,
   large,
   ariaLabel,
-  tooltipSide = 'bottom',
 }: PartnerBadgeProps) {
   return (
-    <HoverTooltip label={ariaLabel} side={tooltipSide}>
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={ariaLabel}
-        className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-90"
-      >
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={ariaLabel}
+      className="inline-flex items-center gap-1.5 transition-opacity hover:opacity-90"
+    >
       <img
         src={logoSrc}
         alt=""
@@ -61,8 +57,7 @@ function PartnerBadge({
       >
         {label}
       </span>
-      </a>
-    </HoverTooltip>
+    </a>
   );
 }
 
@@ -101,7 +96,6 @@ export function PoweredByJupiter({
           label={t('common.jupiter')}
           large={large}
           ariaLabel={t('powered.jupiterAria')}
-          tooltipSide={large ? 'bottom' : 'top'}
         />
         <PartnerBadge
           href="https://solana.com"
@@ -109,7 +103,6 @@ export function PoweredByJupiter({
           label={t('common.solana')}
           large={large}
           ariaLabel={t('powered.solanaAria')}
-          tooltipSide={large ? 'bottom' : 'top'}
         />
         <PartnerBadge
           href="https://x.com"
@@ -118,7 +111,6 @@ export function PoweredByJupiter({
           label={X_SYMBOL}
           large={large}
           ariaLabel={t('powered.xAria')}
-          tooltipSide={large ? 'bottom' : 'top'}
         />
       </span>
     </span>

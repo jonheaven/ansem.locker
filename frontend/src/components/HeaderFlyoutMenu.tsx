@@ -1,6 +1,5 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { HoverTooltip } from '@/components/HoverTooltip';
 import { cn } from '@/lib/cn';
 
 const TRIGGER_CLASS =
@@ -64,9 +63,8 @@ export function HeaderFlyoutMenu({
   const close = () => setOpen(false);
 
   return (
-    <HoverTooltip label={label} hidden={open}>
-      <div ref={rootRef} className="relative inline-flex">
-        <button
+    <div ref={rootRef} className="relative inline-flex">
+      <button
           type="button"
           aria-label={label}
           aria-expanded={open}
@@ -97,7 +95,6 @@ export function HeaderFlyoutMenu({
           </div>
         ) : null}
       </div>
-    </HoverTooltip>
   );
 }
 
