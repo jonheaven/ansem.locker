@@ -1,5 +1,5 @@
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { PoweredByJupiter } from '@/components/PoweredByJupiter';
+import { AppWalletButton } from '@/components/AppWalletButton';
 import { CopyWalletButton } from '@/components/CopyWalletButton';
 import { LocaleCurrencySelector } from '@/components/LocaleCurrencySelector';
 import { XMenuButton } from '@/components/XMenuButton';
@@ -8,9 +8,12 @@ import { useI18n } from '@/lib/i18n/i18n-context';
 
 function HeaderActions() {
   return (
-    <div className="flex items-center gap-2">
-      <XMenuButton />
-      <WalletMultiButton />
+    <div className="flex flex-col items-end gap-1.5">
+      <LocaleCurrencySelector layout="stacked" />
+      <div className="flex items-center gap-2">
+        <XMenuButton />
+        <AppWalletButton />
+      </div>
     </div>
   );
 }
@@ -79,8 +82,6 @@ export function AppHeader() {
           <span>· {t('common.openSource')}</span>
           <span aria-hidden>·</span>
           <span>{t('common.nonCustodial')}</span>
-          <span aria-hidden>·</span>
-          <LocaleCurrencySelector />
           <span aria-hidden>·</span>
           <PoweredByJupiter />
         </span>

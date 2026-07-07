@@ -11,9 +11,13 @@ const CURRENCIES: FiatCurrency[] = ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD'];
 
 type LocaleCurrencySelectorProps = {
   className?: string;
+  layout?: 'inline' | 'stacked';
 };
 
-export function LocaleCurrencySelector({ className }: LocaleCurrencySelectorProps) {
+export function LocaleCurrencySelector({
+  className,
+  layout = 'inline',
+}: LocaleCurrencySelectorProps) {
   const { locale, setLocale, t } = useI18n();
   const { currency, setCurrency } = useCurrency();
 
@@ -22,7 +26,14 @@ export function LocaleCurrencySelector({ className }: LocaleCurrencySelectorProp
   );
 
   return (
-    <span className={cn('inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1', className)}>
+    <span
+      className={cn(
+        layout === 'stacked'
+          ? 'flex flex-col items-end gap-1'
+          : 'inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1',
+        className,
+      )}
+    >
       <label className="inline-flex items-center gap-1">
         <span className="sr-only">{t('common.language')}</span>
         <select
