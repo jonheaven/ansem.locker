@@ -134,7 +134,7 @@ export function AnsemChartPanel() {
               aria-selected={interval === item}
               onClick={() => setInterval(item)}
               className={cn(
-                'rounded-full px-3 py-1.5 font-mono text-xs font-semibold transition-colors',
+                'min-h-11 rounded-full px-3 py-2.5 font-mono text-xs font-semibold transition-colors sm:py-1.5',
                 interval === item
                   ? 'bg-foreground text-background'
                   : 'text-muted-foreground hover:text-foreground',

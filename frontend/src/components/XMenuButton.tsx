@@ -34,6 +34,7 @@ import {
   X_PROFILES,
 } from '@/lib/share-x';
 import { buildVerificationCode } from '@/lib/x-link-store';
+import { resolveLockTxSig } from '@/lib/lock-tx-store';
 
 type Panel = 'menu' | 'link' | 'flex';
 
@@ -185,7 +186,7 @@ export function XMenuButton() {
           aria-label={t('xMenu.tooltip')}
           onClick={() => setOpen((value) => !value)}
           className={cn(
-            'inline-flex h-9 items-center gap-2 rounded-full border border-border bg-surface px-3 text-sm font-medium text-foreground transition-colors hover:bg-surface-hover',
+            'inline-flex h-11 min-w-11 items-center justify-center gap-2 rounded-full border border-border bg-surface px-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface-hover sm:h-9 sm:min-w-0 sm:px-3',
             open && 'bg-surface-hover',
           )}
         >
@@ -299,12 +300,13 @@ export function XMenuButton() {
                 <MenuRow
                   icon={Share2}
                   label={t('xMenu.shareMyLock')}
-                  description={`${formatAnsemAmount(topLock.remainingInVault)} $ANSEM · ${formatTimeRemaining(topLock.unlockTs)}`}
+                  description={`${formatAnsemAmount(topLock.remainingInVault)} ${t('common.ansem')} · ${formatTimeRemaining(topLock.unlockTs)}`}
                   onClick={() => {
                     openConvictionShare(
                       topLock.remainingInVault,
                       formatTimeRemaining(topLock.unlockTs),
                       xHandle,
+                      resolveLockTxSig(topLock),
                     );
                     setPanel('flex');
                   }}
@@ -400,7 +402,7 @@ export function XMenuButton() {
                       placeholder={t('flex.verifyPlaceholder')}
                       value={tweetUrl}
                       onChange={(e) => setTweetUrl(e.target.value)}
-                      className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-2.5 text-sm outline-none ring-accent/40 focus:ring-2"
+                      className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-2.5 text-base outline-none ring-accent/40 focus:ring-2"
                     />
                   </div>
 

@@ -147,7 +147,7 @@ export function AnsemCalculator() {
             <button
               type="button"
               onClick={swapFields}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface-elevated text-muted-foreground transition-colors hover:border-accent/40 hover:text-accent"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface-elevated text-muted-foreground transition-colors hover:border-accent/40 hover:text-accent"
               aria-label={t('tools.swapAmounts')}
             >
               <ArrowDownUp className="h-4 w-4" aria-hidden />
@@ -202,7 +202,7 @@ export function AnsemCalculator() {
                   setLastEdited('ansem');
                   setAnsemInput(formatAnsemAmount(BigInt(preset) * BigInt(10 ** ANSEM_DECIMALS)));
                 }}
-                className="rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-accent/40 hover:text-accent"
+                className="min-h-11 rounded-full border border-border px-3 py-2.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-accent/40 hover:text-accent"
               >
                 {formatAnsemAmount(BigInt(preset) * BigInt(10 ** ANSEM_DECIMALS))}
               </button>

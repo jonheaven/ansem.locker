@@ -42,56 +42,82 @@ export function AppCarousel() {
   ).length;
 
   const scrollPanelClass = cn(
-    !committed && 'app-scroll max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain',
+    committed && 'app-scroll max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain',
   );
 
-  return (
-    <div className="flex w-full max-w-5xl flex-col items-stretch gap-4 sm:flex-row sm:items-start sm:gap-6 lg:gap-8">
-      <BullAside className="sm:sticky sm:top-24" />
+  const bullCompact = view === 'lock' && !committed;
 
-      <div className="flex min-w-0 flex-1 flex-col">
+  return (
+    <div className="grid w-full max-w-5xl grid-cols-1 items-start gap-3 sm:grid-cols-[minmax(0,34%)_minmax(0,1fr)] sm:gap-4 lg:grid-cols-[minmax(0,38%)_minmax(0,1fr)] lg:gap-6">
+      {/* Left column — hero + bull (persistent across tabs) */}
+      <aside
+        className={cn(
+          'flex flex-col gap-3 sm:sticky sm:top-[calc(4.5rem+env(safe-area-inset-top))]',
+          'max-sm:grid max-sm:grid-cols-[1fr_auto] max-sm:items-end max-sm:gap-3',
+        )}
+      >
+        <div className="min-w-0 text-left max-sm:col-start-1 max-sm:row-start-1">
+          <h1 className="text-lg font-bold tracking-tight sm:text-xl lg:text-2xl">
+            {t('home.headline')}
+          </h1>
+          <p className="mt-1 line-clamp-3 text-xs leading-snug text-muted-foreground sm:line-clamp-none sm:text-sm sm:leading-relaxed">
+            {t('home.tagline')}
+          </p>
+        </div>
+
+        <BullAside
+          compact={bullCompact}
+          className="max-sm:col-start-2 max-sm:row-start-1 max-sm:w-[88px] sm:w-full"
+        />
+      </aside>
+
+      {/* Right column — tab nav + panel content */}
+      <div className="flex min-w-0 flex-col">
         <div
           role="tablist"
           aria-label="ansem.locker views"
-          className="mb-4 flex rounded-full border border-border/80 bg-surface/80 p-1 shadow-sm backdrop-blur-md"
+          className="mb-2 grid grid-cols-2 gap-1 rounded-2xl border border-border/80 bg-surface/80 p-1 shadow-sm backdrop-blur-md sm:flex sm:rounded-full"
         >
           {TAB_IDS.map((tab) => {
             const { id, labelKey } = tab;
             const Icon = 'icon' in tab ? tab.icon : undefined;
+            const label = t(labelKey);
             return (
-            <button
-              key={id}
-              type="button"
-              role="tab"
-              aria-selected={view === id}
-              onClick={() => setView(id)}
-              className={cn(
-                'flex flex-1 items-center justify-center gap-1 rounded-full px-1 py-2 text-xs font-semibold transition-all sm:gap-1.5 sm:px-2 sm:py-2.5 sm:text-sm',
-                view === id
-                  ? 'bg-foreground text-background shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground',
-              )}
-            >
-              {id === 'leaderboard' ? (
-                <DiamondHoovesIcon
-                  size="sm"
-                  className={view === id ? 'text-background' : undefined}
-                />
-              ) : Icon ? (
-                <Icon className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" aria-hidden />
-              ) : null}
-              <span className="truncate">{t(labelKey)}</span>
-              {id === 'locks' && claimableCount > 0 ? (
-                <span className="ml-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[9px] font-bold text-white">
-                  {claimableCount}
-                </span>
-              ) : null}
-            </button>
+              <button
+                key={id}
+                type="button"
+                role="tab"
+                aria-selected={view === id}
+                aria-label={label}
+                onClick={() => setView(id)}
+                className={cn(
+                  'flex min-h-11 items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-xs font-semibold transition-all sm:min-h-10 sm:flex-1 sm:rounded-full sm:py-2 sm:text-sm',
+                  view === id
+                    ? 'bg-foreground text-background shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground',
+                  id === 'locks' && 'col-span-2 sm:col-span-1',
+                )}
+              >
+                {id === 'leaderboard' ? (
+                  <DiamondHoovesIcon
+                    size="sm"
+                    className={view === id ? 'text-background' : undefined}
+                  />
+                ) : Icon ? (
+                  <Icon className="h-4 w-4 shrink-0" aria-hidden />
+                ) : null}
+                <span className="truncate">{label}</span>
+                {id === 'locks' && claimableCount > 0 ? (
+                  <span className="ml-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-white">
+                    {claimableCount}
+                  </span>
+                ) : null}
+              </button>
             );
           })}
         </div>
 
-        <div className="overflow-x-hidden">
+        <div className="overflow-x-clip">
           <div
             className="flex transition-transform duration-300 ease-out motion-reduce:transition-none"
             style={{ transform: `translateX(-${index * 100}%)` }}
@@ -103,19 +129,7 @@ export function AppCarousel() {
                 role="tabpanel"
                 aria-hidden={view !== id}
               >
-                {id === 'lock' && (
-                  <div className="space-y-4">
-                    <div className="text-left">
-                      <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                        {t('home.headline')}
-                      </h1>
-                      <p className="mt-2 text-base leading-relaxed text-muted-foreground sm:text-lg">
-                        {t('home.tagline')}
-                      </p>
-                    </div>
-                    <LockPanel />
-                  </div>
-                )}
+                {id === 'lock' && <LockPanel />}
                 {id === 'leaderboard' && (
                   <LeaderboardTable showSortTabs limit={25} />
                 )}

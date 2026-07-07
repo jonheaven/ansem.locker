@@ -12,6 +12,8 @@ type BullSliderProps = {
   disabled?: boolean;
   ariaLabel: string;
   className?: string;
+  /** Shorter track on mobile to save vertical space. */
+  compact?: boolean;
   /** 0–1 — longer lock = more shake, scale, and speed. */
   bullishness?: number;
 };
@@ -25,6 +27,7 @@ export function BullSlider({
   disabled,
   ariaLabel,
   className,
+  compact = false,
   bullishness = 0,
 }: BullSliderProps) {
   const span = max - min;
@@ -35,7 +38,12 @@ export function BullSlider({
 
   return (
     <div className={cn('bull-slider', disabled && 'pointer-events-none opacity-50', className)}>
-      <div className="relative mx-7 h-14 sm:mx-8 sm:h-16">
+      <div
+        className={cn(
+          'relative mx-7 sm:mx-8',
+          compact ? 'h-10 sm:h-16' : 'h-14 sm:h-16',
+        )}
+      >
         <div
           className="absolute top-1/2 right-0 left-0 h-1 -translate-y-1/2 rounded-full bg-border"
           aria-hidden
@@ -55,7 +63,7 @@ export function BullSlider({
             alt=""
             draggable={false}
             className={cn(
-              'h-10 w-auto max-w-none select-none sm:h-12',
+              compact ? 'h-8 w-auto sm:h-12' : 'h-10 w-auto sm:h-12',
               intensity > 0.03 && 'bull-thumb-charge',
               intensity > 0.72 && 'bull-thumb-rage',
             )}

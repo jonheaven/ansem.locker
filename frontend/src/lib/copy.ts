@@ -1,17 +1,16 @@
 import { JUPITER_LOCK_UI } from '@/lib/jupiter-lock/constants';
-
-import { X_SYMBOL } from '@/config/constants';
+import { ANSEM_TICKER, X_SYMBOL } from '@/config/constants';
 
 /** Plain-language copy — lead with outcomes; on-chain program is supporting detail. */
 export const COPY = {
-  headline: `Fle${X_SYMBOL} your commitment to $ANSEM`,
+  headline: `Fle${X_SYMBOL} your commitment to ${ANSEM_TICKER}`,
   tagline:
-    'Prove your bullishness on-chain. Lock $ANSEM in a trustless vault until your date — public, verifiable, and yours to flex.',
+    `Prove your bullishness on-chain. Lock ${ANSEM_TICKER} in a trustless vault until your date — public, verifiable, and yours to flex.`,
   lockPanel:
     'Choose how much to lock and for how long. Your wallet signs one transaction. Until the unlock date, nobody (including us) can move those tokens.',
   lockPanelBalanceHint: 'Lock a portion of your wallet balance.',
   lockPanelDisconnected:
-    'Connect a wallet to prove your bullishness. Lock $ANSEM on-chain — you sign everything; we never see or touch your private keys.',
+    `Connect a wallet to prove your bullishness. Lock ${ANSEM_TICKER} on-chain — you sign everything; we never see or touch your private keys.`,
   lockFooter:
     'Mainnet · you sign every transaction · verifiable on Solscan · unlock works without this site',
   bonfidaShort:
@@ -20,7 +19,7 @@ export const COPY = {
   bonfidaLinkLabel: 'About Jupiter Lock',
   bonfidaLinkUrl: JUPITER_LOCK_UI,
   siteIndependenceTitle: 'If this site goes offline',
-  siteIndependenceBody: `Your $ANSEM is not stored on ansem.locker. It sits in a Jupiter Lock escrow on Solana mainnet, tied to your wallet. After your unlock date, you can claim from lock.jup.ag, this open-source repo, or any tool that talks to the same program — even if our website is gone.`,
+  siteIndependenceBody: `Your ${ANSEM_TICKER} is not stored on ansem.locker. It sits in a Jupiter Lock escrow on Solana mainnet, tied to your wallet. After your unlock date, you can claim from lock.jup.ag, this open-source repo, or any tool that talks to the same program — even if our website is gone.`,
   siteIndependenceUnlockLabel: 'Claim on lock.jup.ag',
 } as const;
 
@@ -33,7 +32,7 @@ export const HOW_IT_WORKS = [
   {
     step: '2',
     title: 'Set amount & date',
-    body: 'Pick how much $ANSEM to lock and when it should unlock.',
+    body: `Pick how much ${ANSEM_TICKER} to lock and when it should unlock.`,
   },
   {
     step: '3',

@@ -53,13 +53,13 @@ export function FlexVerifyForm({ wallet, onSuccess, className, compact }: FlexVe
         placeholder={t('flex.verifyPlaceholder')}
         value={flexTweetUrl}
         onChange={(e) => setFlexTweetUrl(e.target.value)}
-        className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-2.5 text-sm outline-none ring-accent/40 focus:ring-2"
+        className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-2.5 text-base outline-none ring-accent/40 focus:ring-2"
       />
       <button
         type="button"
         disabled={!flexTweetUrl || !wallet || verifyMutation.isPending}
         onClick={submit}
-        className="flex w-full items-center justify-center gap-2 rounded-full bg-accent px-4 py-2.5 text-sm font-medium text-white transition-colors hover:brightness-95 disabled:opacity-50"
+        className="flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-accent px-4 py-2.5 text-sm font-medium text-white transition-colors hover:brightness-95 disabled:opacity-50"
       >
         {verifyMutation.isPending ? (
           <Loader2 className="h-4 w-4 animate-spin" />

@@ -36,6 +36,11 @@ export const BUILDER_X_URL = 'https://x.com/jontype';
 export const BUILDER_WALLET = 'FUcz2E5vecFVDKXV6XirhfuDXGeq8EcuetLpMjhJWUFo';
 export const ANSEM_X = '@blknoiz06';
 
+/** Ticker symbol in UI (no $ — that's a cashtag on 𝕏 only). */
+export const ANSEM_TICKER = 'ANSEM';
+/** 𝕏 cashtag for share posts and flex verification. */
+export const ANSEM_CASHTAG = '$ANSEM';
+
 /** Display name for the X platform in UI copy */
 export const X_SYMBOL = '𝕏';
 

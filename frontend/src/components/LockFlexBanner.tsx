@@ -7,6 +7,7 @@ import { SolscanLink } from '@/components/SolscanLink';
 import { useI18n } from '@/lib/i18n/i18n-context';
 import { solscanTx } from '@/lib/solscan';
 import { openLockShare } from '@/lib/share-x';
+import { resolveLockTxSig } from '@/lib/lock-tx-store';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 
@@ -24,11 +25,12 @@ export function LockFlexBanner({ payload, onDismiss, className }: LockFlexBanner
   const [showVerify, setShowVerify] = useState(false);
 
   const handleFlex = () => {
-    openLockShare(
-      BigInt(payload.amountRaw),
-      payload.durationLabel,
-      payload.txSig,
-    );
+    const txSig =
+      payload.txSig ||
+      (payload.vestingAccount
+        ? resolveLockTxSig({ vestingAccount: payload.vestingAccount })
+        : undefined);
+    openLockShare(BigInt(payload.amountRaw), payload.durationLabel, txSig);
     setShowVerify(true);
   };
 

@@ -76,7 +76,7 @@ function CollapsibleSection({
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-surface-elevated/50"
+        className="flex w-full min-h-11 items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-surface-elevated/50"
         aria-expanded={open}
       >
         <span className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
@@ -158,7 +158,7 @@ export function LeaderboardTable({
                   type="button"
                   onClick={() => setSort(key)}
                   className={cn(
-                    'rounded-lg px-3 py-1.5 text-xs font-medium transition-colors',
+                    'min-h-11 rounded-lg px-3 py-2.5 text-xs font-medium transition-colors sm:py-1.5',
                     sort === key
                       ? 'bg-accent/15 text-accent'
                       : 'text-muted-foreground hover:text-foreground',
@@ -172,7 +172,7 @@ export function LeaderboardTable({
                 type="button"
                 onClick={() => setVerifiedOnly((v) => !v)}
                 className={cn(
-                  'rounded-lg px-3 py-1.5 text-xs font-medium transition-colors',
+                  'min-h-11 rounded-lg px-3 py-2.5 text-xs font-medium transition-colors sm:py-1.5',
                   verifiedOnly
                     ? 'bg-accent/15 text-accent'
                     : 'text-muted-foreground hover:text-foreground',
@@ -229,7 +229,7 @@ export function LeaderboardTable({
                 return (
                   <div
                     key={entry.vestingAccount}
-                    className="relative flex items-center justify-between gap-3 overflow-hidden rounded-xl border border-border/80 bg-surface-elevated px-4 py-3 app-row-glass"
+                    className="relative flex flex-col gap-2 overflow-hidden rounded-xl border border-border/80 bg-surface-elevated px-4 py-3 app-row-glass sm:flex-row sm:items-center sm:justify-between sm:gap-3"
                   >
                     {rank <= 3 ? (
                       <span
@@ -240,7 +240,7 @@ export function LeaderboardTable({
                         aria-hidden
                       />
                     ) : null}
-                    <div className="flex min-w-0 flex-1 items-center gap-3">
+                    <div className="flex min-w-0 flex-1 items-center gap-3 pl-1 sm:pl-0">
                       <RankBadge rank={rank} />
                       <div className="min-w-0">
                         {displayHandle ? (
@@ -284,18 +284,19 @@ export function LeaderboardTable({
                         </p>
                       </div>
                     </div>
-                    <div className="flex shrink-0 items-center gap-2">
+                    <div className="flex shrink-0 items-center justify-between gap-2 pl-11 sm:justify-end sm:pl-0">
                       <AnsemAmountDisplay
                         raw={entry.remainingInVault}
                         size="sm"
                         align="right"
                       />
-                      <CopyWalletButton address={entry.owner} />
+                      <div className="flex items-center gap-1">
+                      <CopyWalletButton address={entry.owner} className="h-11 w-11" />
                       <HoverTooltip label={t('leaderboard.shareRank', { rank })}>
                         <Button
                           size="sm"
                           variant="ghost"
-                          className="h-8 w-8 shrink-0 p-0"
+                          className="h-11 w-11 shrink-0 p-0"
                           aria-label={t('leaderboard.shareRank', { rank })}
                           onClick={() =>
                             openLeaderboardEntryShare({
@@ -310,13 +311,14 @@ export function LeaderboardTable({
                           <Share2 className="h-4 w-4" />
                         </Button>
                       </HoverTooltip>
+                      </div>
                     </div>
                   </div>
                 );
               })}
             </div>
           )}
-          <p className="mt-3 text-[10px] leading-relaxed text-muted-foreground">
+          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
             {t('leaderboard.tipHint')}
           </p>
         </CardContent>

@@ -31,7 +31,7 @@ const ALIGN = {
   right: 'text-right',
 } as const;
 
-/** Fiat-first amount: local currency prominent, $ANSEM beneath. */
+/** Fiat-first amount: local currency prominent, ANSEM beneath. */
 export function AnsemAmountDisplay({
   raw,
   size = 'md',

@@ -16,7 +16,7 @@ export function useAnsemBalance() {
       );
 
       if (!result.ok || !result.data) {
-        throw new Error(apiErrorMessage(result, 'Could not load $ANSEM balance'));
+        throw new Error(apiErrorMessage(result, 'Could not load ANSEM balance'));
       }
 
       return {

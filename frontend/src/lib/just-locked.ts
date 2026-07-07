@@ -5,6 +5,7 @@ export type JustLockedPayload = {
   amountDisplay: string;
   durationLabel: string;
   txSig: string;
+  vestingAccount?: string;
   timestamp: number;
 };
 
@@ -13,6 +14,7 @@ export function saveJustLocked(payload: {
   amountDisplay: string;
   durationLabel: string;
   txSig: string;
+  vestingAccount?: string;
 }): void {
   try {
     sessionStorage.setItem(
@@ -22,6 +24,7 @@ export function saveJustLocked(payload: {
         amountDisplay: payload.amountDisplay,
         durationLabel: payload.durationLabel,
         txSig: payload.txSig,
+        vestingAccount: payload.vestingAccount,
         timestamp: Date.now(),
       }),
     );

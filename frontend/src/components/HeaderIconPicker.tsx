@@ -57,7 +57,7 @@ export function HeaderIconPicker<T extends string>({
           aria-controls={menuId}
           onClick={() => setOpen((v) => !v)}
           className={cn(
-            'inline-flex h-9 min-w-9 items-center justify-center rounded-full border border-border bg-surface px-2 text-foreground transition-colors hover:bg-surface-hover',
+            'inline-flex h-11 min-w-11 items-center justify-center rounded-full border border-border bg-surface px-2 text-foreground transition-colors hover:bg-surface-hover',
             open && 'border-accent/40 bg-surface-hover ring-2 ring-accent/20',
           )}
         >
@@ -84,7 +84,7 @@ export function HeaderIconPicker<T extends string>({
                     setOpen(false);
                   }}
                   className={cn(
-                    'flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors',
+                    'flex w-full min-h-11 items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors',
                     selected
                       ? 'bg-accent/12 font-medium text-foreground'
                       : 'text-muted-foreground hover:bg-surface-hover hover:text-foreground',
