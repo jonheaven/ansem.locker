@@ -20,50 +20,53 @@ const REASSURANCE = [
 
 type TrustSectionProps = {
   variant?: 'full' | 'stacked';
+  hideIntro?: boolean;
 };
 
-export function TrustSection({ variant = 'full' }: TrustSectionProps) {
+export function TrustSection({ variant = 'full', hideIntro = false }: TrustSectionProps) {
   const stacked = variant === 'stacked';
   const { t } = useI18n();
 
   return (
     <section className="space-y-6">
-      <div
-        className={cn(
-          'rounded-2xl border border-border/80 bg-surface/90 p-5 shadow-sm backdrop-blur-md',
-          !stacked && 'mx-auto max-w-2xl text-center',
-        )}
-      >
-        <div className={cn('mb-3 flex', stacked ? '' : 'justify-center')}>
-          <PoweredByJupiter variant="wordmark" />
-        </div>
-        <p className="text-sm font-medium text-foreground">{t('info.jupiterShort')}</p>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t('info.jupiterLong')}</p>
-        <p
+      {!hideIntro ? (
+        <div
           className={cn(
-            'mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground',
-            stacked ? 'items-start' : 'items-center justify-center',
+            'rounded-2xl border border-border/80 bg-surface/90 p-5 shadow-sm backdrop-blur-md',
+            !stacked && 'mx-auto max-w-2xl text-center',
           )}
         >
-          <a
-            href="https://lock.jup.ag"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 transition-colors hover:text-accent"
+          <div className={cn('mb-3 flex', stacked ? '' : 'justify-center')}>
+            <PoweredByJupiter variant="wordmark" />
+          </div>
+          <p className="text-sm font-medium text-foreground">{t('info.jupiterShort')}</p>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t('info.jupiterLong')}</p>
+          <p
+            className={cn(
+              'mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground',
+              stacked ? 'items-start' : 'items-center justify-center',
+            )}
           >
-            {t('info.aboutJupiter')}
-            <ExternalLink className="h-3 w-3" />
-          </a>
-          <span aria-hidden>·</span>
-          <SolscanLink href={solscanAccount(JUPITER_LOCK_PROGRAM_ID.toBase58())} className="font-mono">
-            {t('info.programOnSolscan')}
-          </SolscanLink>
-          <span aria-hidden>·</span>
-          <SolscanLink href={solscanToken(ANSEM_MINT.toBase58())} className="font-mono">
-            {t('info.tokenOnSolscan')}
-          </SolscanLink>
-        </p>
-      </div>
+            <a
+              href="https://lock.jup.ag"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 transition-colors hover:text-accent"
+            >
+              {t('info.aboutJupiter')}
+              <ExternalLink className="h-3 w-3" />
+            </a>
+            <span aria-hidden>·</span>
+            <SolscanLink href={solscanAccount(JUPITER_LOCK_PROGRAM_ID.toBase58())} className="font-mono">
+              {t('info.programOnSolscan')}
+            </SolscanLink>
+            <span aria-hidden>·</span>
+            <SolscanLink href={solscanToken(ANSEM_MINT.toBase58())} className="font-mono">
+              {t('info.tokenOnSolscan')}
+            </SolscanLink>
+          </p>
+        </div>
+      ) : null}
 
       <div className={cn('grid gap-4', stacked ? 'grid-cols-1' : 'sm:grid-cols-3')}>
         {REASSURANCE.map(({ titleKey, bodyKey }) => (

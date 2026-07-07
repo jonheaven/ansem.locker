@@ -63,6 +63,37 @@ export const ja = {
     headline: 'ダイヤモンドフーフを証明',
     tagline:
       'ANSEM をオンチェーンでロック、𝕏 で Flex、Locker List に参加。最大ロック × 最長期間 = Diamond Hooves Rank トップ。',
+    hero: {
+      lock: {
+        headline: 'ダイヤモンドフーフを証明',
+        tagline: '数量と解除日を設定 — ウォレットで署名。秘密鍵は触りません。',
+      },
+      lockCommitted: {
+        tagline: '今すぐ 𝕏 で Flex — ダイヤモンドフーフを見せつけよう。',
+      },
+      lockDisconnected: {
+        tagline: 'ウォレットを接続して ANSEM をオンチェーンでロック。すべてあなたが署名。',
+      },
+      leaderboard: {
+        headline: 'Diamond Hooves Rank',
+        tagline: 'Hoove Score = 数量 × ロック日数。最も強い確信をオンチェーンで。',
+      },
+      why: {
+        headline: 'なぜ ANSEM をロック？',
+        tagline: '供給ショック、公開証明、ツイートではなく金庫に入れる強気だけのランキング。',
+      },
+      how: {
+        headline: '仕組み',
+        tagline: '接続 → ロック設定 → 一度承認。Solana の Jupiter Lock — 監査済み・オープンソース。',
+      },
+      locks: {
+        headline: 'マイロック',
+        tagline: 'アクティブなエスクロー — 解除時刻になったらここで請求。',
+      },
+      locksClaim: {
+        tagline: '解除時刻を過ぎました — ウォレット署名一回で ANSEM を請求。',
+      },
+    },
   },
   trust: {
     badge: '信頼と安全',

@@ -25,6 +25,7 @@ type LeaderboardPreviewProps = {
   sort?: LeaderboardSort;
   limit?: number;
   showSortTabs?: boolean;
+  hideIntro?: boolean;
 };
 
 const RANK_STYLES: Record<
@@ -99,6 +100,7 @@ export function LeaderboardTable({
   sort: initialSort = 'score',
   limit = 10,
   showSortTabs = false,
+  hideIntro = false,
 }: LeaderboardPreviewProps) {
   const { publicKey } = useWallet();
   const wallet = publicKey?.toBase58();
@@ -121,17 +123,24 @@ export function LeaderboardTable({
   return (
     <div className="space-y-3">
       <Card className="border-accent/20 shadow-md">
-        <CardHeader className="space-y-3 pb-3">
+        <CardHeader className={cn('space-y-3', hideIntro ? 'pb-2' : 'pb-3')}>
           <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+            {!hideIntro ? (
+              <div>
+                <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+                  <DiamondHoovesIcon />
+                  {t('leaderboard.title')}
+                </CardTitle>
+                <CardDescription className="mt-1 max-w-xl text-sm">
+                  {t('leaderboard.description')}
+                </CardDescription>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
                 <DiamondHoovesIcon />
-                {t('leaderboard.title')}
-              </CardTitle>
-              <CardDescription className="mt-1 max-w-xl text-sm">
-                {t('leaderboard.description')}
-              </CardDescription>
-            </div>
+                <span className="sr-only">{t('leaderboard.title')}</span>
+              </div>
+            )}
             {sorted.length > 0 ? (
               <Button
                 size="sm"

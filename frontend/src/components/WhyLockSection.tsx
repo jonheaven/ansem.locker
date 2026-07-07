@@ -10,21 +10,24 @@ const POINTS = [
 
 type WhyLockSectionProps = {
   className?: string;
+  hideIntro?: boolean;
 };
 
-export function WhyLockSection({ className }: WhyLockSectionProps) {
+export function WhyLockSection({ className, hideIntro = false }: WhyLockSectionProps) {
   const { t } = useI18n();
 
   return (
     <section className={cn('space-y-4', className)}>
-      <div>
-        <h2 className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
-          {t('why.title')}
-        </h2>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-          {t('why.intro')}
-        </p>
-      </div>
+      {!hideIntro ? (
+        <div>
+          <h2 className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
+            {t('why.title')}
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
+            {t('why.intro')}
+          </p>
+        </div>
+      ) : null}
       <div className="grid gap-3 sm:grid-cols-2">
         {POINTS.map(({ titleKey, bodyKey }) => (
           <div

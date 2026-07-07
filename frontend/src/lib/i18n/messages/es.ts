@@ -63,6 +63,37 @@ export const es = {
     headline: 'Demuestra tus diamond hooves',
     tagline:
       'Bloquea ANSEM on-chain, presume en 𝕏 y únete al Locker List. Los mayores bloqueos + la convicción más larga = lo más alto del Diamond Hooves Rank.',
+    hero: {
+      lock: {
+        headline: 'Demuestra tus diamond hooves',
+        tagline: 'Elige cantidad y fecha — firmas en tu wallet; nunca tocamos tus claves.',
+      },
+      lockCommitted: {
+        tagline: 'Presume en 𝕏 ahora — muestra quién tiene diamond hooves.',
+      },
+      lockDisconnected: {
+        tagline: 'Conecta tu wallet para bloquear ANSEM on-chain. Tú firmas cada paso.',
+      },
+      leaderboard: {
+        headline: 'Diamond Hooves Rank',
+        tagline: 'Hoove Score = cantidad × días bloqueados. ¿Quién tiene más convicción on-chain?',
+      },
+      why: {
+        headline: '¿Por qué bloquear ANSEM?',
+        tagline: 'Menos float, prueba pública y un ranking para toros que guardan — no solo tuitean.',
+      },
+      how: {
+        headline: 'Cómo funciona',
+        tagline: 'Conectar → bloquear → aprobar una vez. Jupiter Lock en Solana — auditado y open source.',
+      },
+      locks: {
+        headline: 'Mis bloqueos',
+        tagline: 'Tus escrow activos — reclama aquí cuando llegue la fecha.',
+      },
+      locksClaim: {
+        tagline: 'Fecha pasada — reclama tu ANSEM con una firma de wallet.',
+      },
+    },
   },
   trust: {
     badge: 'Confianza y seguridad',

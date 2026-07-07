@@ -15,7 +15,7 @@ import {
   type JustUnlockedPayload,
 } from '@/lib/just-unlocked';
 
-export function MyLocksPanel() {
+export function MyLocksPanel({ hideIntro = false }: { hideIntro?: boolean }) {
   const { publicKey } = useWallet();
   const { locks, isLoading, refetch } = useMyLocks();
   const { claimLock, claimingId } = useClaimLock(() => {
@@ -49,10 +49,12 @@ export function MyLocksPanel() {
   if (!publicKey) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle>{t('locks.title')}</CardTitle>
-          <CardDescription>{t('locks.disconnected')}</CardDescription>
-        </CardHeader>
+        {!hideIntro ? (
+          <CardHeader>
+            <CardTitle>{t('locks.title')}</CardTitle>
+            <CardDescription>{t('locks.disconnected')}</CardDescription>
+          </CardHeader>
+        ) : null}
       </Card>
     );
   }
@@ -90,13 +92,15 @@ export function MyLocksPanel() {
       ) : null}
 
       <Card>
-        <CardHeader>
-          <CardTitle>{t('locks.title')}</CardTitle>
-          <CardDescription>
-            {claimable.length > 0 ? t('locks.descriptionClaim') : t('locks.description')}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+        {!hideIntro ? (
+          <CardHeader>
+            <CardTitle>{t('locks.title')}</CardTitle>
+            <CardDescription>
+              {claimable.length > 0 ? t('locks.descriptionClaim') : t('locks.description')}
+            </CardDescription>
+          </CardHeader>
+        ) : null}
+        <CardContent className={hideIntro ? 'pt-4' : undefined}>
           {isLoading ? (
             <p className="text-sm text-muted-foreground">{t('locks.loading')}</p>
           ) : locks.length === 0 ? (

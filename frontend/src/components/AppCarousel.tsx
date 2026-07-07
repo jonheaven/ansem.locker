@@ -1,6 +1,7 @@
 import { HelpCircle, Info, Lock, Wallet } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { BullAside } from '@/components/BullAside';
 import { DiamondHoovesIcon } from '@/components/DiamondHoovesIcon';
 import { LockPanel } from '@/components/LockPanel';
@@ -15,6 +16,7 @@ import { SolscanLink } from '@/components/SolscanLink';
 import { GITHUB_URL, JUPITER_LOCK_PROGRAM_ID } from '@/config/constants';
 import { solscanAccount } from '@/lib/solscan';
 import { useI18n } from '@/lib/i18n/i18n-context';
+import { resolveTabHeroCopy } from '@/lib/tab-hero';
 import { cn } from '@/lib/cn';
 
 const TAB_IDS = [
@@ -27,6 +29,7 @@ const TAB_IDS = [
 
 export function AppCarousel() {
   const { view, setView } = useAppView();
+  const { publicKey } = useWallet();
   const committed = useHasActiveLock();
   const { locks } = useMyLocks();
   const { t } = useI18n();
@@ -43,6 +46,17 @@ export function AppCarousel() {
 
   const bullCompact = view === 'lock' && !committed;
 
+  const hero = useMemo(
+    () =>
+      resolveTabHeroCopy({
+        view,
+        committed,
+        walletConnected: Boolean(publicKey),
+        claimableCount,
+      }),
+    [view, committed, publicKey, claimableCount],
+  );
+
   return (
     <div className="grid w-full max-w-5xl grid-cols-1 items-start gap-3 sm:grid-cols-[minmax(0,34%)_minmax(0,1fr)] sm:gap-4 lg:grid-cols-[minmax(0,38%)_minmax(0,1fr)] lg:gap-6">
       {/* Left column — hero + bull (persistent across tabs) */}
@@ -53,11 +67,17 @@ export function AppCarousel() {
         )}
       >
         <div className="min-w-0 text-left max-sm:col-start-1 max-sm:row-start-1">
-          <h1 className="text-lg font-bold tracking-tight sm:text-xl lg:text-2xl">
-            {t('home.headline')}
+          <h1
+            key={`${view}-headline`}
+            className="text-lg font-bold tracking-tight transition-opacity duration-200 sm:text-xl lg:text-2xl"
+          >
+            {t(hero.headlineKey)}
           </h1>
-          <p className="mt-1 line-clamp-3 text-xs leading-snug text-muted-foreground sm:line-clamp-none sm:text-sm sm:leading-relaxed">
-            {t('home.tagline')}
+          <p
+            key={`${view}-tagline`}
+            className="mt-1 text-xs leading-snug text-muted-foreground sm:text-sm sm:leading-relaxed"
+          >
+            {t(hero.taglineKey)}
           </p>
         </div>
 
@@ -121,14 +141,14 @@ export function AppCarousel() {
               role="tabpanel"
               hidden={view !== id}
             >
-              {id === 'lock' && <LockPanel />}
+              {id === 'lock' && <LockPanel hideIntro />}
               {id === 'leaderboard' && (
-                <LeaderboardTable showSortTabs limit={25} />
+                <LeaderboardTable showSortTabs limit={25} hideIntro />
               )}
-              {id === 'why' && <WhyLockSection />}
+              {id === 'why' && <WhyLockSection hideIntro />}
               {id === 'how' && (
                 <div className="space-y-4">
-                  <TrustSection variant="stacked" />
+                  <TrustSection variant="stacked" hideIntro />
                   <p className="text-center text-[11px] text-muted-foreground">
                     <SolscanLink
                       href={solscanAccount(JUPITER_LOCK_PROGRAM_ID.toBase58())}
@@ -156,7 +176,7 @@ export function AppCarousel() {
                   </p>
                 </div>
               )}
-              {id === 'locks' && <MyLocksPanel />}
+              {id === 'locks' && <MyLocksPanel hideIntro />}
             </div>
           ))}
         </div>

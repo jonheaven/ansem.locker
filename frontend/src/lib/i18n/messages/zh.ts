@@ -63,6 +63,37 @@ export const zh = {
     headline: '证明你的钻石蹄',
     tagline:
       '链上锁定 ANSEM，在 𝕏 上炫耀，加入 Locker List。锁定最多 + 坚持最久 = 钻石蹄排行榜榜首。',
+    hero: {
+      lock: {
+        headline: '证明你的钻石蹄',
+        tagline: '设置数量与解锁日期 — 在钱包中签名；我们不接触你的私钥。',
+      },
+      lockCommitted: {
+        tagline: '立即在 𝕏 炫耀 — 让所有人看到你的钻石蹄。',
+      },
+      lockDisconnected: {
+        tagline: '连接钱包以链上锁定 ANSEM。每一步都由你签名。',
+      },
+      leaderboard: {
+        headline: 'Diamond Hooves Rank',
+        tagline: 'Hoove Score = 数量 × 锁定天数。谁有最强的链上信念？',
+      },
+      why: {
+        headline: '为什么要锁定 ANSEM？',
+        tagline: '真实供应冲击、公开证明，以及为真正锁仓的牛市准备的排行榜。',
+      },
+      how: {
+        headline: '如何运作',
+        tagline: '连接 → 设置锁定 → 一次批准。Solana 上的 Jupiter Lock — 已审计、开源。',
+      },
+      locks: {
+        headline: '我的锁定',
+        tagline: '你的活跃托管 — 解锁时间到了在此领取。',
+      },
+      locksClaim: {
+        tagline: '解锁时间已过 — 一次钱包签名即可领回 ANSEM。',
+      },
+    },
   },
   trust: {
     badge: '信任与安全',

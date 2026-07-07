@@ -59,7 +59,7 @@ function amountRawToSlider(raw: bigint, maxRaw: bigint): number {
   );
 }
 
-export function LockPanel() {
+export function LockPanel({ hideIntro = false }: { hideIntro?: boolean }) {
   const { publicKey, signTransaction } = useWallet();
   const { connection } = useConnection();
   const balance = useAnsemBalance();
@@ -291,10 +291,12 @@ export function LockPanel() {
   if (!publicKey) {
     return (
       <Card>
-        <CardHeader>
-          <CardTitle>{t('lock.title')}</CardTitle>
-          <CardDescription>{t('lock.disconnected')}</CardDescription>
-        </CardHeader>
+        {!hideIntro ? (
+          <CardHeader>
+            <CardTitle>{t('lock.title')}</CardTitle>
+            <CardDescription>{t('lock.disconnected')}</CardDescription>
+          </CardHeader>
+        ) : null}
         <CardContent className="flex flex-col items-start pt-4">
           <PoweredByJupiter />
         </CardContent>
