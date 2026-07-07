@@ -1,3 +1,4 @@
+import { useI18n } from '@/lib/i18n/i18n-context';
 import { JUPITER_LOCK_UI } from '@/lib/jupiter-lock/constants';
 import { X_SYMBOL } from '@/config/constants';
 import { cn } from '@/lib/cn';
@@ -64,6 +65,7 @@ export function PoweredByJupiter({
   variant = 'compact',
   className,
 }: PoweredByJupiterProps) {
+  const { t } = useI18n();
   const large = variant === 'wordmark';
 
   return (
@@ -80,7 +82,7 @@ export function PoweredByJupiter({
           large ? 'text-[10px] font-semibold uppercase tracking-[0.18em]' : 'text-[11px]',
         )}
       >
-        Powered by
+        {t('common.poweredByJupiter')}
       </span>
       <span
         className={cn(
@@ -91,16 +93,16 @@ export function PoweredByJupiter({
         <PartnerBadge
           href={JUPITER_LOCK_UI}
           logoSrc={JUPITER_LOGO_SRC}
-          label="Jupiter"
+          label={t('common.jupiter')}
           large={large}
-          ariaLabel="Powered by Jupiter Lock — open lock.jup.ag"
+          ariaLabel={t('powered.jupiterAria')}
         />
         <PartnerBadge
           href="https://solana.com"
           logoSrc={SOLANA_LOGO_SRC}
-          label="Solana"
+          label={t('common.solana')}
           large={large}
-          ariaLabel="Built on Solana — open solana.com"
+          ariaLabel={t('powered.solanaAria')}
         />
         <PartnerBadge
           href="https://x.com"
@@ -108,7 +110,7 @@ export function PoweredByJupiter({
           logoClassName="invert"
           label={X_SYMBOL}
           large={large}
-          ariaLabel="Share and verify on X"
+          ariaLabel={t('powered.xAria')}
         />
       </span>
     </span>

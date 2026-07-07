@@ -238,7 +238,7 @@ export function LockPanel() {
       void queryClient.invalidateQueries({ queryKey: ['leaderboard'] });
       window.location.hash = 'locks';
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Transaction failed';
+      const message = err instanceof Error ? err.message : t('lock.txFailed');
       toast.error(message);
     } finally {
       setPending(false);

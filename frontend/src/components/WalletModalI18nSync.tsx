@@ -14,7 +14,7 @@ export function WalletModalI18nSync() {
       const title = document.querySelector('.wallet-adapter-modal-title');
       if (title) {
         const raw = title.textContent ?? '';
-        if (raw.includes('need a wallet') || raw.includes('ウォレットが必要')) {
+        if (raw.includes('need a wallet') || raw.includes('ウォレットが必要') || raw.includes('нужен кошелёк') || raw.includes('需要钱包') || raw.includes('necesitas una cartera')) {
           title.textContent = t('wallet.modalTitleNoWallet');
         } else {
           title.textContent = t('wallet.modalTitle');
@@ -27,9 +27,19 @@ export function WalletModalI18nSync() {
           span.parentElement?.querySelector('.wallet-adapter-modal-list-more-icon-rotate'),
         );
 
-        if (raw.includes('Already') || raw.includes('すでに')) {
+        if (raw.includes('Already') || raw.includes('すでに') || raw.includes('お持ち')) {
           span.textContent = expanded ? t('wallet.hideOptions') : t('wallet.alreadyHaveWallet');
-        } else if (raw.includes('More') || raw.includes('Less') || raw.includes('オプション')) {
+        } else if (
+          raw.includes('More') ||
+          raw.includes('Less') ||
+          raw.includes('オプション') ||
+          raw.includes('Más') ||
+          raw.includes('Menos') ||
+          raw.includes('Ещё') ||
+          raw.includes('Скрыть') ||
+          raw.includes('更多') ||
+          raw.includes('收起')
+        ) {
           span.textContent = expanded ? t('wallet.lessOptions') : t('wallet.moreOptions');
         }
       });

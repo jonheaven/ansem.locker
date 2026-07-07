@@ -7,6 +7,9 @@ import { cn } from '@/lib/cn';
 const LOCALES: { code: SupportedLocale; labelKey: string }[] = [
   { code: 'en', labelKey: 'locale.en' },
   { code: 'ja', labelKey: 'locale.ja' },
+  { code: 'es', labelKey: 'locale.es' },
+  { code: 'ru', labelKey: 'locale.ru' },
+  { code: 'zh', labelKey: 'locale.zh' },
 ];
 
 const CURRENCIES: FiatCurrency[] = ['USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD'];

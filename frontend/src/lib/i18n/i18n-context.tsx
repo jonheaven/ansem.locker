@@ -3,10 +3,9 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { messagesByLocale, SUPPORTED_LOCALES, type SupportedLocale } from './messages';
 import type { MessageTree } from './messages/types';
 import { intlLocaleForSupported } from './intl-locale';
+import { LOCALE_KEY, readStoredLocale } from '@/lib/locale/prefs';
 
 export type { SupportedLocale } from './messages';
-
-const LOCALE_KEY = 'ansem-locker-preferred-locale';
 
 type I18nContextValue = {
   locale: SupportedLocale;
@@ -41,6 +40,9 @@ function normalizeLocale(raw: string | null | undefined): SupportedLocale | null
   if (!raw) return null;
   const normalized = raw.trim().toLowerCase();
   if (normalized === 'ja' || normalized.startsWith('ja-')) return 'ja';
+  if (normalized === 'es' || normalized.startsWith('es-')) return 'es';
+  if (normalized === 'ru' || normalized.startsWith('ru-')) return 'ru';
+  if (normalized === 'zh' || normalized.startsWith('zh-')) return 'zh';
   if (normalized === 'en' || normalized.startsWith('en')) return 'en';
   return null;
 }
@@ -59,7 +61,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     try {
-      const stored = normalizeLocale(window.localStorage.getItem(LOCALE_KEY));
+      const stored = normalizeLocale(readStoredLocale());
       setLocaleState(stored ?? detectBrowserLocale());
     } catch {
       setLocaleState(detectBrowserLocale());

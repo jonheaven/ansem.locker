@@ -2,10 +2,9 @@ import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { ANSEM_DECIMALS } from '@/config/constants';
 import { fetchAnsemQuoteClient } from '@/lib/ansem-price/ansem-market-client';
+import { FIAT_KEY, readStoredCurrency } from '@/lib/locale/prefs';
 
 export type FiatCurrency = 'USD' | 'EUR' | 'GBP' | 'JPY' | 'AUD' | 'CAD';
-
-const FIAT_KEY = 'ansem-locker-preferred-fiat';
 
 type CurrencyContextValue = {
   currency: FiatCurrency;
@@ -34,10 +33,12 @@ function detectDefaultCurrency(): FiatCurrency {
   if (lang.startsWith('en-AU')) return 'AUD';
   if (lang.startsWith('en-CA') || lang.startsWith('fr-CA')) return 'CAD';
   if (lang.startsWith('ja')) return 'JPY';
+  if (lang.startsWith('ru')) return 'USD';
+  if (lang.startsWith('zh')) return 'USD';
+  if (lang.startsWith('es')) return lang.includes('-ES') || lang === 'es' ? 'EUR' : 'USD';
   if (
     lang.startsWith('de') ||
     lang.startsWith('fr') ||
-    lang.startsWith('es') ||
     lang.startsWith('it')
   ) {
     return 'EUR';
@@ -61,14 +62,10 @@ export function CurrencyProvider({
   const [fxFromUsd, setFxFromUsd] = useState<Record<FiatCurrency, number>>(FALLBACK_FX_FROM_USD);
 
   useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem(FIAT_KEY);
-      if (stored && stored in FALLBACK_FX_FROM_USD) {
-        setCurrencyState(stored as FiatCurrency);
-        return;
-      }
-    } catch {
-      // ignore
+    const stored = readStoredCurrency();
+    if (stored) {
+      setCurrencyState(stored);
+      return;
     }
     setCurrencyState(detectDefaultCurrency());
   }, []);

@@ -21,6 +21,7 @@ import {
 } from '@/hooks/useXLinks';
 import { X_SYMBOL } from '@/config/constants';
 import { cn } from '@/lib/cn';
+import { useI18n } from '@/lib/i18n/i18n-context';
 import { formatAnsemAmount, formatTimeRemaining } from '@/lib/format';
 import {
   buildVerificationTweet,
@@ -83,6 +84,7 @@ function Divider() {
 }
 
 export function XMenuButton() {
+  const { t } = useI18n();
   const menuId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
@@ -136,7 +138,7 @@ export function XMenuButton() {
 
   const startLink = () => {
     if (!wallet) {
-      toast.error('Connect your wallet first');
+      toast.error(t('lock.connectFirst'));
       return;
     }
     setVerificationCode(buildVerificationCode(wallet));
@@ -151,10 +153,10 @@ export function XMenuButton() {
         code: verificationCode,
         tweetUrl,
       });
-      toast.success(`Linked @${result.xHandle}`);
+      toast.success(t('xMenu.linkedToast', { handle: result.xHandle }));
       setOpen(false);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : `Could not link ${X_SYMBOL}`);
+      toast.error(err instanceof Error ? err.message : t('xMenu.linkFailed', { x: X_SYMBOL }));
     }
   };
 
@@ -162,10 +164,10 @@ export function XMenuButton() {
     if (!wallet) return;
     try {
       await unlinkMutation.mutateAsync(wallet);
-      toast.success(`${X_SYMBOL} account unlinked`);
+      toast.success(t('xMenu.unlinkedToast', { x: X_SYMBOL }));
       setOpen(false);
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Could not unlink');
+      toast.error(err instanceof Error ? err.message : t('xMenu.unlinkFailed'));
     }
   };
 
@@ -205,10 +207,10 @@ export function XMenuButton() {
                 </div>
                 <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                   {linked
-                    ? `Wallet linked to @${linked.xHandle} for leaderboard social proof.`
+                    ? t('xMenu.linkedIntro', { handle: linked.xHandle })
                     : wallet
-                      ? `Link your wallet to a ${X_SYMBOL} account, or share without linking.`
-                      : `Share on ${X_SYMBOL} anytime. Connect a wallet to link your profile.`}
+                      ? t('xMenu.linkIntro', { x: X_SYMBOL })
+                      : t('xMenu.shareIntro', { x: X_SYMBOL })}
                 </p>
               </div>
 
@@ -219,7 +221,7 @@ export function XMenuButton() {
                   <MenuRow
                     icon={User}
                     label={`@${linked.xHandle}`}
-                    description="View your linked profile"
+                    description={t('xMenu.viewProfile')}
                     onClick={() =>
                       window.open(
                         `https://x.com/${linked.xHandle}`,
@@ -231,8 +233,8 @@ export function XMenuButton() {
                   />
                   <MenuRow
                     icon={Unlink}
-                    label={`Unlink ${X_SYMBOL} account`}
-                    description={`Remove wallet ↔ ${X_SYMBOL} mapping`}
+                    label={t('xMenu.unlinkAccount', { x: X_SYMBOL })}
+                    description={t('xMenu.unlinkDescription', { x: X_SYMBOL })}
                     onClick={handleUnlink}
                     disabled={unlinkMutation.isPending}
                     trailing={
@@ -245,11 +247,9 @@ export function XMenuButton() {
               ) : (
                 <MenuRow
                   icon={Link2}
-                  label={`Link ${X_SYMBOL} account`}
+                  label={t('xMenu.linkAccount', { x: X_SYMBOL })}
                   description={
-                    wallet
-                      ? 'Verify with a public post — shows on leaderboard'
-                      : 'Connect wallet first'
+                    wallet ? t('xMenu.linkDescription') : t('xMenu.connectFirst')
                   }
                   onClick={startLink}
                   disabled={!wallet}
@@ -259,13 +259,13 @@ export function XMenuButton() {
               <Divider />
 
               <p className="px-3 pb-1 pt-2 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                Share
+                {t('xMenu.sectionShare')}
               </p>
 
               <MenuRow
                 icon={Share2}
-                label="Share ansem.locker"
-                description="Spread the word — no linking required"
+                label={t('xMenu.shareSite')}
+                description={t('xMenu.shareSiteDescription')}
                 onClick={() => {
                   openSiteShare(xHandle);
                   setOpen(false);
@@ -275,11 +275,11 @@ export function XMenuButton() {
 
               <MenuRow
                 icon={DiamondHoovesMenuIcon}
-                label="Share leaderboard"
+                label={t('xMenu.shareLeaderboard')}
                 description={
                   rank && rankLock
-                    ? `You're #${rank} — flex your conviction`
-                    : 'Invite others to compete'
+                    ? t('xMenu.shareLeaderboardRank', { rank })
+                    : t('xMenu.shareLeaderboardInvite')
                 }
                 onClick={() => {
                   if (rank && rankLock) {
@@ -295,7 +295,7 @@ export function XMenuButton() {
               {topLock ? (
                 <MenuRow
                   icon={Share2}
-                  label="Share my lock"
+                  label={t('xMenu.shareMyLock')}
                   description={`${formatAnsemAmount(topLock.remainingInVault)} $ANSEM · ${formatTimeRemaining(topLock.unlockTs)}`}
                   onClick={() => {
                     openConvictionShare(
@@ -312,15 +312,15 @@ export function XMenuButton() {
               {wallet && topLock && !flexVerified ? (
                 <MenuRow
                   icon={DiamondHoovesMenuIcon}
-                  label="Join Locker List"
-                  description="Paste your flex post URL after sharing"
+                  label={t('xMenu.joinLockerList')}
+                  description={t('xMenu.joinLockerListDescription')}
                   onClick={() => setPanel('flex')}
                 />
               ) : flexVerified ? (
                 <MenuRow
                   icon={DiamondHoovesMenuIcon}
-                  label="On the Locker List"
-                  description="Flex verified — you're visible to the community"
+                  label={t('xMenu.onLockerList')}
+                  description={t('xMenu.onLockerListDescription')}
                   disabled
                   trailing={null}
                 />
@@ -329,7 +329,7 @@ export function XMenuButton() {
               <Divider />
 
               <p className="px-3 pb-1 pt-2 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-                Follow
+                {t('xMenu.sectionFollow')}
               </p>
 
               {X_PROFILES.map(({ handle, label }) => (
@@ -337,7 +337,7 @@ export function XMenuButton() {
                   key={handle}
                   icon={ExternalLink}
                   label={handle}
-                  description={`Follow ${label}`}
+                  description={t('xMenu.followLabel', { label })}
                   onClick={() => {
                     window.open(
                       `https://x.com/${handle.replace(/^@/, '')}`,
@@ -357,20 +357,21 @@ export function XMenuButton() {
                 onClick={() => setPanel('menu')}
                 className="mb-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                ← Back
+                {t('xMenu.back')}
               </button>
 
-              <p className="text-sm font-semibold text-foreground">Link {X_SYMBOL} account</p>
+              <p className="text-sm font-semibold text-foreground">
+                {t('xMenu.linkTitle', { x: X_SYMBOL })}
+              </p>
               <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                Post the verification tweet, then paste the post URL below. We read it via {X_SYMBOL}
-                oEmbed — no OAuth app required.
+                {t('xMenu.linkBody', { x: X_SYMBOL })}
               </p>
 
               {wallet && verificationCode ? (
                 <div className="mt-4 space-y-3">
                   <div className="rounded-xl border border-border bg-surface-elevated p-3">
                     <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-                      Code
+                      {t('xMenu.codeLabel')}
                     </p>
                     <p className="mt-1 font-mono text-sm text-foreground">{verificationCode}</p>
                     <p className="mt-3 whitespace-pre-wrap text-xs leading-relaxed text-muted-foreground">
@@ -384,16 +385,16 @@ export function XMenuButton() {
                     className="flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-4 py-2.5 text-sm font-medium text-background transition-colors hover:bg-black"
                   >
                     <img src="/x.png" alt="" className="h-4 w-4 invert" aria-hidden />
-                    Post verification on {X_SYMBOL}
+                    {t('xMenu.postVerification', { x: X_SYMBOL })}
                   </button>
 
                   <div>
                     <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
-                      Post URL
+                      {t('xMenu.postUrl')}
                     </label>
                     <input
                       type="url"
-                      placeholder="https://x.com/you/status/…"
+                      placeholder={t('flex.verifyPlaceholder')}
                       value={tweetUrl}
                       onChange={(e) => setTweetUrl(e.target.value)}
                       className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-2.5 text-sm outline-none ring-accent/40 focus:ring-2"
@@ -411,7 +412,7 @@ export function XMenuButton() {
                     ) : (
                       <Link2 className="h-4 w-4" />
                     )}
-                    Verify &amp; link
+                    {t('xMenu.verifyAndLink')}
                   </button>
                 </div>
               ) : null}
@@ -423,7 +424,7 @@ export function XMenuButton() {
                 onClick={() => setPanel('menu')}
                 className="mb-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                ← Back
+                {t('xMenu.back')}
               </button>
               <FlexVerifyForm
                 wallet={wallet}
