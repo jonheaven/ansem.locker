@@ -53,12 +53,11 @@ export function ToolsNavMenu() {
           aria-controls={menuId}
           onClick={() => setOpen((v) => !v)}
           className={cn(
-            'inline-flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-full border border-border bg-surface px-2.5 text-xs font-medium transition-colors hover:bg-surface-hover sm:h-9 sm:min-w-0 sm:px-3',
+            'inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface text-xs font-medium transition-colors hover:bg-surface-hover sm:h-9 sm:w-9',
             (onTools || open) && 'border-accent/40 bg-accent/10 text-accent',
           )}
         >
           <Wrench className="h-4 w-4 shrink-0" aria-hidden />
-          <span className="hidden sm:inline">{t('tools.nav')}</span>
         </button>
 
         {open ? (

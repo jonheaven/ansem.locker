@@ -13,7 +13,7 @@ Push to `main` on `jonheaven/ansem.locker` → Vercel builds and deploys.
 The repo root `vercel.json` deploys:
 
 - `frontend/dist` — static site
-- `api/[...path].ts` — single serverless router (Hobby plan: max 12 functions per deployment)
+- `api/*.ts` — thin route entrypoints (12 serverless functions, Hobby plan max)
 
 If Root Directory is set to `frontend`, `/api/locks` will fail.
 
