@@ -65,13 +65,13 @@ export function HeaderIconPicker<T extends string>({
       {!open ? (
         <span
           role="tooltip"
-          className="pointer-events-none absolute bottom-[calc(100%+6px)] left-1/2 z-[70] -translate-x-1/2 whitespace-nowrap rounded-lg bg-foreground px-2.5 py-1 text-[10px] font-medium tracking-wide text-background opacity-0 shadow-lg transition-opacity duration-150 group-hover/pick:opacity-100 group-focus-within/pick:opacity-100"
+          className="pointer-events-none absolute top-[calc(100%+6px)] left-1/2 z-[70] -translate-x-1/2 whitespace-nowrap rounded-lg bg-foreground px-2.5 py-1 text-[10px] font-medium tracking-wide text-background opacity-0 shadow-lg transition-opacity duration-150 group-hover/pick:opacity-100 group-focus-within/pick:opacity-100"
         >
-          {tooltip}
           <span
-            className="absolute left-1/2 top-full -translate-x-1/2 border-[5px] border-transparent border-t-foreground"
+            className="absolute bottom-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-b-foreground"
             aria-hidden
           />
+          {tooltip}
         </span>
       ) : null}
 
