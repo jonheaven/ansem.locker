@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AppToaster } from '@/components/AppToaster';
+import { WheelScrollChain } from '@/components/WheelScrollChain';
 import { CommittedTheme } from '@/components/CommittedTheme';
 import { CommittedViewport } from '@/components/CommittedViewport';
 import { AppShell } from '@/layout/AppShell';
@@ -19,6 +20,7 @@ export default function App() {
         <SolanaWalletProvider>
           <CommittedTheme />
           <CommittedViewport>
+            <WheelScrollChain />
             <BrowserRouter>
               <Routes>
                 <Route element={<AppShell />}>

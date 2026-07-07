@@ -57,7 +57,7 @@ export function AnsemChartPanel() {
   );
 
   return (
-    <Card className="overflow-hidden border-border/80 bg-background/80 shadow-sm backdrop-blur-md">
+    <Card className="overflow-clip border-border/80 bg-background/80 shadow-sm backdrop-blur-md">
       <CardHeader className="space-y-4 border-b border-border/60 pb-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>

@@ -19,7 +19,7 @@ export function UnlockFlexBanner({ payload, onDismiss, className }: UnlockFlexBa
   return (
     <div
       className={cn(
-        'app-glass relative overflow-hidden rounded-2xl border border-accent/40 bg-gradient-to-br from-accent/15 via-accent/5 to-surface p-5 shadow-md',
+        'app-glass relative overflow-clip rounded-2xl border border-accent/40 bg-gradient-to-br from-accent/15 via-accent/5 to-surface p-5 shadow-md',
         className,
       )}
     >

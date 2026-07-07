@@ -427,7 +427,7 @@ export function LockPanel() {
               {flexLabel}
             </p>
           ) : null}
-          <div className="-mx-1 mt-1.5 flex gap-1.5 overflow-x-auto px-1 pb-0.5 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible [&::-webkit-scrollbar]:hidden">
+          <div className="-mx-1 mt-1.5 flex flex-wrap gap-1.5 px-1 pb-0.5">
             {LOCK_PRESETS.map(({ labelKey, minutes }) => (
               <button
                 key={labelKey}

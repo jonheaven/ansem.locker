@@ -26,7 +26,7 @@ const TAB_IDS = [
 ] as const;
 
 export function AppCarousel() {
-  const { view, setView, index } = useAppView();
+  const { view, setView } = useAppView();
   const committed = useHasActiveLock();
   const { locks } = useMyLocks();
   const { t } = useI18n();
@@ -40,10 +40,6 @@ export function AppCarousel() {
   const claimableCount = locks.filter(
     (l) => l.unlockTs <= nowSec && l.remainingInVault > 0n,
   ).length;
-
-  const scrollPanelClass = cn(
-    committed && 'app-scroll max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain',
-  );
 
   const bullCompact = view === 'lock' && !committed;
 
@@ -117,61 +113,52 @@ export function AppCarousel() {
           })}
         </div>
 
-        <div className="overflow-x-clip">
-          <div
-            className="flex transition-transform duration-300 ease-out motion-reduce:transition-none"
-            style={{ transform: `translateX(-${index * 100}%)` }}
-          >
-            {APP_VIEWS.map((id) => (
-              <div
-                key={id}
-                className="w-full shrink-0 px-0.5"
-                role="tabpanel"
-                aria-hidden={view !== id}
-              >
-                {id === 'lock' && <LockPanel />}
-                {id === 'leaderboard' && (
-                  <LeaderboardTable showSortTabs limit={25} />
-                )}
-                {id === 'why' && (
-                  <div className={scrollPanelClass}>
-                    <WhyLockSection />
-                  </div>
-                )}
-                {id === 'how' && (
-                  <div className={cn('space-y-4', scrollPanelClass)}>
-                    <TrustSection variant="stacked" />
-                    <p className="text-center text-[11px] text-muted-foreground">
-                      <SolscanLink
-                        href={solscanAccount(JUPITER_LOCK_PROGRAM_ID.toBase58())}
-                        className="font-mono"
-                      >
-                        {t('info.program')}
-                      </SolscanLink>
-                      {' · '}
-                      <a
-                        href={`${GITHUB_URL}/blob/main/docs/SECURITY.md`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="transition-colors hover:text-accent"
-                      >
-                        {t('info.security')}
-                      </a>
-                      {' · '}
-                      <a href={GITHUB_URL} className="transition-colors hover:text-accent">
-                        {t('info.source')}
-                      </a>
-                      {' · '}
-                      <Link to="/trust" className="transition-colors hover:text-accent">
-                        {t('trust.badge')}
-                      </Link>
-                    </p>
-                  </div>
-                )}
-                {id === 'locks' && <MyLocksPanel />}
-              </div>
-            ))}
-          </div>
+        <div className="min-w-0">
+          {APP_VIEWS.map((id) => (
+            <div
+              key={id}
+              className={cn('w-full', view !== id && 'hidden')}
+              role="tabpanel"
+              hidden={view !== id}
+            >
+              {id === 'lock' && <LockPanel />}
+              {id === 'leaderboard' && (
+                <LeaderboardTable showSortTabs limit={25} />
+              )}
+              {id === 'why' && <WhyLockSection />}
+              {id === 'how' && (
+                <div className="space-y-4">
+                  <TrustSection variant="stacked" />
+                  <p className="text-center text-[11px] text-muted-foreground">
+                    <SolscanLink
+                      href={solscanAccount(JUPITER_LOCK_PROGRAM_ID.toBase58())}
+                      className="font-mono"
+                    >
+                      {t('info.program')}
+                    </SolscanLink>
+                    {' · '}
+                    <a
+                      href={`${GITHUB_URL}/blob/main/docs/SECURITY.md`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="transition-colors hover:text-accent"
+                    >
+                      {t('info.security')}
+                    </a>
+                    {' · '}
+                    <a href={GITHUB_URL} className="transition-colors hover:text-accent">
+                      {t('info.source')}
+                    </a>
+                    {' · '}
+                    <Link to="/trust" className="transition-colors hover:text-accent">
+                      {t('trust.badge')}
+                    </Link>
+                  </p>
+                </div>
+              )}
+              {id === 'locks' && <MyLocksPanel />}
+            </div>
+          ))}
         </div>
       </div>
     </div>

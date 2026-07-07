@@ -45,7 +45,7 @@ export function ClaimLockCard({ lock, claiming, onClaim }: ClaimLockCardProps) {
   return (
     <li
       className={cn(
-        'relative overflow-hidden rounded-2xl border bg-surface-elevated p-4 app-row-glass sm:p-5',
+        'relative overflow-clip rounded-2xl border bg-surface-elevated p-4 app-row-glass sm:p-5',
         ready
           ? 'claim-ready-glow border-accent/60 bg-gradient-to-br from-accent/12 via-surface-elevated to-surface-elevated'
           : 'border-border/80',
