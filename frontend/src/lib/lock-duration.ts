@@ -6,11 +6,15 @@ const DAYS_PER_MONTH = 30;
 const MINUTES_PER_DAY = 24 * 60;
 
 export const LOCK_PRESETS = [
-  { labelKey: 'lock.preset1m', minutes: 1 * DAYS_PER_MONTH * MINUTES_PER_DAY },
-  { labelKey: 'lock.preset2m', minutes: 2 * DAYS_PER_MONTH * MINUTES_PER_DAY },
-  { labelKey: 'lock.preset4m', minutes: 4 * DAYS_PER_MONTH * MINUTES_PER_DAY },
-  { labelKey: 'lock.preset6m', minutes: 6 * DAYS_PER_MONTH * MINUTES_PER_DAY },
-  { labelKey: 'lock.preset8m', minutes: 8 * DAYS_PER_MONTH * MINUTES_PER_DAY },
+  { labelKey: 'lock.preset10m', minutes: 10 },
+  { labelKey: 'lock.preset1h', minutes: 60 },
+  { labelKey: 'lock.preset6h', minutes: 6 * 60 },
+  { labelKey: 'lock.preset1d', minutes: MINUTES_PER_DAY },
+  { labelKey: 'lock.preset3d', minutes: 3 * MINUTES_PER_DAY },
+  { labelKey: 'lock.preset1w', minutes: 7 * MINUTES_PER_DAY },
+  { labelKey: 'lock.preset1mo', minutes: 1 * DAYS_PER_MONTH * MINUTES_PER_DAY },
+  { labelKey: 'lock.preset3mo', minutes: 3 * DAYS_PER_MONTH * MINUTES_PER_DAY },
+  { labelKey: 'lock.preset6mo', minutes: 6 * DAYS_PER_MONTH * MINUTES_PER_DAY },
   { labelKey: 'lock.preset1y', minutes: MAX_LOCK_DAYS * MINUTES_PER_DAY },
 ] as const;
 

@@ -432,7 +432,7 @@ export function LockPanel({ hideIntro = false }: { hideIntro?: boolean }) {
           <div className="-mx-1 mt-1.5 flex flex-wrap gap-1.5 px-1 pb-0.5">
             {LOCK_PRESETS.map(({ labelKey, minutes }) => (
               <button
-                key={labelKey}
+                key={minutes}
                 type="button"
                 onClick={() => applyPreset(minutes)}
                 className="shrink-0 rounded-full border border-border px-2.5 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-border-strong hover:bg-surface-elevated hover:text-foreground sm:min-h-11 sm:px-3 sm:py-2.5 sm:text-sm"
