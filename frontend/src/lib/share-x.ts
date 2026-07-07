@@ -117,6 +117,19 @@ export function openLeaderboardHypeShare() {
   window.open(buildLeaderboardHypeShareUrl(), '_blank', 'noopener,noreferrer');
 }
 
+export function buildUnlockShareUrl(amount: string, txSig: string) {
+  const text = `Got my ${amount} $ANSEM back from ansem.locker — lock worked, claim worked, all on-chain.\n\nClaim proof: https://solscan.io/tx/${txSig}\n\nTry a short lock to prove it yourself: ${SITE_URL}\n\n#ANSEM #DiamondHooves`;
+  return tweetIntent(text);
+}
+
+export function openUnlockShare(amount: bigint, txSig: string) {
+  window.open(
+    buildUnlockShareUrl(formatAnsemAmount(amount), txSig),
+    '_blank',
+    'noopener,noreferrer',
+  );
+}
+
 export function buildVerificationTweet(wallet: string, code: string) {
   return `Verifying my ansem.locker wallet.
 

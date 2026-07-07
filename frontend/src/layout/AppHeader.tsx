@@ -1,6 +1,5 @@
-import { Eye } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
-import { HoverTooltip } from '@/components/HoverTooltip';
+import { Link } from 'react-router-dom';
+import { ToolsNavMenu } from '@/components/ToolsNavMenu';
 import { PoweredByJupiter } from '@/components/PoweredByJupiter';
 import { AnsemPriceTicker } from '@/components/AnsemPriceTicker';
 import { AppWalletButton } from '@/components/AppWalletButton';
@@ -9,28 +8,11 @@ import { LocaleCurrencySelector } from '@/components/LocaleCurrencySelector';
 import { XMenuButton } from '@/components/XMenuButton';
 import { BUILDER_WALLET, BUILDER_X, BUILDER_X_URL, GITHUB_URL } from '@/config/constants';
 import { useI18n } from '@/lib/i18n/i18n-context';
-import { cn } from '@/lib/cn';
 
 function HeaderActions() {
-  const { t } = useI18n();
-  const location = useLocation();
-  const onTools = location.pathname.startsWith('/tools');
-
   return (
     <div className="flex items-center gap-2">
-      <HoverTooltip label={t('tools.title')}>
-        <Link
-          to="/tools"
-          className={cn(
-            'inline-flex h-9 items-center gap-1.5 rounded-full border border-border bg-surface px-3 text-xs font-medium transition-colors hover:bg-surface-hover',
-            onTools && 'border-accent/40 bg-accent/10 text-accent',
-          )}
-          aria-current={onTools ? 'page' : undefined}
-        >
-          <Eye className="h-4 w-4 shrink-0" aria-hidden />
-          <span className="hidden sm:inline">{t('tools.nav')}</span>
-        </Link>
-      </HoverTooltip>
+      <ToolsNavMenu />
       <LocaleCurrencySelector />
       <XMenuButton />
       <AppWalletButton />

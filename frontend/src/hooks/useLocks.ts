@@ -27,7 +27,14 @@ export function useMyLocks() {
     queryKey: ['my-locks', connection.rpcEndpoint, publicKey?.toBase58()],
     enabled: Boolean(publicKey),
     queryFn: () => fetchWalletVestingLocks(connection, publicKey!),
-    refetchInterval: 30_000,
+    refetchInterval: (q) => {
+      const locks = q.state.data ?? [];
+      const now = Math.floor(Date.now() / 1000);
+      const active = locks.filter((l) => l.remainingInVault > 0n);
+      if (active.some((l) => l.unlockTs <= now)) return 5_000;
+      if (active.some((l) => l.unlockTs - now < 120)) return 5_000;
+      return 30_000;
+    },
   });
 
   return { ...query, locks: query.data ?? [] };

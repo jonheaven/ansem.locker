@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { useQueryClient } from '@tanstack/react-query';
-import { Transaction } from '@solana/web3.js';
+import { SendTransactionError, Transaction } from '@solana/web3.js';
 import { Loader2, Lock } from 'lucide-react';
 import { toast } from 'sonner';
 import { BullSlider } from '@/components/BullSlider';
@@ -11,10 +11,16 @@ import { PoweredByJupiter } from '@/components/PoweredByJupiter';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAnsemBalance } from '@/hooks/useAnsemBalance';
+import { useSolBalance } from '@/hooks/useSolBalance';
 import { useLocalizedFormat } from '@/hooks/useLocalizedFormat';
 import { buildLockAnsemInstructions } from '@/lib/bonfida';
+import {
+  MIN_SOL_LAMPORTS_FOR_LOCK,
+  RECOMMENDED_SOL_LAMPORTS_FOR_LOCK,
+} from '@/config/constants';
 import { formatAnsemAmount, parseAnsemAmount } from '@/lib/format';
 import { useI18n } from '@/lib/i18n/i18n-context';
+import { localizedTxError, parseAndLocalizeTxError } from '@/lib/localized-tx-error';
 import {
   defaultUnlockLocal,
   formatLockLength,
@@ -31,6 +37,8 @@ import {
 } from '@/lib/lock-duration';
 import { saveJustLocked } from '@/lib/just-locked';
 import { openLockShare } from '@/lib/share-x';
+import { getSimulationError } from '@/lib/simulate-transaction';
+import { formatSolLamports } from '@/lib/solana-tx-error';
 import { solscanTx } from '@/lib/solscan';
 import { cn } from '@/lib/cn';
 
@@ -54,6 +62,7 @@ export function LockPanel() {
   const { publicKey, signTransaction } = useWallet();
   const { connection } = useConnection();
   const balance = useAnsemBalance();
+  const solBalance = useSolBalance();
   const queryClient = useQueryClient();
   const { t } = useI18n();
   const {
@@ -96,6 +105,11 @@ export function LockPanel() {
   );
   const bullishness = sliderValueToBullishness(durationSlider);
   const flexLabel = getBullishFlexLabel(durationSlider);
+
+  const solLamports = solBalance.data?.lamports ?? 0;
+  const lowSol = solLamports > 0 && solLamports < MIN_SOL_LAMPORTS_FOR_LOCK;
+  const solWarning =
+    solLamports > 0 && solLamports < RECOMMENDED_SOL_LAMPORTS_FOR_LOCK && !lowSol;
 
   const setDurationFromMinutes = useCallback((minutes: number) => {
     setDurationSlider(minutesToSliderValue(minutes));
@@ -186,6 +200,19 @@ export function LockPanel() {
       return;
     }
 
+    if (solLamports < MIN_SOL_LAMPORTS_FOR_LOCK) {
+      toast.error(
+        t('lock.insufficientSol', {
+          have: formatSolLamports(solLamports),
+          need: formatSolLamports(MIN_SOL_LAMPORTS_FOR_LOCK),
+          short: formatSolLamports(
+            Math.max(0, MIN_SOL_LAMPORTS_FOR_LOCK - solLamports),
+          ),
+        }),
+      );
+      return;
+    }
+
     setPending(true);
     try {
       const { instructions, extraSigners } = buildLockAnsemInstructions(
@@ -204,6 +231,12 @@ export function LockPanel() {
       }).add(...instructions);
 
       tx.partialSign(...extraSigners);
+
+      const simulationError = await getSimulationError(connection, tx);
+      if (simulationError) {
+        toast.error(localizedTxError(t, simulationError));
+        return;
+      }
 
       const signed = await signTransaction(tx);
       const sig = await connection.sendRawTransaction(signed.serialize(), {
@@ -236,11 +269,15 @@ export function LockPanel() {
       setAmountRawExact(null);
       setAmountInput('');
       balance.refetch();
+      solBalance.refetch();
       void queryClient.invalidateQueries({ queryKey: ['my-locks'] });
       void queryClient.invalidateQueries({ queryKey: ['leaderboard'] });
       window.location.hash = 'locks';
     } catch (err) {
-      const message = err instanceof Error ? err.message : t('lock.txFailed');
+      const message =
+        err instanceof SendTransactionError
+          ? parseAndLocalizeTxError(t, err, err.logs)
+          : parseAndLocalizeTxError(t, err);
       toast.error(message);
     } finally {
       setPending(false);
@@ -262,6 +299,8 @@ export function LockPanel() {
   }
 
   const hasBalance = maxRaw > 0n;
+  const hasEnoughSol =
+    solBalance.isLoading || solBalance.isError || solLamports >= MIN_SOL_LAMPORTS_FOR_LOCK;
 
   return (
     <Card>
@@ -282,6 +321,20 @@ export function LockPanel() {
               <AnsemAmountDisplay raw={maxRaw} size="hero" align="center" />
             </div>
           )}
+          <p className="mt-3 text-xs text-muted-foreground">
+            {solBalance.isLoading
+              ? t('lock.solBalanceLoading')
+              : solBalance.isError
+                ? t('lock.solBalanceError')
+                : t('lock.solBalance', { amount: formatSolLamports(solLamports) })}
+          </p>
+          {lowSol ? (
+            <p className="mt-2 text-sm font-medium text-destructive">{t('lock.lowSolBlocking')}</p>
+          ) : solWarning ? (
+            <p className="mt-2 text-sm font-medium text-amber-600 dark:text-amber-400">
+              {t('lock.lowSolWarning')}
+            </p>
+          ) : null}
         </div>
 
         <div>
@@ -409,7 +462,9 @@ export function LockPanel() {
         <Button
           size="lg"
           className="w-full"
-          disabled={pending || amountRaw <= 0n || Boolean(validationError)}
+          disabled={
+            pending || amountRaw <= 0n || Boolean(validationError) || !hasEnoughSol
+          }
           onClick={handleLock}
         >
           {pending ? (

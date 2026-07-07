@@ -1,77 +1,50 @@
 import { useEffect, useState } from 'react';
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { PublicKey, Transaction } from '@solana/web3.js';
-import { Loader2, Unlock } from 'lucide-react';
-import { toast } from 'sonner';
-import { SolscanLink } from '@/components/SolscanLink';
-import { AnsemAmountDisplay } from '@/components/AnsemFiatValue';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { Sparkles } from 'lucide-react';
+import { ClaimLockCard } from '@/components/ClaimLockCard';
 import { LockFlexBanner } from '@/components/LockFlexBanner';
-import { Button } from '@/components/ui/button';
+import { UnlockFlexBanner } from '@/components/UnlockFlexBanner';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useLocalizedFormat } from '@/hooks/useLocalizedFormat';
+import { useClaimLock } from '@/hooks/useClaimLock';
 import { useMyLocks } from '@/hooks/useLocks';
-import { buildClaimAnsemInstructions } from '@/lib/bonfida';
 import { useI18n } from '@/lib/i18n/i18n-context';
 import { clearJustLocked, readJustLocked, type JustLockedPayload } from '@/lib/just-locked';
-import { solscanAccount, solscanTx } from '@/lib/solscan';
+import {
+  clearJustUnlocked,
+  readJustUnlocked,
+  type JustUnlockedPayload,
+} from '@/lib/just-unlocked';
 
 export function MyLocksPanel() {
-  const { publicKey, signTransaction } = useWallet();
-  const { connection } = useConnection();
+  const { publicKey } = useWallet();
   const { locks, isLoading, refetch } = useMyLocks();
-  const [unlocking, setUnlocking] = useState<string | null>(null);
+  const { claimLock, claimingId } = useClaimLock(() => {
+    void refetch();
+    setUnlockPrompt(readJustUnlocked());
+  });
   const [flexPrompt, setFlexPrompt] = useState<JustLockedPayload | null>(() => readJustLocked());
+  const [unlockPrompt, setUnlockPrompt] = useState<JustUnlockedPayload | null>(() =>
+    readJustUnlocked(),
+  );
+  const [nowSec, setNowSec] = useState(() => Math.floor(Date.now() / 1000));
   const { t } = useI18n();
-  const { formatTimeRemaining, formatUnlockDate } = useLocalizedFormat();
 
   useEffect(() => {
     setFlexPrompt(readJustLocked());
+    setUnlockPrompt(readJustUnlocked());
   }, []);
 
-  const handleUnlock = async (vestingAccount: string, amount: bigint) => {
-    if (!publicKey || !signTransaction) return;
+  useEffect(() => {
+    const id = window.setInterval(() => setNowSec(Math.floor(Date.now() / 1000)), 1_000);
+    return () => window.clearInterval(id);
+  }, []);
 
-    setUnlocking(vestingAccount);
-    try {
-      const instructions = buildClaimAnsemInstructions(
-        new PublicKey(vestingAccount),
-        publicKey,
-        amount,
-      );
-
-      const { blockhash, lastValidBlockHeight } =
-        await connection.getLatestBlockhash('confirmed');
-
-      const tx = new Transaction({
-        feePayer: publicKey,
-        blockhash,
-        lastValidBlockHeight,
-      }).add(...instructions);
-
-      const signed = await signTransaction(tx);
-      const sig = await connection.sendRawTransaction(signed.serialize(), {
-        skipPreflight: false,
-        preflightCommitment: 'confirmed',
-      });
-
-      await connection.confirmTransaction(
-        { signature: sig, blockhash, lastValidBlockHeight },
-        'confirmed',
-      );
-
-      toast.success(t('locks.unlockedToast'), {
-        action: {
-          label: t('common.viewTxOnSolscan'),
-          onClick: () => window.open(solscanTx(sig), '_blank', 'noopener,noreferrer'),
-        },
-      });
-      refetch();
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : t('locks.unlockFailed'));
-    } finally {
-      setUnlocking(null);
-    }
-  };
+  const claimable = locks.filter(
+    (lock) => lock.unlockTs <= nowSec && lock.remainingInVault > 0n,
+  );
+  const pending = locks.filter(
+    (lock) => lock.unlockTs > nowSec && lock.remainingInVault > 0n,
+  );
 
   if (!publicKey) {
     return (
@@ -86,6 +59,16 @@ export function MyLocksPanel() {
 
   return (
     <div className="space-y-4">
+      {unlockPrompt ? (
+        <UnlockFlexBanner
+          payload={unlockPrompt}
+          onDismiss={() => {
+            clearJustUnlocked();
+            setUnlockPrompt(null);
+          }}
+        />
+      ) : null}
+
       {flexPrompt ? (
         <LockFlexBanner
           payload={flexPrompt}
@@ -96,10 +79,22 @@ export function MyLocksPanel() {
         />
       ) : null}
 
+      {claimable.length > 0 ? (
+        <div className="app-glass rounded-2xl border border-accent/35 bg-accent/8 p-4">
+          <p className="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.12em] text-accent">
+            <Sparkles className="h-4 w-4" aria-hidden />
+            {t('locks.claimableBanner', { count: claimable.length })}
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">{t('locks.claimOnSite')}</p>
+        </div>
+      ) : null}
+
       <Card>
         <CardHeader>
           <CardTitle>{t('locks.title')}</CardTitle>
-          <CardDescription>{t('locks.description')}</CardDescription>
+          <CardDescription>
+            {claimable.length > 0 ? t('locks.descriptionClaim') : t('locks.description')}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           {isLoading ? (
@@ -108,52 +103,19 @@ export function MyLocksPanel() {
             <p className="text-sm text-muted-foreground">{t('locks.empty')}</p>
           ) : (
             <ul className="space-y-3">
-              {locks.map((lock) => {
-                const nowSec = Math.floor(Date.now() / 1000);
-                const unlocked = lock.unlockTs <= nowSec;
-                return (
-                  <li
-                    key={lock.vestingAccount}
-                    className="flex flex-col gap-3 rounded-xl border border-border/80 bg-surface-elevated p-4 app-row-glass sm:flex-row sm:items-center sm:justify-between"
-                  >
-                    <div>
-                      <AnsemAmountDisplay raw={lock.remainingInVault} size="lg" align="left" />
-                      <p className="mt-1 text-sm font-medium text-muted-foreground sm:text-base">
-                        {unlocked
-                          ? t('locks.cliffPassed')
-                          : `${formatTimeRemaining(lock.unlockTs, nowSec)} · ${t('leaderboard.unlocksOn', { date: formatUnlockDate(lock.unlockTs) })}`}
-                      </p>
-                      <SolscanLink
-                        href={solscanAccount(lock.vestingAccount)}
-                        className="text-[10px] text-muted-foreground"
-                      >
-                        {t('locks.solscanAccount', {
-                          short: lock.vestingAccount.slice(0, 8),
-                        })}
-                      </SolscanLink>
-                    </div>
-                    {unlocked && (
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        disabled={unlocking === lock.vestingAccount}
-                        onClick={() =>
-                          handleUnlock(lock.vestingAccount, lock.remainingInVault)
-                        }
-                      >
-                        {unlocking === lock.vestingAccount ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <Unlock className="h-4 w-4" />
-                        )}
-                        {t('common.unlock')}
-                      </Button>
-                    )}
-                  </li>
-                );
-              })}
+              {[...claimable, ...pending].map((lock) => (
+                <ClaimLockCard
+                  key={lock.vestingAccount}
+                  lock={lock}
+                  claiming={claimingId === lock.vestingAccount}
+                  onClaim={() => claimLock(lock.vestingAccount, lock.remainingInVault)}
+                />
+              ))}
             </ul>
           )}
+          <p className="mt-4 text-[11px] leading-relaxed text-muted-foreground">
+            {t('locks.jupiterFallback')}
+          </p>
         </CardContent>
       </Card>
     </div>

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Medal, Share2 } from 'lucide-react';
+import { useState, type ReactNode } from 'react';
+import { ChevronDown, Medal, Share2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { AnsemAmountDisplay } from '@/components/AnsemFiatValue';
@@ -53,6 +53,48 @@ function RankBadge({ rank }: { rank: number }) {
   );
 }
 
+function CollapsibleSection({
+  title,
+  defaultOpen = false,
+  children,
+  className,
+}: {
+  title: string;
+  defaultOpen?: boolean;
+  children: ReactNode;
+  className?: string;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+
+  return (
+    <div
+      className={cn(
+        'rounded-2xl border border-border/70 bg-surface/50',
+        className,
+      )}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-surface-elevated/50"
+        aria-expanded={open}
+      >
+        <span className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+          {title}
+        </span>
+        <ChevronDown
+          className={cn(
+            'h-4 w-4 shrink-0 text-muted-foreground transition-transform',
+            open && 'rotate-180',
+          )}
+          aria-hidden
+        />
+      </button>
+      {open ? <div className="border-t border-border/60 px-4 pb-4 pt-3">{children}</div> : null}
+    </div>
+  );
+}
+
 export function LeaderboardTable({
   sort: initialSort = 'score',
   limit = 10,
@@ -77,214 +119,217 @@ export function LeaderboardTable({
   const nowSec = Math.floor(Date.now() / 1000);
 
   return (
-    <div className="space-y-4">
-      <LockerListPanel />
-      <Card>
-      <CardHeader>
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <CardTitle className="flex items-center gap-2">
-              <DiamondHoovesIcon />
-              {t('leaderboard.title')}
-            </CardTitle>
-            <CardDescription>{t('leaderboard.description')}</CardDescription>
-            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-              {t('leaderboard.tipHint')}
-            </p>
+    <div className="space-y-3">
+      <Card className="border-accent/20 shadow-md">
+        <CardHeader className="space-y-3 pb-3">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+                <DiamondHoovesIcon />
+                {t('leaderboard.title')}
+              </CardTitle>
+              <CardDescription className="mt-1 max-w-xl text-sm">
+                {t('leaderboard.description')}
+              </CardDescription>
+            </div>
+            {sorted.length > 0 ? (
+              <Button
+                size="sm"
+                variant="secondary"
+                className="shrink-0 gap-1.5"
+                onClick={() => openLeaderboardHypeShare()}
+              >
+                <Share2 className="h-3.5 w-3.5" />
+                {t('leaderboard.shareRanks')}
+              </Button>
+            ) : null}
           </div>
-          {sorted.length > 0 ? (
-            <Button
-              size="sm"
-              variant="secondary"
-              className="shrink-0 gap-1.5"
-              onClick={() => openLeaderboardHypeShare()}
-            >
-              <Share2 className="h-3.5 w-3.5" />
-              {t('leaderboard.shareRanks')}
-            </Button>
-          ) : null}
-        </div>
-        {showSortTabs && (
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            {(
-              [
-                ['score', 'leaderboard.sortScore'],
-                ['amount', 'leaderboard.sortAmount'],
-                ['duration', 'leaderboard.sortDuration'],
-              ] as const
-            ).map(([key, labelKey]) => (
+          {showSortTabs && (
+            <div className="flex flex-wrap items-center gap-2">
+              {(
+                [
+                  ['score', 'leaderboard.sortScore'],
+                  ['amount', 'leaderboard.sortAmount'],
+                  ['duration', 'leaderboard.sortDuration'],
+                ] as const
+              ).map(([key, labelKey]) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setSort(key)}
+                  className={cn(
+                    'rounded-lg px-3 py-1.5 text-xs font-medium transition-colors',
+                    sort === key
+                      ? 'bg-accent/15 text-accent'
+                      : 'text-muted-foreground hover:text-foreground',
+                  )}
+                >
+                  {t(labelKey)}
+                </button>
+              ))}
+              <span className="mx-1 hidden h-4 w-px bg-border sm:inline" aria-hidden />
               <button
-                key={key}
                 type="button"
-                onClick={() => setSort(key)}
+                onClick={() => setVerifiedOnly((v) => !v)}
                 className={cn(
                   'rounded-lg px-3 py-1.5 text-xs font-medium transition-colors',
-                  sort === key
+                  verifiedOnly
                     ? 'bg-accent/15 text-accent'
                     : 'text-muted-foreground hover:text-foreground',
                 )}
               >
-                {t(labelKey)}
+                {t('leaderboard.verifiedOnly')}
               </button>
-            ))}
-            <span className="mx-1 hidden h-4 w-px bg-border sm:inline" aria-hidden />
-            <button
-              type="button"
-              onClick={() => setVerifiedOnly((v) => !v)}
-              className={cn(
-                'rounded-lg px-3 py-1.5 text-xs font-medium transition-colors',
-                verifiedOnly
-                  ? 'bg-accent/15 text-accent'
-                  : 'text-muted-foreground hover:text-foreground',
-              )}
-            >
-              {t('leaderboard.verifiedOnly')}
-            </button>
-          </div>
-        )}
-      </CardHeader>
-      <CardContent>
-        {isLoading && (
-          <p className="py-8 text-center text-sm text-muted-foreground">
-            {t('leaderboard.loading')}
-          </p>
-        )}
-        {isError && (
-          <div className="mx-auto max-w-md py-8 text-center text-sm">
-            <p className="text-destructive">
-              {error instanceof Error ? error.message : t('leaderboard.loadError')}
+            </div>
+          )}
+        </CardHeader>
+        <CardContent className="pt-0">
+          {isLoading && (
+            <p className="py-6 text-center text-sm text-muted-foreground">
+              {t('leaderboard.loading')}
             </p>
-            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-              {t('leaderboard.rpcHint')}
+          )}
+          {isError && (
+            <div className="mx-auto max-w-md py-6 text-center text-sm">
+              <p className="text-destructive">
+                {error instanceof Error ? error.message : t('leaderboard.loadError')}
+              </p>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                {t('leaderboard.rpcHint')}
+              </p>
+            </div>
+          )}
+          {!isLoading && !isError && sorted.length === 0 && (
+            <p className="py-6 text-center text-sm text-muted-foreground">
+              {verifiedOnly ? t('leaderboard.verifiedOnlyEmpty') : t('leaderboard.empty')}{' '}
+              {!verifiedOnly ? (
+                <Link to="/" className="text-accent hover:underline">
+                  {t('leaderboard.lockCta')}
+                </Link>
+              ) : null}
             </p>
-          </div>
-        )}
-        {!isLoading && !isError && sorted.length === 0 && (
-          <p className="py-8 text-center text-sm text-muted-foreground">
-            {verifiedOnly ? t('leaderboard.verifiedOnlyEmpty') : t('leaderboard.empty')}{' '}
-            {!verifiedOnly ? (
-              <Link to="/" className="text-accent hover:underline">
-                {t('leaderboard.lockCta')}
-              </Link>
-            ) : null}
-          </p>
-        )}
-        {sorted.length > 0 && (
-          <div className="space-y-2">
-            {sorted.map((entry, i) => {
-              const xLink = xLinks?.get(entry.owner);
-              const rank = i + 1;
-              const lockerEntry = lockerList.find((e) => e.wallet === entry.owner);
-              const displayHandle = xLink?.xHandle ?? lockerEntry?.xHandle;
-              const whoLabel = displayHandle
-                ? `@${displayHandle}`
-                : shortenAddress(entry.owner, 6);
-              const timeRemaining =
-                entry.unlockTs > nowSec
-                  ? formatTimeRemaining(entry.unlockTs, nowSec)
-                  : t('leaderboard.unlockAvailable');
-              const isSelf = wallet === entry.owner;
-              const flexVerified = verifiedWallets.has(entry.owner);
+          )}
+          {sorted.length > 0 && (
+            <div className="space-y-2">
+              {sorted.map((entry, i) => {
+                const xLink = xLinks?.get(entry.owner);
+                const rank = i + 1;
+                const lockerEntry = lockerList.find((e) => e.wallet === entry.owner);
+                const displayHandle = xLink?.xHandle ?? lockerEntry?.xHandle;
+                const whoLabel = displayHandle
+                  ? `@${displayHandle}`
+                  : shortenAddress(entry.owner, 6);
+                const timeRemaining =
+                  entry.unlockTs > nowSec
+                    ? formatTimeRemaining(entry.unlockTs, nowSec)
+                    : t('leaderboard.unlockAvailable');
+                const isSelf = wallet === entry.owner;
+                const flexVerified = verifiedWallets.has(entry.owner);
 
-              return (
-                <div
-                  key={entry.vestingAccount}
-                  className="relative flex items-center justify-between gap-3 overflow-hidden rounded-xl border border-border/80 bg-surface-elevated px-4 py-3 app-row-glass"
-                >
-                  {rank <= 3 ? (
-                    <span
-                      className={cn(
-                        'absolute inset-y-0 left-0 w-1.5 rounded-l-xl',
-                        RANK_STYLES[rank as 1 | 2 | 3].strip,
-                      )}
-                      aria-hidden
-                    />
-                  ) : null}
-                  <div className="flex min-w-0 flex-1 items-center gap-3">
-                    <RankBadge rank={rank} />
-                    <div className="min-w-0">
-                      {displayHandle ? (
-                        <a
-                          href={
-                            lockerEntry?.flexTweetUrl ??
-                            `https://x.com/${displayHandle}`
-                          }
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex flex-wrap items-center gap-1.5 text-sm font-medium transition-colors hover:text-accent"
-                        >
-                          <img src="/x.png" alt="" className="h-3.5 w-3.5" aria-hidden />
-                          @{displayHandle}
-                          {flexVerified ? (
-                            <span className="rounded-full bg-accent/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-accent">
-                              {t('leaderboard.verifiedFlex')}
-                            </span>
-                          ) : null}
-                        </a>
-                      ) : (
-                        <SolscanLink
-                          href={solscanAccount(entry.owner)}
-                          className="font-mono text-sm"
-                        >
-                          {shortenAddress(entry.owner, 6)}
-                        </SolscanLink>
-                      )}
-                      <p className="text-xs text-muted-foreground">
+                return (
+                  <div
+                    key={entry.vestingAccount}
+                    className="relative flex items-center justify-between gap-3 overflow-hidden rounded-xl border border-border/80 bg-surface-elevated px-4 py-3 app-row-glass"
+                  >
+                    {rank <= 3 ? (
+                      <span
+                        className={cn(
+                          'absolute inset-y-0 left-0 w-1.5 rounded-l-xl',
+                          RANK_STYLES[rank as 1 | 2 | 3].strip,
+                        )}
+                        aria-hidden
+                      />
+                    ) : null}
+                    <div className="flex min-w-0 flex-1 items-center gap-3">
+                      <RankBadge rank={rank} />
+                      <div className="min-w-0">
                         {displayHandle ? (
-                          <SolscanLink href={solscanAccount(entry.owner)} className="font-mono">
-                            {shortenAddress(entry.owner, 4)}
+                          <a
+                            href={
+                              lockerEntry?.flexTweetUrl ??
+                              `https://x.com/${displayHandle}`
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex flex-wrap items-center gap-1.5 text-sm font-medium transition-colors hover:text-accent"
+                          >
+                            <img src="/x.png" alt="" className="h-3.5 w-3.5" aria-hidden />
+                            @{displayHandle}
+                            {flexVerified ? (
+                              <span className="rounded-full bg-accent/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-accent">
+                                {t('leaderboard.verifiedFlex')}
+                              </span>
+                            ) : null}
+                          </a>
+                        ) : (
+                          <SolscanLink
+                            href={solscanAccount(entry.owner)}
+                            className="font-mono text-sm"
+                          >
+                            {shortenAddress(entry.owner, 6)}
                           </SolscanLink>
-                        ) : null}
-                        {displayHandle ? ' · ' : ''}
-                        <SolscanLink href={solscanAccount(entry.vestingAccount)} className="font-mono">
-                          {entry.vestingAccount.slice(0, 6)}…
-                        </SolscanLink>
-                        {' · '}
-                        {timeRemaining}
-                      </p>
+                        )}
+                        <p className="text-xs text-muted-foreground">
+                          {displayHandle ? (
+                            <SolscanLink href={solscanAccount(entry.owner)} className="font-mono">
+                              {shortenAddress(entry.owner, 4)}
+                            </SolscanLink>
+                          ) : null}
+                          {displayHandle ? ' · ' : ''}
+                          <SolscanLink href={solscanAccount(entry.vestingAccount)} className="font-mono">
+                            {entry.vestingAccount.slice(0, 6)}…
+                          </SolscanLink>
+                          {' · '}
+                          {timeRemaining}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-2">
+                      <AnsemAmountDisplay
+                        raw={entry.remainingInVault}
+                        size="sm"
+                        align="right"
+                      />
+                      <CopyWalletButton address={entry.owner} />
+                      <HoverTooltip label={t('leaderboard.shareRank', { rank })}>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-8 w-8 shrink-0 p-0"
+                          aria-label={t('leaderboard.shareRank', { rank })}
+                          onClick={() =>
+                            openLeaderboardEntryShare({
+                              rank,
+                              amount: entry.remainingInVault,
+                              whoLabel,
+                              timeRemaining,
+                              isSelf,
+                            })
+                          }
+                        >
+                          <Share2 className="h-4 w-4" />
+                        </Button>
+                      </HoverTooltip>
                     </div>
                   </div>
-                  <div className="flex shrink-0 items-center gap-2">
-                    <AnsemAmountDisplay
-                      raw={entry.remainingInVault}
-                      size="sm"
-                      align="right"
-                    />
-                    <CopyWalletButton address={entry.owner} />
-                    <HoverTooltip label={t('leaderboard.shareRank', { rank })}>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="h-8 w-8 shrink-0 p-0"
-                        aria-label={t('leaderboard.shareRank', { rank })}
-                        onClick={() =>
-                          openLeaderboardEntryShare({
-                            rank,
-                            amount: entry.remainingInVault,
-                            whoLabel,
-                            timeRemaining,
-                            isSelf,
-                          })
-                        }
-                      >
-                        <Share2 className="h-4 w-4" />
-                      </Button>
-                    </HoverTooltip>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+                );
+              })}
+            </div>
+          )}
+          <p className="mt-3 text-[10px] leading-relaxed text-muted-foreground">
+            {t('leaderboard.tipHint')}
+          </p>
+        </CardContent>
+      </Card>
+
+      <CollapsibleSection title={t('leaderboard.lockerListTitle')}>
+        <LockerListPanel className="border-0 bg-transparent p-0 shadow-none" embedded />
+      </CollapsibleSection>
 
       {wallet && !verifiedWallets.has(wallet) ? (
-        <Card>
-          <CardContent className="pt-6">
-            <FlexVerifyForm wallet={wallet} />
-          </CardContent>
-        </Card>
+        <CollapsibleSection title={t('leaderboard.lockerListJoin')}>
+          <FlexVerifyForm wallet={wallet} />
+        </CollapsibleSection>
       ) : null}
     </div>
   );

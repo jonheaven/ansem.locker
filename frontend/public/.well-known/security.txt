@@ -1,0 +1,9 @@
+Contact: https://x.com/jontype
+Contact: mailto:jonheaven@proton.me
+Expires: 2027-07-06T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://ansem.locker/.well-known/security.txt
+Policy: https://github.com/jonheaven/ansem.locker/blob/main/docs/SECURITY.md
+
+# Open-source non-custodial $ANSEM locker (Jupiter Lock on Solana).
+# Source: https://github.com/jonheaven/ansem.locker

@@ -24,6 +24,11 @@ export const RPC_ENDPOINT =
 export const MIN_LOCK_MINUTES = 5;
 export const MAX_LOCK_DAYS = 365;
 
+/** Rent + fees for Jupiter Lock escrow creation (observed ~0.003 SOL on mainnet). */
+export const MIN_SOL_LAMPORTS_FOR_LOCK = 3_200_000;
+/** Comfortable buffer so users are not one rent tweak away from failure. */
+export const RECOMMENDED_SOL_LAMPORTS_FOR_LOCK = 5_000_000;
+
 export const GITHUB_URL = 'https://github.com/jonheaven/ansem.locker';
 export const SITE_URL = 'https://ansem.locker';
 export const BUILDER_X = '@jontype';

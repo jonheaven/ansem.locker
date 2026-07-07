@@ -8,23 +8,27 @@ import { cn } from '@/lib/cn';
 
 type LockerListPanelProps = {
   className?: string;
+  /** Hides duplicate heading when nested in Leaderboard collapsible */
+  embedded?: boolean;
 };
 
-export function LockerListPanel({ className }: LockerListPanelProps) {
+export function LockerListPanel({ className, embedded }: LockerListPanelProps) {
   const { t } = useI18n();
   const { data: entries = [], isLoading } = useLockerList();
 
   return (
     <div
       className={cn(
-        'app-glass rounded-2xl border border-accent/25 bg-accent/5 p-4 shadow-sm',
+        !embedded && 'app-glass rounded-2xl border border-accent/25 bg-accent/5 p-4 shadow-sm',
         className,
       )}
     >
-      <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-accent">
-        {t('leaderboard.lockerListTitle')}
-      </h3>
-      <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">
+      {!embedded ? (
+        <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-accent">
+          {t('leaderboard.lockerListTitle')}
+        </h3>
+      ) : null}
+      <p className={cn('text-xs leading-relaxed text-muted-foreground sm:text-sm', !embedded && 'mt-2')}>
         {t('leaderboard.lockerListBody')}
       </p>
       {isLoading ? (

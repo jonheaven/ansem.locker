@@ -1,4 +1,6 @@
 import { HelpCircle, Info, Lock, Wallet } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { BullAside } from '@/components/BullAside';
 import { DiamondHoovesIcon } from '@/components/DiamondHoovesIcon';
 import { LockPanel } from '@/components/LockPanel';
@@ -8,6 +10,7 @@ import { TrustSection } from '@/components/TrustSection';
 import { WhyLockSection } from '@/components/WhyLockSection';
 import { APP_VIEWS, useAppView } from '@/hooks/useAppView';
 import { useHasActiveLock } from '@/hooks/useHasActiveLock';
+import { useMyLocks } from '@/hooks/useLocks';
 import { SolscanLink } from '@/components/SolscanLink';
 import { GITHUB_URL, JUPITER_LOCK_PROGRAM_ID } from '@/config/constants';
 import { solscanAccount } from '@/lib/solscan';
@@ -25,7 +28,18 @@ const TAB_IDS = [
 export function AppCarousel() {
   const { view, setView, index } = useAppView();
   const committed = useHasActiveLock();
+  const { locks } = useMyLocks();
   const { t } = useI18n();
+  const [nowSec, setNowSec] = useState(() => Math.floor(Date.now() / 1000));
+
+  useEffect(() => {
+    const id = window.setInterval(() => setNowSec(Math.floor(Date.now() / 1000)), 1_000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  const claimableCount = locks.filter(
+    (l) => l.unlockTs <= nowSec && l.remainingInVault > 0n,
+  ).length;
 
   const scrollPanelClass = cn(
     !committed && 'app-scroll max-h-[min(58vh,520px)] overflow-y-auto overscroll-contain',
@@ -67,6 +81,11 @@ export function AppCarousel() {
                 <Icon className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" aria-hidden />
               ) : null}
               <span className="truncate">{t(labelKey)}</span>
+              {id === 'locks' && claimableCount > 0 ? (
+                <span className="ml-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[9px] font-bold text-white">
+                  {claimableCount}
+                </span>
+              ) : null}
             </button>
             );
           })}
@@ -98,9 +117,7 @@ export function AppCarousel() {
                   </div>
                 )}
                 {id === 'leaderboard' && (
-                  <div className={scrollPanelClass}>
-                    <LeaderboardTable showSortTabs limit={25} />
-                  </div>
+                  <LeaderboardTable showSortTabs limit={25} />
                 )}
                 {id === 'why' && (
                   <div className={scrollPanelClass}>
@@ -130,6 +147,10 @@ export function AppCarousel() {
                       <a href={GITHUB_URL} className="transition-colors hover:text-accent">
                         {t('info.source')}
                       </a>
+                      {' · '}
+                      <Link to="/trust" className="transition-colors hover:text-accent">
+                        {t('trust.badge')}
+                      </Link>
                     </p>
                   </div>
                 )}
