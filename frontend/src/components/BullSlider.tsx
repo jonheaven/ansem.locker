@@ -37,10 +37,18 @@ export function BullSlider({
   const cssIntensity = intensity <= 0 ? 0 : intensity * (1 + intensity * 0.85);
 
   return (
-    <div className={cn('bull-slider', disabled && 'pointer-events-none opacity-50', className)}>
+    <div
+      className={cn(
+        'bull-slider overflow-visible',
+        disabled && 'pointer-events-none opacity-50',
+        className,
+      )}
+    >
       <div
         className={cn(
-          'relative mx-7 sm:mx-8',
+          'relative overflow-visible',
+          /* Horizontal padding = half the max scaled bull width so 0% / 100% stay visible */
+          'px-10 sm:px-16',
           compact ? 'h-10 sm:h-16' : 'h-14 sm:h-16',
         )}
       >
@@ -55,7 +63,7 @@ export function BullSlider({
         </div>
 
         <div
-          className="pointer-events-none absolute bottom-0 -translate-x-[42%]"
+          className="pointer-events-none absolute bottom-0 -translate-x-1/2"
           style={{ left: `${percent}%` }}
         >
           <img
