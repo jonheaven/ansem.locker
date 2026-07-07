@@ -24,6 +24,7 @@ export const ru = {
     solana: 'Solana',
     language: 'Язык',
     currency: 'Валюта',
+    settings: 'Настройки',
   },
   price: {
     tickerAria: '{price} {change} за последние 24 часа',

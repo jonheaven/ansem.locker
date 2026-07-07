@@ -24,6 +24,7 @@ export const ja = {
     solana: 'Solana',
     language: '言語',
     currency: '通貨',
+    settings: '設定',
   },
   price: {
     tickerAria: '24時間で {price} {change}',

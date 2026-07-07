@@ -59,30 +59,32 @@ function MenuRow({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        'flex w-full items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors',
+        'flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-left transition-colors sm:items-start sm:gap-2.5 sm:rounded-xl sm:px-3 sm:py-2',
         disabled
           ? 'cursor-not-allowed opacity-50'
           : 'hover:bg-surface-hover active:bg-surface-hover',
       )}
     >
-      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-elevated">
-        <Icon className="h-4 w-4 text-foreground" />
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-surface-elevated sm:mt-0.5 sm:h-8 sm:w-8">
+        <Icon className="h-3.5 w-3.5 text-foreground sm:h-4 sm:w-4" />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block text-sm font-medium text-foreground">{label}</span>
+        <span className="block text-sm font-medium text-foreground whitespace-nowrap">{label}</span>
         {description ? (
-          <span className="mt-0.5 block text-xs leading-relaxed text-muted-foreground">
+          <span className="mt-0.5 hidden text-xs leading-relaxed text-muted-foreground sm:block sm:whitespace-normal">
             {description}
           </span>
         ) : null}
       </span>
-      {trailing ?? <ChevronRight className="mt-2 h-4 w-4 shrink-0 text-muted-foreground" />}
+      {trailing ?? (
+        <ChevronRight className="hidden h-4 w-4 shrink-0 text-muted-foreground sm:mt-2 sm:block" />
+      )}
     </button>
   );
 }
 
-function Divider() {
-  return <div className="my-1 h-px bg-border/80" />;
+function Divider({ className }: { className?: string }) {
+  return <div className={cn('my-0.5 h-px bg-border/80', className)} />;
 }
 
 export function XMenuButton() {
@@ -186,12 +188,12 @@ export function XMenuButton() {
           aria-label={t('xMenu.tooltip')}
           onClick={() => setOpen((value) => !value)}
           className={cn(
-            'inline-flex h-11 min-w-11 items-center justify-center gap-2 rounded-full border border-border bg-surface px-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface-hover sm:h-9 sm:min-w-0 sm:px-3',
+            'inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface text-foreground transition-colors hover:bg-surface-hover sm:h-9 sm:w-9',
             open && 'bg-surface-hover',
           )}
         >
           <img src="/x.png" alt="" className="h-4 w-4" aria-hidden />
-          <span className="hidden sm:inline">
+          <span className="sr-only">
             {linked ? `@${linked.xHandle}` : X_SYMBOL}
           </span>
         </button>
@@ -200,11 +202,16 @@ export function XMenuButton() {
           <div
             id={menuId}
             role="menu"
-            className="absolute right-0 z-[60] mt-2 w-[min(100vw-2rem,22rem)] overflow-hidden rounded-2xl border border-border/80 bg-background/95 p-2 shadow-xl backdrop-blur-2xl backdrop-saturate-150"
+            className={cn(
+              'absolute right-0 top-full z-[60] mt-2 w-max max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-xl border border-border/80 bg-background/95 p-1 shadow-xl backdrop-blur-2xl backdrop-saturate-150',
+              panel === 'menu'
+                ? 'max-h-[min(70dvh,26rem)] overflow-y-auto overscroll-y-contain'
+                : 'w-[min(calc(100vw-1.5rem),18rem)] max-h-[min(70dvh,32rem)] overflow-y-auto overscroll-y-contain p-2',
+            )}
           >
           {panel === 'menu' ? (
             <>
-              <div className="px-3 py-2">
+              <div className="hidden px-2 py-1.5 sm:block">
                 <div className="flex items-center gap-2">
                   <img src="/xai.svg" alt="" className="h-4 w-4 invert" aria-hidden />
                   <p className="text-sm font-semibold text-foreground">{X_SYMBOL}</p>
@@ -218,7 +225,7 @@ export function XMenuButton() {
                 </p>
               </div>
 
-              <Divider />
+              <Divider className="hidden sm:block" />
 
               {linked ? (
                 <>
@@ -262,7 +269,7 @@ export function XMenuButton() {
 
               <Divider />
 
-              <p className="px-3 pb-1 pt-2 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+              <p className="hidden px-2 pb-0.5 pt-1 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground sm:block">
                 {t('xMenu.sectionShare')}
               </p>
 
@@ -342,7 +349,7 @@ export function XMenuButton() {
 
               <Divider />
 
-              <p className="px-3 pb-1 pt-2 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+              <p className="hidden px-2 pb-0.5 pt-1 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground sm:block">
                 {t('xMenu.sectionFollow')}
               </p>
 

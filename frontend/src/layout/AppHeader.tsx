@@ -1,19 +1,19 @@
 import { Link } from 'react-router-dom';
+import { SettingsNavMenu } from '@/components/SettingsNavMenu';
 import { ToolsNavMenu } from '@/components/ToolsNavMenu';
 import { PoweredByJupiter } from '@/components/PoweredByJupiter';
 import { AnsemPriceTicker } from '@/components/AnsemPriceTicker';
 import { AppWalletButton } from '@/components/AppWalletButton';
 import { CopyWalletButton } from '@/components/CopyWalletButton';
-import { LocaleCurrencySelector } from '@/components/LocaleCurrencySelector';
 import { XMenuButton } from '@/components/XMenuButton';
 import { BUILDER_WALLET, BUILDER_X, BUILDER_X_URL, GITHUB_URL } from '@/config/constants';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
 function HeaderActions({ className }: { className?: string }) {
   return (
-    <div className={className ?? 'flex shrink-0 items-center gap-1 sm:gap-2'}>
+    <div className={className ?? 'flex shrink-0 items-center gap-1 sm:gap-1.5'}>
       <ToolsNavMenu />
-      <LocaleCurrencySelector />
+      <SettingsNavMenu />
       <XMenuButton />
       <AppWalletButton />
     </div>

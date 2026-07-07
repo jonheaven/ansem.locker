@@ -24,6 +24,7 @@ export const zh = {
     solana: 'Solana',
     language: '语言',
     currency: '货币',
+    settings: '设置',
   },
   price: {
     tickerAria: '24 小时内 {price} {change}',
