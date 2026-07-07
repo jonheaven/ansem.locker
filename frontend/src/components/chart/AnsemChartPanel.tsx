@@ -26,7 +26,7 @@ function formatPercent(change: number): string {
   return `${sign}${rounded.toFixed(2)}%`;
 }
 
-export function AnsemChartPanel() {
+export function AnsemChartPanel({ embedded = false }: { embedded?: boolean }) {
   const { t } = useI18n();
   const { formatTokenPrice } = useCurrency();
   const [interval, setInterval] = useState<AsterKlineInterval>('1h');
@@ -57,18 +57,23 @@ export function AnsemChartPanel() {
   );
 
   return (
-    <Card className="overflow-clip border-border/80 bg-background/80 shadow-sm backdrop-blur-md">
-      <CardHeader className="space-y-4 border-b border-border/60 pb-4">
+    <Card className={cn('overflow-clip border-border/80 bg-background/80 shadow-sm backdrop-blur-md', embedded && 'border-0 bg-transparent shadow-none')}>
+      <CardHeader className={cn('space-y-4 border-b border-border/60 pb-4', embedded && 'space-y-3 p-0 pb-3')}>
         <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <CardTitle className="text-xl sm:text-2xl">{t('tools.chart')}</CardTitle>
-            <CardDescription className="mt-1">{t('tools.chartDescription')}</CardDescription>
-          </div>
+          {!embedded ? (
+            <div>
+              <CardTitle className="text-xl sm:text-2xl">{t('tools.chart')}</CardTitle>
+              <CardDescription className="mt-1">{t('tools.chartDescription')}</CardDescription>
+            </div>
+          ) : null}
           <a
             href={ASTER_TRADE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-surface-hover"
+            className={cn(
+              'inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-surface-hover',
+              embedded && 'ml-auto',
+            )}
           >
             {t('tools.openOnAster')}
             <ExternalLink className="h-3.5 w-3.5" aria-hidden />
@@ -81,7 +86,7 @@ export function AnsemChartPanel() {
               {t('common.ansem')}
             </p>
             <div className="mt-1 flex flex-wrap items-center gap-2">
-              <p className="font-mono text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              <p className={cn('font-mono font-bold tracking-tight text-foreground', embedded ? 'text-2xl' : 'text-3xl sm:text-4xl')}>
                 {price ?? (ticker.isLoading ? '…' : '—')}
               </p>
               {changeLabel ? (
@@ -146,8 +151,13 @@ export function AnsemChartPanel() {
         </div>
       </CardHeader>
 
-      <CardContent className="p-0">
-        <div className="relative h-[min(58vh,520px)] min-h-[320px] w-full px-2 pb-3 pt-2 sm:px-4">
+      <CardContent className={cn('p-0', embedded && 'px-0')}>
+        <div
+          className={cn(
+            'relative w-full px-2 pb-3 pt-2 sm:px-4',
+            embedded ? 'h-[min(42vh,360px)] min-h-[240px]' : 'h-[min(58vh,520px)] min-h-[320px]',
+          )}
+        >
           {klines.isLoading ? (
             <div className="flex h-full items-center justify-center gap-2 text-sm text-muted-foreground">
               <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
@@ -162,7 +172,7 @@ export function AnsemChartPanel() {
           )}
         </div>
 
-        <p className="border-t border-border/60 px-4 py-2 text-center text-[10px] text-muted-foreground">
+        <p className={cn('border-t border-border/60 px-4 py-2 text-center text-[10px] text-muted-foreground', embedded && 'px-0')}>
           {t('tools.poweredByAster')}
         </p>
       </CardContent>

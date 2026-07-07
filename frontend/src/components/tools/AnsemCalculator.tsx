@@ -37,7 +37,7 @@ function rawToAnsemUnits(raw: bigint): number {
   return Number(raw) / 10 ** ANSEM_DECIMALS;
 }
 
-export function AnsemCalculator() {
+export function AnsemCalculator({ embedded = false }: { embedded?: boolean }) {
   const { t } = useI18n();
   const { currency, priceUsd, convertFiatFromRaw, formatFiat, formatTokenPrice } = useCurrency();
   const [ansemInput, setAnsemInput] = useState('10000');
@@ -109,25 +109,29 @@ export function AnsemCalculator() {
 
   const priceLoading = priceUsd == null;
 
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('tools.calculatorTitle')}</CardTitle>
-        <CardDescription>{t('tools.calculatorDescription')}</CardDescription>
-        <p className="pt-1 text-sm font-medium text-foreground">
-          {priceLoading ? (
-            <span className="inline-flex items-center gap-2 text-muted-foreground">
-              <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
-              {t('tools.priceLoading')}
-            </span>
-          ) : (
-            t('tools.pricePerAnsem', {
-              price: formatTokenPrice(priceUsd) ?? '—',
-            })
-          )}
-        </p>
-      </CardHeader>
-      <CardContent className="space-y-4">
+  const priceLine = priceLoading ? (
+    <span className="inline-flex items-center gap-2 text-muted-foreground">
+      <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
+      {t('tools.priceLoading')}
+    </span>
+  ) : (
+    t('tools.pricePerAnsem', {
+      price: formatTokenPrice(priceUsd) ?? '—',
+    })
+  );
+
+  const body = (
+    <>
+      {!embedded ? (
+        <CardHeader>
+          <CardTitle>{t('tools.calculatorTitle')}</CardTitle>
+          <CardDescription>{t('tools.calculatorDescription')}</CardDescription>
+          <p className="pt-1 text-sm font-medium text-foreground">{priceLine}</p>
+        </CardHeader>
+      ) : (
+        <p className="text-sm font-medium text-foreground">{priceLine}</p>
+      )}
+      <CardContent className={cn('space-y-4', embedded && 'p-0')}>
         <div className="space-y-3">
           <label className="block">
             <span className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
@@ -212,6 +216,12 @@ export function AnsemCalculator() {
 
         <p className="text-[11px] leading-relaxed text-muted-foreground">{t('tools.calculatorNote')}</p>
       </CardContent>
-    </Card>
+    </>
   );
+
+  if (embedded) {
+    return <div className="space-y-4">{body}</div>;
+  }
+
+  return <Card>{body}</Card>;
 }
