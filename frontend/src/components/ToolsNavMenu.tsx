@@ -58,7 +58,7 @@ export function ToolsNavMenu() {
           )}
         >
           <Wrench className="h-4 w-4 shrink-0" aria-hidden />
-          <span className="hidden sm:inline">{t('tools.nav')}</span>
+          <span>{t('tools.nav')}</span>
         </button>
 
         {open ? (
