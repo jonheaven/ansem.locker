@@ -62,7 +62,7 @@ export const ja = {
   home: {
     headline: 'ダイヤモンドフーフを証明',
     tagline:
-      'ANSEM をオンチェーンでロック、𝕏 で Flex、Locker List に参加。最大ロック × 最長期間 = Diamond Hooves Rank トップ。',
+      'ANSEM をオンチェーンでロック、𝕏 で Flex、ロッカーリストに参加。最大ロック × 最長期間 = ダイヤモンドフーフランキングのトップ。',
     hero: {
       lock: {
         headline: 'ダイヤモンドフーフを証明',
@@ -75,8 +75,8 @@ export const ja = {
         tagline: 'ウォレットを接続して ANSEM をオンチェーンでロック。すべてあなたが署名。',
       },
       leaderboard: {
-        headline: 'Diamond Hooves Rank',
-        tagline: 'Hoove Score = 数量 × ロック日数。最も強い確信をオンチェーンで。',
+        headline: 'ダイヤモンドフーフランキング',
+        tagline: 'フーフスコア = 数量 × ロック日数。最も強い確信をオンチェーンで。',
       },
       why: {
         headline: 'なぜ ANSEM をロック？',
@@ -173,21 +173,22 @@ export const ja = {
     claimableBanner: '{count} 件請求可能',
     claimedToast: 'ANSEM を請求 — ウォレットに返却',
     claimedDescription: '{amount} がオンチェーンで返却。Solscan 証明を 𝕏 でシェア。',
-    claimSuccessTitle: '請求完了 — diamond hooves お届け',
+    claimSuccessTitle: '請求完了 — ダイヤモンドフーフお届け',
     claimSuccessBody: 'ANSEM がウォレットに戻りました。ロック→待機→請求、すべてオンチェーン。証明をシェアして信頼を。',
     shareClaim: '請求を 𝕏 でシェア',
     viewClaimTx: '請求トランザクション',
     unlockedToast: 'オンチェーンでアンロックしました',
     unlockFailed: '請求失敗 — 再試行または lock.jup.ag',
     solscanAccount: '{short}… · Solscan',
+    lockProgressAria: 'ロックの進捗',
     shareLock: '𝕏でシェア',
     shareCopied: 'ツイートをコピーしました — アプリが開かない場合は𝕏に貼り付けてください。',
     jupiterFallback: 'バックアップ: ansem.locker がオフラインでも、解除後は lock.jup.ag から請求可能（同一プログラム）。',
   },
   leaderboard: {
-    title: 'Diamond Hooves Rank',
+    title: 'ダイヤモンドフーフランキング',
     description:
-      '誰が最も多く・最も長く ANSEM をロック？ Hoove Score = 量 × 残り日数 — オンチェーンの確信ランキング。',
+      '誰が最も多く・最も長く ANSEM をロック？ フーフスコア = 量 × 残り日数 — オンチェーンの確信ランキング。',
     shareRanks: 'ランキングをシェア',
     loading: 'ロックを読み込み中…',
     empty: 'まだダイヤモンドフーフがありません。',
@@ -195,7 +196,7 @@ export const ja = {
     loadError: 'ランキングを読み込めませんでした',
     rpcHint:
       'ランキングには Vercel の専用 Solana RPC (SOLANA_RPC_URL) が必要です。helius.dev の無料枠で動作します。環境変数追加後に再デプロイしてください。',
-    sortScore: 'Hoove Score',
+    sortScore: 'フーフスコア',
     sortAmount: 'ロック量',
     sortDuration: '期間',
     unlockAvailable: 'アンロック可能',
@@ -205,11 +206,11 @@ export const ja = {
     verifiedOnly: '検証済み Flex のみ',
     verifiedOnlyEmpty:
       'まだ検証済み Flex がありません。ロック → Solscan tx リンク付きでシェア → 投稿 URL を貼り付け。',
-    lockerListTitle: 'The Locker List',
+    lockerListTitle: 'ロッカーリスト',
     lockerListBody:
       'ロック → 𝕏 で Flex → 投稿 URL を貼り付け。検証されたロッカーがここに表示されます。本気のブルズの可視性（報酬保証なし）。',
     lockerListEmpty: 'まだ検証済み Flex がありません。ロック、シェア、URL を貼り付け。',
-    lockerListJoin: 'Locker List に参加',
+    lockerListJoin: 'ロッカーリストに参加',
     copyWallet: 'ウォレットアドレスをコピー',
     tipHint:
       'ウォレットをコピー — エアドロップや支援者が SOL やトークンを直接送れます。報酬保証はありませんが、可視性を得たブルズです。',
@@ -250,13 +251,13 @@ export const ja = {
   },
   flex: {
     flexOnX: '𝕏 で Flex',
-    verifyTitle: 'Flex を証明 → Locker List',
+    verifyTitle: 'Flex を証明 → ロッカーリスト',
     verifyHint:
       '𝕏 でロック Flex を投稿（Solscan tx リンクを含める）、公開投稿 URL を貼り付け。oEmbed + オンチェーン tx で検証。',
     verifySolscanNote: 'Flex 投稿に https://solscan.io/tx/… （ロック tx）が必要です。',
     verifyPlaceholder: 'https://x.com/you/status/…',
-    verifySubmit: '検証して Locker List に参加',
-    verifySuccess: 'Locker List に登録されました',
+    verifySubmit: '検証してロッカーリストに参加',
+    verifySuccess: 'ロッカーリストに登録されました',
     verifyRequiresWallet: '先にウォレットを接続してください',
     step1: '1. 𝕏 で Flex',
     step2: '2. 投稿 URL を貼り付け',
@@ -269,15 +270,15 @@ export const ja = {
       'ロックされたトークンは解除日まで市場に出ない。ペーパーハンドの売り圧力が減る。オンチェーンで検証可能 — 約束ではなくボルト。',
     convictionTitle: 'シグナル > ノイズ',
     convictionBody:
-      '誰でも「強気」とツイートできる。ロックは証明。Diamond Hooves Rank は量 × 期間で本気度を示す。',
+      '誰でも「強気」とツイートできる。ロックは証明。ダイヤモンドフーフランキングは量 × 期間で本気度を示す。',
     flexTitle: 'Flex で可視性',
     flexBody:
-      '𝕏 でロックをシェア、投稿を検証、Locker List に載る。本気のブルズが注目される。',
+      '𝕏 でロックをシェア、投稿を検証、ロッカーリストに載る。本気のブルズが注目される。',
     diamondTitle: 'ダイヤモンドフーフ、ペーパーパウではない',
     diamondBody:
       '解除日はあなたが選ぶ。早期退出なし、パニック売りなし。$1B を目指すブルズと一緒にロックイン。',
     disclaimer:
-      '投資助言ではありません。Locker List の可視性は報酬やエアドロップの保証ではありません — 本気度の公開証明です。',
+      '投資助言ではありません。ロッカーリストの可視性は報酬やエアドロップの保証ではありません — 本気度の公開証明です。',
   },
   duration: {
     under1m: '1分未満',
@@ -331,9 +332,9 @@ export const ja = {
     shareLeaderboardRank: 'あなたは #{rank} — 確信を Flex',
     shareLeaderboardInvite: '競争に招待',
     shareMyLock: 'マイロックをシェア',
-    joinLockerList: 'Locker List に参加',
+    joinLockerList: 'ロッカーリストに参加',
     joinLockerListDescription: 'シェア後に Flex 投稿 URL を貼り付け',
-    onLockerList: 'Locker List 掲載中',
+    onLockerList: 'ロッカーリスト掲載中',
     onLockerListDescription: 'Flex 検証済み — コミュニティに表示中',
     sectionFollow: 'フォロー',
     followLabel: '{label} をフォロー',
@@ -351,7 +352,7 @@ export const ja = {
     unlinkFailed: 'リンク解除に失敗しました',
   },
   tools: {
-    nav: 'Tools',
+    nav: 'ツール',
     title: 'ツール',
     subtitle: 'ANSEM 用ユーティリティ — 計算機、チャートなど。ウォレット不要。',
     calculator: '計算機',

@@ -186,6 +186,7 @@ export const en = {
     unlockedToast: 'Unlocked on-chain',
     unlockFailed: 'Claim failed — try again or use lock.jup.ag as backup',
     solscanAccount: '{short}… on Solscan',
+    lockProgressAria: 'Lock progress',
     shareLock: 'Share on 𝕏',
     shareCopied: 'Tweet copied — paste in 𝕏 if the app did not open.',
     jupiterFallback:

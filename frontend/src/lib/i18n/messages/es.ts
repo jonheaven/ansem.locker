@@ -60,23 +60,23 @@ export const es = {
     myLocks: 'Mis bloqueos',
   },
   home: {
-    headline: 'Demuestra tus diamond hooves',
+    headline: 'Demuestra tus pezuñas de diamante',
     tagline:
-      'Bloquea ANSEM on-chain, presume en 𝕏 y únete al Locker List. Los mayores bloqueos + la convicción más larga = lo más alto del Diamond Hooves Rank.',
+      'Bloquea ANSEM on-chain, presume en 𝕏 y únete a la Lista de lockers. Los mayores bloqueos + la convicción más larga = lo más alto del Ranking de pezuñas de diamante.',
     hero: {
       lock: {
-        headline: 'Demuestra tus diamond hooves',
+        headline: 'Demuestra tus pezuñas de diamante',
         tagline: 'Elige cantidad y fecha — firmas en tu wallet; nunca tocamos tus claves.',
       },
       lockCommitted: {
-        tagline: 'Presume en 𝕏 ahora — muestra quién tiene diamond hooves.',
+        tagline: 'Presume en 𝕏 ahora — muestra quién tiene pezuñas de diamante.',
       },
       lockDisconnected: {
         tagline: 'Conecta tu wallet para bloquear ANSEM on-chain. Tú firmas cada paso.',
       },
       leaderboard: {
-        headline: 'Diamond Hooves Rank',
-        tagline: 'Hoove Score = cantidad × días bloqueados. ¿Quién tiene más convicción on-chain?',
+        headline: 'Ranking de pezuñas de diamante',
+        tagline: 'Puntuación pezuña = cantidad × días bloqueados. ¿Quién tiene más convicción on-chain?',
       },
       why: {
         headline: '¿Por qué bloquear ANSEM?',
@@ -156,7 +156,7 @@ export const es = {
   },
   bull: {
     lockedIn: 'Estás bloqueado',
-    flexNow: 'Presume en 𝕏 ahora — muéstrale a las trincheras quién tiene diamond hooves.',
+    flexNow: 'Presume en 𝕏 ahora — muéstrale a las trincheras quién tiene pezuñas de diamante.',
     youAreLockedIn: 'Estás bloqueado',
   },
   locks: {
@@ -174,29 +174,30 @@ export const es = {
     claimableBanner: '{count} listos para reclamar',
     claimedToast: 'ANSEM reclamado — de vuelta en tu cartera',
     claimedDescription: '{amount} devuelto on-chain. Comparte la prueba en Solscan en 𝕏.',
-    claimSuccessTitle: 'Reclamado — diamond hooves entregados',
+    claimSuccessTitle: 'Reclamado — pezuñas de diamante entregadas',
     claimSuccessBody: 'Tu ANSEM volvió a tu cartera. Bloqueo, espera, reclamo — todo on-chain. Comparte la prueba.',
     shareClaim: 'Compartir reclamo en 𝕏',
     viewClaimTx: 'Ver transacción de reclamo',
     unlockedToast: 'Desbloqueado on-chain',
     unlockFailed: 'Reclamo fallido — reintenta o usa lock.jup.ag',
     solscanAccount: '{short}… en Solscan',
+    lockProgressAria: 'Progreso del bloqueo',
     shareLock: 'Compartir en 𝕏',
     shareCopied: 'Tweet copiado — pégalo en 𝕏 si la app no se abrió.',
     jupiterFallback: 'Respaldo: si ansem.locker cae, reclama en lock.jup.ag tras tu fecha — mismo programa Jupiter Lock.',
   },
   leaderboard: {
-    title: 'Diamond Hooves Rank',
+    title: 'Ranking de pezuñas de diamante',
     description:
-      '¿Quién bloqueó más ANSEM durante más tiempo? Hoove Score = cantidad × días restantes — el tablero de convicción on-chain.',
+      '¿Quién bloqueó más ANSEM durante más tiempo? Puntuación pezuña = cantidad × días restantes — el tablero de convicción on-chain.',
     shareRanks: 'Compartir el ranking',
     loading: 'Cargando bloqueos…',
-    empty: 'Aún no hay diamond hooves.',
+    empty: 'Aún no hay pezuñas de diamante.',
     lockCta: 'Bloquear ANSEM',
     loadError: 'No se pudo cargar el ranking',
     rpcHint:
       'El tablero de ranking necesita un RPC de Solana dedicado en Vercel (SOLANA_RPC_URL). El plan gratuito en helius.dev funciona. Vuelve a desplegar después de añadir la variable de entorno.',
-    sortScore: 'Hoove Score',
+    sortScore: 'Puntuación pezuña',
     sortAmount: 'Bloqueado',
     sortDuration: 'Duración',
     unlockAvailable: 'Desbloqueo disponible',
@@ -205,11 +206,11 @@ export const es = {
     verifiedFlex: 'Flex verificado',
     verifiedOnly: 'Solo flex verificado',
     verifiedOnlyEmpty: 'Aún no hay publicaciones de flex verificadas. Bloquea, comparte con tu enlace de tx en Solscan y pega la URL de la publicación.',
-    lockerListTitle: 'The Locker List',
+    lockerListTitle: 'La lista de lockers',
     lockerListBody:
       'Bloquea, publica tu flex en 𝕏, pega el enlace de vuelta — los lockers verificados obtienen un lugar público aquí. Visibilidad para los toros más comprometidos (sin garantías, pero así es como te ponen en el radar).',
     lockerListEmpty: 'Aún no hay publicaciones de flex verificadas. Bloquea, comparte, pega la URL de tu publicación.',
-    lockerListJoin: 'Únete al Locker List',
+    lockerListJoin: 'Únete a la lista de lockers',
     copyWallet: 'Copiar dirección de cartera',
     tipHint:
       'Copia cualquier cartera — quienes hacen airdrops y los seguidores pueden enviar SOL o tokens directamente. Sin garantías, pero estos toros se ganaron la visibilidad.',
@@ -250,13 +251,13 @@ export const es = {
   },
   flex: {
     flexOnX: 'Presumir en 𝕏',
-    verifyTitle: 'Demuestra tu flex → Locker List',
+    verifyTitle: 'Demuestra tu flex → Lista de lockers',
     verifyHint:
       'Publica tu flex de bloqueo en 𝕏 (usa el botón de arriba — incluye el enlace de tx en Solscan), luego pega aquí la URL pública de la publicación. Verificamos mediante oEmbed de 𝕏 y confirmamos la tx de bloqueo on-chain.',
     verifySolscanNote: 'Tu publicación de flex debe incluir https://solscan.io/tx/… de tu bloqueo.',
     verifyPlaceholder: 'https://x.com/you/status/…',
-    verifySubmit: 'Verificar y unirse al Locker List',
-    verifySuccess: 'Estás en el Locker List',
+    verifySubmit: 'Verificar y unirse a la lista de lockers',
+    verifySuccess: 'Estás en la lista de lockers',
     verifyRequiresWallet: 'Conecta tu cartera primero',
     step1: '1. Presumir en 𝕏',
     step2: '2. Pegar URL de la publicación',
@@ -270,15 +271,15 @@ export const es = {
       'Cada token bloqueado está fuera del mercado hasta tu fecha. Menos flotante para que las manos débiles vendan. Visible, on-chain, verificable — no es una promesa, es una bóveda.',
     convictionTitle: 'Señal > ruido',
     convictionBody:
-      'Cualquiera puede tuitear «bullish». Los bloqueos lo demuestran. El Diamond Hooves Rank muestra quién puso el dinero donde pone la boca — cantidad × tiempo bloqueado.',
+      'Cualquiera puede tuitear «bullish». Los bloqueos lo demuestran. El Ranking de pezuñas de diamante muestra quién puso el dinero donde pone la boca — cantidad × tiempo bloqueado.',
     flexTitle: 'Presumir gana visibilidad',
     flexBody:
-      'Comparte tu bloqueo en 𝕏, verifica la publicación y entra en el Locker List. Los toros tempranos que demuestran convicción en público son a quienes los proyectos (y las comunidades) notan.',
-    diamondTitle: 'Diamond hooves vs manos débiles',
+      'Comparte tu bloqueo en 𝕏, verifica la publicación y entra en la lista de lockers. Los toros tempranos que demuestran convicción en público son a quienes los proyectos (y las comunidades) notan.',
+    diamondTitle: 'Pezuñas de diamante frente a manos débiles',
     diamondBody:
       'Tú elegiste la fecha de desbloqueo. Sin salida anticipada, sin venderte tus propias bolsas por pánico. Cuando llegue el desbloqueo, tú decides — pero hasta entonces, estás bloqueado con los toros que van por $1B.',
     disclaimer:
-      'No es asesoramiento financiero. La visibilidad en el Locker List no es una promesa de recompensas ni airdrops — solo prueba pública de que vas en serio.',
+      'No es asesoramiento financiero. La visibilidad en la lista de lockers no es una promesa de recompensas ni airdrops — solo prueba pública de que vas en serio.',
   },
   duration: {
     under1m: 'menos de 1m restante',
@@ -305,7 +306,7 @@ export const es = {
     warmingUp: 'Calentando…',
     gettingBullish: 'Poniéndose bullish',
     bullMode: 'Modo toro',
-    diamondHooves: 'Diamond hooves',
+    diamondHooves: 'Pezuñas de diamante',
     seriousConviction: 'Convicción seria',
     flexCommitment: 'Presume tu compromiso',
   },
@@ -332,9 +333,9 @@ export const es = {
     shareLeaderboardRank: 'Eres el #{rank} — presume tu convicción',
     shareLeaderboardInvite: 'Invita a otros a competir',
     shareMyLock: 'Compartir mi bloqueo',
-    joinLockerList: 'Unirse al Locker List',
+    joinLockerList: 'Unirse a la lista de lockers',
     joinLockerListDescription: 'Pega la URL de tu publicación de flex después de compartir',
-    onLockerList: 'En el Locker List',
+    onLockerList: 'En la lista de lockers',
     onLockerListDescription: 'Flex verificado — eres visible para la comunidad',
     sectionFollow: 'Seguir',
     followLabel: 'Seguir a {label}',
@@ -352,7 +353,7 @@ export const es = {
     unlinkFailed: 'No se pudo desvincular',
   },
   tools: {
-    nav: 'Tools',
+    nav: 'Herramientas',
     title: 'Herramientas',
     subtitle: 'Utilidades para ANSEM — calculadora, gráfico y más. Sin billetera.',
     calculator: 'Calculadora',

@@ -62,7 +62,7 @@ export const zh = {
   home: {
     headline: '证明你的钻石蹄',
     tagline:
-      '链上锁定 ANSEM，在 𝕏 上炫耀，加入 Locker List。锁定最多 + 坚持最久 = 钻石蹄排行榜榜首。',
+      '链上锁定 ANSEM，在 𝕏 上炫耀，加入锁仓者名单。锁定最多 + 坚持最久 = 钻石蹄排行榜榜首。',
     hero: {
       lock: {
         headline: '证明你的钻石蹄',
@@ -75,8 +75,8 @@ export const zh = {
         tagline: '连接钱包以链上锁定 ANSEM。每一步都由你签名。',
       },
       leaderboard: {
-        headline: 'Diamond Hooves Rank',
-        tagline: 'Hoove Score = 数量 × 锁定天数。谁有最强的链上信念？',
+        headline: '钻石蹄排行榜',
+        tagline: '蹄分 = 数量 × 锁定天数。谁有最强的链上信念？',
       },
       why: {
         headline: '为什么要锁定 ANSEM？',
@@ -173,13 +173,14 @@ export const zh = {
     claimableBanner: '{count} 个可领取',
     claimedToast: 'ANSEM 已领取 — 回到钱包',
     claimedDescription: '{amount} 已链上返还。在 𝕏 分享 Solscan 证明。',
-    claimSuccessTitle: '已领取 — diamond hooves 送达',
+    claimSuccessTitle: '已领取 — 钻石蹄已送达',
     claimSuccessBody: 'ANSEM 已回到钱包。锁定、等待、领取 — 全程链上。分享证明建立信任。',
     shareClaim: '在 𝕏 分享领取',
     viewClaimTx: '查看领取交易',
     unlockedToast: '已在链上解锁',
     unlockFailed: '领取失败 — 重试或使用 lock.jup.ag',
     solscanAccount: '{short}… 在 Solscan 上',
+    lockProgressAria: '锁定进度',
     shareLock: '在 𝕏 分享',
     shareCopied: '推文已复制 — 若未打开应用，请粘贴到 𝕏。',
     jupiterFallback: '备用：若 ansem.locker 离线，到期后可在 lock.jup.ag 领取 — 同一 Jupiter Lock 程序。',
@@ -204,11 +205,11 @@ export const zh = {
     verifiedFlex: '已验证炫耀',
     verifiedOnly: '仅显示已验证炫耀',
     verifiedOnlyEmpty: '尚无已验证炫耀帖子。锁定后分享并附上 Solscan 交易链接，再粘贴帖子 URL。',
-    lockerListTitle: 'Locker List',
+    lockerListTitle: '锁仓者名单',
     lockerListBody:
       '锁定、在 𝕏 炫耀、粘贴链接回来 — 经过验证的锁定者将公开展示。最有信念的牛人们获得曝光（无保证，但这是登上雷达的方式）。',
     lockerListEmpty: '尚无已验证炫耀帖子。锁定、分享、粘贴帖子 URL。',
-    lockerListJoin: '加入 Locker List',
+    lockerListJoin: '加入锁仓者名单',
     copyWallet: '复制钱包地址',
     tipHint:
       '复制任意钱包 — 空投者和支持者可直接发送 SOL 或代币。无保证，但这些牛人赢得了曝光。',
@@ -249,13 +250,13 @@ export const zh = {
   },
   flex: {
     flexOnX: '在 𝕏 炫耀',
-    verifyTitle: '证明你的炫耀 → Locker List',
+    verifyTitle: '证明你的炫耀 → 锁仓者名单',
     verifyHint:
       '在 𝕏 发布锁定炫耀（使用上方按钮 — 附上 Solscan 交易链接），然后在此粘贴公开帖子 URL。我们通过 𝕏 oEmbed 验证，并在链上确认锁定交易。',
     verifySolscanNote: '你的炫耀帖子必须包含锁定交易的 https://solscan.io/tx/… 链接。',
     verifyPlaceholder: 'https://x.com/you/status/…',
-    verifySubmit: '验证并加入 Locker List',
-    verifySuccess: '你已登上 Locker List',
+    verifySubmit: '验证并加入锁仓者名单',
+    verifySuccess: '你已登上锁仓者名单',
     verifyRequiresWallet: '请先连接钱包',
     step1: '1. 在 𝕏 炫耀',
     step2: '2. 粘贴帖子 URL',
@@ -272,12 +273,12 @@ export const zh = {
       '谁都能发推说"看多"。锁定才能证明。钻石蹄排行榜展示谁言行一致 — 数量 × 锁定时间。',
     flexTitle: '炫耀赢得曝光',
     flexBody:
-      '在 𝕏 分享你的锁定，验证帖子，登上 Locker List。公开证明信念的早期牛人，正是项目和社区会注意到的人。',
+      '在 𝕏 分享你的锁定，验证帖子，登上锁仓者名单。公开证明信念的早期牛人，正是项目和社区会注意到的人。',
     diamondTitle: '钻石蹄 vs 纸手',
     diamondBody:
       '解锁日期由你选择。无法提前退出，不会因恐慌抛售自己的仓位。解锁时由你决定 — 但在此之前，你与冲向 $1B 的牛人们一同锁定。',
     disclaimer:
-      '非投资建议。Locker List 曝光不代表奖励或空投承诺 — 只是公开证明你是认真的。',
+      '非投资建议。锁仓者名单曝光不代表奖励或空投承诺 — 只是公开证明你是认真的。',
   },
   duration: {
     under1m: '不足 1 分钟',
@@ -331,9 +332,9 @@ export const zh = {
     shareLeaderboardRank: '你排名第 #{rank} — 炫耀你的信念',
     shareLeaderboardInvite: '邀请他人参与竞争',
     shareMyLock: '分享我的锁定',
-    joinLockerList: '加入 Locker List',
+    joinLockerList: '加入锁仓者名单',
     joinLockerListDescription: '分享后粘贴你的炫耀帖子 URL',
-    onLockerList: '已在 Locker List',
+    onLockerList: '已在锁仓者名单',
     onLockerListDescription: '炫耀已验证 — 你对社区可见',
     sectionFollow: '关注',
     followLabel: '关注 {label}',
@@ -351,7 +352,7 @@ export const zh = {
     unlinkFailed: '无法取消关联',
   },
   tools: {
-    nav: 'Tools',
+    nav: '工具',
     title: '工具',
     subtitle: 'ANSEM 实用工具 — 计算器、图表等。无需钱包。',
     calculator: '计算器',
