@@ -3,7 +3,9 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { FlexVerifyForm } from '@/components/FlexVerifyForm';
 import { clearJustLocked, type JustLockedPayload } from '@/lib/just-locked';
 import { useFlexVerifiedForWallet } from '@/hooks/useLockerList';
+import { SolscanLink } from '@/components/SolscanLink';
 import { useI18n } from '@/lib/i18n/i18n-context';
+import { solscanTx } from '@/lib/solscan';
 import { openLockShare } from '@/lib/share-x';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
@@ -44,6 +46,13 @@ export function LockFlexBanner({ payload, onDismiss, className }: LockFlexBanner
         {payload.amountDisplay} {t('common.ansem')} · {payload.durationLabel}
       </p>
       <p className="mt-1 text-sm text-muted-foreground">{t('bull.flexNow')}</p>
+      {payload.txSig ? (
+        <p className="mt-2">
+          <SolscanLink href={solscanTx(payload.txSig)} className="text-xs font-medium">
+            {t('info.viewLockTx')}
+          </SolscanLink>
+        </p>
+      ) : null}
       <div className="mt-4 flex flex-wrap gap-2">
         <Button size="sm" className="gap-2" onClick={handleFlex}>
           <img src="/x.png" alt="" className="h-3.5 w-3.5 invert" aria-hidden />

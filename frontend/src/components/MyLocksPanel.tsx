@@ -3,6 +3,7 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { PublicKey, Transaction } from '@solana/web3.js';
 import { Loader2, Unlock } from 'lucide-react';
 import { toast } from 'sonner';
+import { SolscanLink } from '@/components/SolscanLink';
 import { AnsemAmountDisplay } from '@/components/AnsemFiatValue';
 import { LockFlexBanner } from '@/components/LockFlexBanner';
 import { Button } from '@/components/ui/button';
@@ -12,6 +13,7 @@ import { useMyLocks } from '@/hooks/useLocks';
 import { buildClaimAnsemInstructions } from '@/lib/bonfida';
 import { useI18n } from '@/lib/i18n/i18n-context';
 import { clearJustLocked, readJustLocked, type JustLockedPayload } from '@/lib/just-locked';
+import { solscanAccount, solscanTx } from '@/lib/solscan';
 
 export function MyLocksPanel() {
   const { publicKey, signTransaction } = useWallet();
@@ -59,9 +61,8 @@ export function MyLocksPanel() {
 
       toast.success(t('locks.unlockedToast'), {
         action: {
-          label: t('common.solscan'),
-          onClick: () =>
-            window.open(`https://solscan.io/tx/${sig}`, '_blank', 'noopener,noreferrer'),
+          label: t('common.viewTxOnSolscan'),
+          onClick: () => window.open(solscanTx(sig), '_blank', 'noopener,noreferrer'),
         },
       });
       refetch();
@@ -122,16 +123,14 @@ export function MyLocksPanel() {
                           ? t('locks.cliffPassed')
                           : `${formatTimeRemaining(lock.unlockTs, nowSec)} · ${t('leaderboard.unlocksOn', { date: formatUnlockDate(lock.unlockTs) })}`}
                       </p>
-                      <a
-                        href={`https://solscan.io/account/${lock.vestingAccount}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[10px] text-muted-foreground transition-colors hover:text-accent"
+                      <SolscanLink
+                        href={solscanAccount(lock.vestingAccount)}
+                        className="text-[10px] text-muted-foreground"
                       >
                         {t('locks.solscanAccount', {
                           short: lock.vestingAccount.slice(0, 8),
                         })}
-                      </a>
+                      </SolscanLink>
                     </div>
                     {unlocked && (
                       <Button

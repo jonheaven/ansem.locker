@@ -8,6 +8,8 @@ export const es = {
     lock: 'Bloquear',
     share: 'Compartir',
     solscan: 'Solscan',
+    viewOnSolscan: 'Ver en Solscan',
+    viewTxOnSolscan: 'Ver transacción en Solscan',
     github: 'GitHub',
     openSource: 'código abierto',
     nonCustodial: 'no custodial · descentralizado',
@@ -21,6 +23,10 @@ export const es = {
     solana: 'Solana',
     language: 'Idioma',
     currency: 'Moneda',
+  },
+  price: {
+    tickerAria: '{price} {change} en las últimas 24 horas',
+    tickerAriaNoChange: '{price}, cambio de 24 h no disponible',
   },
   wallet: {
     selectWallet: 'Seleccionar cartera',
@@ -59,7 +65,7 @@ export const es = {
   lock: {
     title: 'Bloquear $ANSEM',
     disconnected:
-      'Conecta una cartera para demostrar tu optimismo. Bloquea $ANSEM on-chain — tú firmas todo, nosotros nunca guardamos tus claves.',
+      'Conecta una cartera para demostrar tu optimismo. Bloquea $ANSEM on-chain — tú firmas todo; nunca vemos ni tocamos tus claves privadas.',
     yourBalance: 'Tu saldo',
     balanceError: 'No se pudo cargar el saldo. Inténtalo de nuevo en un momento.',
     lockAmount: 'Cantidad a bloquear',
@@ -72,6 +78,7 @@ export const es = {
     insufficientBalance: 'Saldo insuficiente',
     lockedToast: 'Bloqueado — presume en 𝕏',
     txFailed: 'La transacción falló',
+    maxHint: 'Bloquear todo tu saldo',
     duration5m: '5m',
     duration1y: '1a',
     preset1m: '1m',
@@ -137,7 +144,7 @@ export const es = {
     step3Body: 'Confirma en tu cartera. El bloqueo es público on-chain y aparece en el leaderboard.',
     reassuranceNonCustodialTitle: 'No custodial',
     reassuranceNonCustodialBody:
-      'Nunca tocamos tus claves privadas. Los tokens van a una bóveda on-chain estándar, no a nuestros servidores.',
+      'Nunca vemos ni tocamos tus claves privadas. Los tokens van a una bóveda Jupiter Lock en Solana — no a nuestros servidores. Apruebas cada transacción en tu cartera.',
     reassuranceFixedTitle: 'Fecha de desbloqueo fija',
     reassuranceFixedBody:
       'Eliges la fecha de antemano. No es posible retirar antes — el programa hace cumplir el calendario.',
@@ -154,6 +161,8 @@ export const es = {
       'Los bloqueos usan Jupiter Lock, infraestructura de código abierto que Jupiter mantiene para escrows on-chain. Los tokens están en una bóveda controlada por el programa; ansem.locker es solo la interfaz.',
     aboutJupiter: 'Acerca de Jupiter Lock',
     programOnSolscan: 'Programa en Solscan',
+    tokenOnSolscan: '$ANSEM en Solscan',
+    viewLockTx: 'Ver transacción de bloqueo',
     program: 'Programa',
     security: 'Seguridad',
     source: 'Código fuente',
@@ -225,6 +234,7 @@ export const es = {
     xAria: 'Compartir y verificar en X',
   },
   xMenu: {
+    tooltip: 'Menú 𝕏 y compartir',
     linkedIntro: 'Cartera vinculada a @{handle} para prueba social en el leaderboard.',
     linkIntro: 'Vincula tu cartera a una cuenta de {x}, o comparte sin vincular.',
     shareIntro: 'Comparte en {x} cuando quieras. Conecta una cartera para vincular tu perfil.',
@@ -259,5 +269,21 @@ export const es = {
     linkFailed: 'No se pudo vincular {x}',
     unlinkedToast: 'Cuenta de {x} desvinculada',
     unlinkFailed: 'No se pudo desvincular',
+  },
+  tools: {
+    nav: 'Incognito',
+    badge: 'Incognito Tools',
+    title: 'Incognito Tools',
+    subtitle: 'Datos de mercado y utilidades para $ANSEM — sin billetera.',
+    chart: 'Gráfico de $ANSEM',
+    chartDescription: 'Perpetuo en Aster · velas en vivo',
+    interval: 'Intervalo del gráfico',
+    loading: 'Cargando gráfico…',
+    loadError: 'No se pudieron cargar los datos de Aster',
+    high24h: 'Máx. 24h',
+    low24h: 'Mín. 24h',
+    volume24h: 'Vol. 24h',
+    poweredByAster: 'Datos de mercado de Aster DEX',
+    openOnAster: 'Operar en Aster',
   },
 } as const;

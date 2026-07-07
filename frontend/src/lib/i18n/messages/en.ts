@@ -8,6 +8,8 @@ export const en = {
     lock: 'Lock',
     share: 'Share',
     solscan: 'Solscan',
+    viewOnSolscan: 'View on Solscan',
+    viewTxOnSolscan: 'View transaction on Solscan',
     github: 'GitHub',
     openSource: 'open source',
     nonCustodial: 'non-custodial · decentralized',
@@ -21,6 +23,10 @@ export const en = {
     solana: 'Solana',
     language: 'Language',
     currency: 'Currency',
+  },
+  price: {
+    tickerAria: '{price} {change} in the last 24 hours',
+    tickerAriaNoChange: '{price}, 24 hour change unavailable',
   },
   wallet: {
     selectWallet: 'Select wallet',
@@ -59,7 +65,7 @@ export const en = {
   lock: {
     title: 'Lock $ANSEM',
     disconnected:
-      'Connect a wallet to prove your bullishness. Lock $ANSEM on-chain — you sign everything, we never hold your keys.',
+      'Connect a wallet to prove your bullishness. Lock $ANSEM on-chain — you sign everything; we never see or touch your private keys.',
     yourBalance: 'Your balance',
     balanceError: 'Could not load balance. Try again shortly.',
     lockAmount: 'Lock amount',
@@ -72,6 +78,7 @@ export const en = {
     insufficientBalance: 'Insufficient balance',
     lockedToast: 'Locked — flex on 𝕏',
     txFailed: 'Transaction failed',
+    maxHint: 'Lock your full balance',
     duration5m: '5m',
     duration1y: '1y',
     preset1m: '1m',
@@ -137,7 +144,7 @@ export const en = {
     step3Body: 'Confirm in your wallet. The lock is public on-chain and appears on the leaderboard.',
     reassuranceNonCustodialTitle: 'Non-custodial',
     reassuranceNonCustodialBody:
-      'We never touch your private keys. Tokens go to a standard on-chain vault, not our servers.',
+      'We never see or touch your private keys. Tokens go to a Jupiter Lock vault on Solana — not our servers. You approve every transaction in your wallet.',
     reassuranceFixedTitle: 'Fixed unlock date',
     reassuranceFixedBody:
       'You pick the date upfront. Early withdrawal is not possible — the program enforces the schedule.',
@@ -154,6 +161,8 @@ export const en = {
       'Locks use Jupiter Lock, open-source infrastructure Jupiter maintains for on-chain escrows. Tokens sit in a program-controlled vault; ansem.locker is only the interface.',
     aboutJupiter: 'About Jupiter Lock',
     programOnSolscan: 'Program on Solscan',
+    tokenOnSolscan: '$ANSEM on Solscan',
+    viewLockTx: 'View lock transaction',
     program: 'Program',
     security: 'Security',
     source: 'Source',
@@ -225,6 +234,7 @@ export const en = {
     xAria: 'Share and verify on X',
   },
   xMenu: {
+    tooltip: '𝕏 menu & share',
     linkedIntro: 'Wallet linked to @{handle} for leaderboard social proof.',
     linkIntro: 'Link your wallet to a {x} account, or share without linking.',
     shareIntro: 'Share on {x} anytime. Connect a wallet to link your profile.',
@@ -259,5 +269,21 @@ export const en = {
     linkFailed: 'Could not link {x}',
     unlinkedToast: '{x} account unlinked',
     unlinkFailed: 'Could not unlink',
+  },
+  tools: {
+    nav: 'Incognito',
+    badge: 'Incognito Tools',
+    title: 'Incognito Tools',
+    subtitle: 'Market data and utilities for $ANSEM — no wallet required.',
+    chart: '$ANSEM Chart',
+    chartDescription: 'Perpetual futures on Aster · live klines',
+    interval: 'Chart interval',
+    loading: 'Loading chart…',
+    loadError: 'Could not load chart data from Aster',
+    high24h: '24h High',
+    low24h: '24h Low',
+    volume24h: '24h Vol',
+    poweredByAster: 'Market data from Aster DEX',
+    openOnAster: 'Trade on Aster',
   },
 } as const;

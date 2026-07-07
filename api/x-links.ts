@@ -5,7 +5,8 @@ import {
   type XLinkRecord,
 } from './_shared/x-link-store';
 import { isBase58Address } from './_shared/solana';
-import { fetchTweetOembed } from './_shared/twitter-oembed';
+import { fetchTweetOembed, assertTweetUrl } from './_shared/twitter-oembed';
+import { verifyWalletSignature } from './_shared/wallet-auth';
 
 export type { XLinkRecord };
 
@@ -44,9 +45,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'DELETE') {
     const wallet = String(req.body?.wallet ?? '').trim();
+    const message = String(req.body?.message ?? '').trim();
+    const signature = String(req.body?.signature ?? '').trim();
+
     if (!isValidWallet(wallet)) {
       return res.status(400).json({ error: 'Invalid wallet address' });
     }
+    if (!message || !signature) {
+      return res.status(400).json({ error: 'Wallet signature required to unlink' });
+    }
+
+    try {
+      await verifyWalletSignature(wallet, message, signature, 'unlink');
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Wallet signature verification failed';
+      return res.status(401).json({ error: msg });
+    }
+
     store.delete(wallet);
     await saveXLinkStore(store);
     return res.status(200).json({ ok: true });
@@ -59,6 +74,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const wallet = String(req.body?.wallet ?? '').trim();
   const code = String(req.body?.code ?? '').trim();
   const tweetUrl = String(req.body?.tweetUrl ?? '').trim();
+  const message = String(req.body?.message ?? '').trim();
+  const signature = String(req.body?.signature ?? '').trim();
 
   if (!isValidWallet(wallet)) {
     return res.status(400).json({ error: 'Invalid wallet address' });
@@ -69,10 +86,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!tweetUrl) {
     return res.status(400).json({ error: 'Paste your verification post URL' });
   }
+  if (!message || !signature) {
+    return res.status(400).json({ error: 'Wallet signature required to link' });
+  }
 
   try {
+    await verifyWalletSignature(wallet, message, signature, 'link');
+    assertTweetUrl(tweetUrl);
     const { xHandle } = await verifyAccountLink(tweetUrl, wallet, code);
     const existing = store.get(wallet);
+    if (existing && existing.xHandle.toLowerCase() !== xHandle.toLowerCase()) {
+      return res.status(409).json({
+        error: `Wallet already linked to @${existing.xHandle}. Unlink first.`,
+      });
+    }
     const link: XLinkRecord = {
       wallet,
       xHandle,

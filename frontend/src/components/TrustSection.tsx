@@ -1,7 +1,9 @@
 import { ExternalLink, Unplug } from 'lucide-react';
 import { PoweredByJupiter } from '@/components/PoweredByJupiter';
-import { GITHUB_URL, JUPITER_LOCK_PROGRAM_ID } from '@/config/constants';
+import { SolscanLink } from '@/components/SolscanLink';
+import { ANSEM_MINT, GITHUB_URL, JUPITER_LOCK_PROGRAM_ID } from '@/config/constants';
 import { useI18n } from '@/lib/i18n/i18n-context';
+import { solscanAccount, solscanToken } from '@/lib/solscan';
 import { cn } from '@/lib/cn';
 
 const STEPS = [
@@ -53,14 +55,13 @@ export function TrustSection({ variant = 'full' }: TrustSectionProps) {
             <ExternalLink className="h-3 w-3" />
           </a>
           <span aria-hidden>·</span>
-          <a
-            href={`https://solscan.io/account/${JUPITER_LOCK_PROGRAM_ID.toBase58()}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono transition-colors hover:text-accent"
-          >
+          <SolscanLink href={solscanAccount(JUPITER_LOCK_PROGRAM_ID.toBase58())} className="font-mono">
             {t('info.programOnSolscan')}
-          </a>
+          </SolscanLink>
+          <span aria-hidden>·</span>
+          <SolscanLink href={solscanToken(ANSEM_MINT.toBase58())} className="font-mono">
+            {t('info.tokenOnSolscan')}
+          </SolscanLink>
         </p>
       </div>
 

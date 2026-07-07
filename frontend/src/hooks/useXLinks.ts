@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { apiErrorMessage, fetchJson } from '@/lib/fetch-json';
 import { X_SYMBOL } from '@/config/constants';
+import { signWalletAuthRequest } from '@/lib/wallet-auth';
 import { useXLinkStore } from '@/lib/x-link-store';
 
 export type XLinkRecord = {
@@ -75,13 +77,15 @@ export function useXLinkForWallet(wallet?: string) {
 export function useLinkXAccount() {
   const queryClient = useQueryClient();
   const setLocalLink = useXLinkStore((s) => s.setLink);
+  const { signMessage } = useWallet();
 
   return useMutation({
     mutationFn: async (input: { wallet: string; code: string; tweetUrl: string }) => {
+      const auth = await signWalletAuthRequest(signMessage, input.wallet, 'link');
       const result = await fetchJson<{ error?: string; link?: XLinkRecord }>('/api/x-links', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(input),
+        body: JSON.stringify({ ...input, ...auth }),
       });
       if (!result.ok || !result.data?.link) {
         throw new Error(apiErrorMessage(result, `Could not link ${X_SYMBOL} account`));
@@ -102,13 +106,15 @@ export function useLinkXAccount() {
 export function useUnlinkXAccount() {
   const queryClient = useQueryClient();
   const removeLocal = useXLinkStore((s) => s.removeLink);
+  const { signMessage } = useWallet();
 
   return useMutation({
     mutationFn: async (wallet: string) => {
+      const auth = await signWalletAuthRequest(signMessage, wallet, 'unlink');
       const result = await fetchJson<{ error?: string }>('/api/x-links', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ wallet }),
+        body: JSON.stringify({ wallet, ...auth }),
       });
       if (!result.ok) {
         throw new Error(apiErrorMessage(result, `Could not unlink ${X_SYMBOL} account`));

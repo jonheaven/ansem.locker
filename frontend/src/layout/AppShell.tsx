@@ -28,7 +28,7 @@ export function AppShell() {
               : 'overflow-y-auto py-6 sm:py-8',
           )}
         >
-          <div className="mx-auto flex w-full max-w-5xl flex-col items-stretch">
+          <div className="mx-auto flex w-full max-w-6xl flex-col items-stretch">
             <Outlet />
           </div>
         </main>

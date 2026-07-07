@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { AnsemAmountDisplay } from '@/components/AnsemFiatValue';
 import { CopyWalletButton } from '@/components/CopyWalletButton';
+import { HoverTooltip } from '@/components/HoverTooltip';
 import { DiamondHoovesIcon } from '@/components/DiamondHoovesIcon';
 import { FlexVerifyForm } from '@/components/FlexVerifyForm';
 import { LockerListPanel } from '@/components/LockerListPanel';
@@ -16,6 +17,8 @@ import { useXLinks } from '@/hooks/useXLinks';
 import { shortenAddress } from '@/lib/format';
 import { useI18n } from '@/lib/i18n/i18n-context';
 import { openLeaderboardEntryShare, openLeaderboardHypeShare } from '@/lib/share-x';
+import { SolscanLink } from '@/components/SolscanLink';
+import { solscanAccount } from '@/lib/solscan';
 import { cn } from '@/lib/cn';
 
 type LeaderboardPreviewProps = {
@@ -219,20 +222,24 @@ export function LeaderboardTable({
                           ) : null}
                         </a>
                       ) : (
-                        <a
-                          href={`https://solscan.io/account/${entry.owner}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-mono text-sm transition-colors hover:text-accent"
+                        <SolscanLink
+                          href={solscanAccount(entry.owner)}
+                          className="font-mono text-sm"
                         >
                           {shortenAddress(entry.owner, 6)}
-                        </a>
+                        </SolscanLink>
                       )}
                       <p className="text-xs text-muted-foreground">
                         {displayHandle ? (
-                          <span className="font-mono">{shortenAddress(entry.owner, 4)}</span>
+                          <SolscanLink href={solscanAccount(entry.owner)} className="font-mono">
+                            {shortenAddress(entry.owner, 4)}
+                          </SolscanLink>
                         ) : null}
                         {displayHandle ? ' · ' : ''}
+                        <SolscanLink href={solscanAccount(entry.vestingAccount)} className="font-mono">
+                          {entry.vestingAccount.slice(0, 6)}…
+                        </SolscanLink>
+                        {' · '}
                         {timeRemaining}
                       </p>
                     </div>
@@ -244,24 +251,25 @@ export function LeaderboardTable({
                       align="right"
                     />
                     <CopyWalletButton address={entry.owner} />
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      className="h-8 w-8 shrink-0 p-0"
-                      title={t('leaderboard.shareRank', { rank })}
-                      aria-label={t('leaderboard.shareRank', { rank })}
-                      onClick={() =>
-                        openLeaderboardEntryShare({
-                          rank,
-                          amount: entry.remainingInVault,
-                          whoLabel,
-                          timeRemaining,
-                          isSelf,
-                        })
-                      }
-                    >
-                      <Share2 className="h-4 w-4" />
-                    </Button>
+                    <HoverTooltip label={t('leaderboard.shareRank', { rank })}>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-8 w-8 shrink-0 p-0"
+                        aria-label={t('leaderboard.shareRank', { rank })}
+                        onClick={() =>
+                          openLeaderboardEntryShare({
+                            rank,
+                            amount: entry.remainingInVault,
+                            whoLabel,
+                            timeRemaining,
+                            isSelf,
+                          })
+                        }
+                      >
+                        <Share2 className="h-4 w-4" />
+                      </Button>
+                    </HoverTooltip>
                   </div>
                 </div>
               );

@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { fetchTweetOembed } from './_shared/twitter-oembed';
+import { assertTweetUrl, fetchTweetOembed } from './_shared/twitter-oembed';
 import {
   loadXLinkStore,
   saveXLinkStore,
@@ -8,6 +8,7 @@ import {
 import { isBase58Address, loadSolanaWeb3 } from './_shared/solana';
 import { walletHasActiveLock } from './_shared/wallet-lock-index';
 import { requireSolscanTxInPost, verifyLockTxForWallet } from './_shared/verify-flex-tx';
+import { verifyWalletSignature } from './_shared/wallet-auth';
 import {
   INDEXER_TIMEOUT_MS,
   missingRpcMessage,
@@ -51,12 +52,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const wallet = String(req.body?.wallet ?? '').trim();
   const flexTweetUrl = String(req.body?.flexTweetUrl ?? req.body?.tweetUrl ?? '').trim();
+  const message = String(req.body?.message ?? '').trim();
+  const signature = String(req.body?.signature ?? '').trim();
 
   if (!isValidWallet(wallet)) {
     return res.status(400).json({ error: 'Invalid wallet address' });
   }
   if (!flexTweetUrl) {
     return res.status(400).json({ error: 'Paste your flex post URL' });
+  }
+  if (!message || !signature) {
+    return res.status(400).json({ error: 'Wallet signature required to verify flex' });
   }
 
   const rpcUrl = resolveServerRpcUrl();
@@ -69,6 +75,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    await verifyWalletSignature(wallet, message, signature, 'flex-verify');
+    assertTweetUrl(flexTweetUrl);
+
     const { PublicKey } = await loadSolanaWeb3();
     const hasLock = await withTimeout(
       walletHasActiveLock(rpcUrl, new PublicKey(wallet)),

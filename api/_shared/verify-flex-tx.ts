@@ -1,5 +1,5 @@
 import { JUPITER_LOCK_PROGRAM_ID } from './jupiter-lock';
-import { loadSolanaWeb3 } from './solana';
+import { ANSEM_MINT_ID, loadSolanaWeb3 } from './solana';
 
 const TX_SIG_RE = /solscan\.io\/tx\/([1-9A-HJ-NP-Za-km-z]{80,90})/i;
 
@@ -46,18 +46,33 @@ export async function verifyLockTxForWallet(
   }
 
   const lockProgram = new PublicKey(JUPITER_LOCK_PROGRAM_ID);
-  const touchesLockProgram = parsed.transaction.message.instructions.some((ix) => {
-    let programId: import('@solana/web3.js').PublicKey | undefined;
-    if ('programId' in ix && ix.programId) {
-      programId = ix.programId;
-    } else if ('programIdIndex' in ix) {
-      programId = accountKeys[ix.programIdIndex]?.pubkey;
-    }
-    return programId?.equals(lockProgram) ?? false;
-  });
+  const ansemMint = new PublicKey(ANSEM_MINT_ID);
 
-  if (!touchesLockProgram) {
-    throw new Error('Transaction must be a Jupiter Lock lock (include your lock tx Solscan link)');
+  const resolvesProgramId = (ix: {
+    programId?: import('@solana/web3.js').PublicKey;
+    programIdIndex?: number;
+  }) => {
+    if ('programId' in ix && ix.programId) return ix.programId;
+    if ('programIdIndex' in ix && typeof ix.programIdIndex === 'number') {
+      return accountKeys[ix.programIdIndex]?.pubkey;
+    }
+    return undefined;
+  };
+
+  const allInstructions = [
+    ...parsed.transaction.message.instructions,
+    ...(parsed.meta?.innerInstructions?.flatMap((inner) => inner.instructions) ?? []),
+  ];
+
+  const touchesLockProgram = allInstructions.some((ix) =>
+    resolvesProgramId(ix)?.equals(lockProgram),
+  );
+  const includesAnsemMint = accountKeys.some((key) => key.pubkey.equals(ansemMint));
+
+  if (!touchesLockProgram || !includesAnsemMint) {
+    throw new Error(
+      'Transaction must be a $ANSEM Jupiter Lock (include your lock tx Solscan link)',
+    );
   }
 }
 

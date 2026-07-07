@@ -8,6 +8,8 @@ export const ja = {
     lock: 'ロック',
     share: 'シェア',
     solscan: 'Solscan',
+    viewOnSolscan: 'Solscanで表示',
+    viewTxOnSolscan: 'Solscanでトランザクションを表示',
     github: 'GitHub',
     openSource: 'オープンソース',
     nonCustodial: '非カストディアル · 分散型',
@@ -21,6 +23,10 @@ export const ja = {
     solana: 'Solana',
     language: '言語',
     currency: '通貨',
+  },
+  price: {
+    tickerAria: '24時間で {price} {change}',
+    tickerAriaNoChange: '{price}、24時間変動は取得できません',
   },
   wallet: {
     selectWallet: 'ウォレットを選択',
@@ -59,7 +65,7 @@ export const ja = {
   lock: {
     title: '$ANSEM をロック',
     disconnected:
-      'ウォレットを接続して強気を証明。$ANSEM をオンチェーンでロック — 署名はすべてあなた、私たちは鍵を持ちません。',
+      'ウォレットを接続して強気を証明。$ANSEM をオンチェーンでロック — 署名はすべてあなた、私たちは秘密鍵を見たり触ったりしません。',
     yourBalance: '残高',
     balanceError: '残高を読み込めませんでした。しばらくしてから再度お試しください。',
     lockAmount: 'ロック量',
@@ -72,6 +78,7 @@ export const ja = {
     insufficientBalance: '残高不足',
     lockedToast: 'ロック完了 — 𝕏 で Flex',
     txFailed: 'トランザクションに失敗しました',
+    maxHint: '残高をすべてロック',
     duration5m: '5分',
     duration1y: '1年',
     preset1m: '1ヶ月',
@@ -138,7 +145,7 @@ export const ja = {
     step3Body: 'ウォレットで確認。ロックはオンチェーンで公開され、リーダーボードに表示されます。',
     reassuranceNonCustodialTitle: '非カストディアル',
     reassuranceNonCustodialBody:
-      '秘密鍵には触れません。トークンは標準的なオンチェーンボルトへ — サーバーではありません。',
+      '私たちは秘密鍵を見たり触ったりすることは一切ありません。トークンは Solana 上の Jupiter Lock ボルトへ — サーバーではありません。すべてのトランザクションはウォレットで承認します。',
     reassuranceFixedTitle: '固定解除日',
     reassuranceFixedBody:
       '解除日は最初に決定。早期引き出し不可 — プログラムがスケジュールを強制します。',
@@ -155,6 +162,8 @@ export const ja = {
       'ロックは Jupiter Lock を使用 — Jupiter が維持するオープンソースのオンチェーンエスクロー。トークンはプログラム管理のボルトに保管され、ansem.locker はインターフェースのみです。',
     aboutJupiter: 'Jupiter Lock について',
     programOnSolscan: 'Solscan のプログラム',
+    tokenOnSolscan: 'Solscan の $ANSEM',
+    viewLockTx: 'ロックトランザクションを表示',
     program: 'プログラム',
     security: 'セキュリティ',
     source: 'ソース',
@@ -225,6 +234,7 @@ export const ja = {
     xAria: 'X でシェア・検証',
   },
   xMenu: {
+    tooltip: '𝕏 メニュー & シェア',
     linkedIntro: 'ウォレットは @{handle} にリンク済み — リーダーボードのソーシャル証明。',
     linkIntro: 'ウォレットを {x} アカウントにリンク、またはリンクなしでシェア。',
     shareIntro: 'いつでも {x} でシェア。プロフィールをリンクするにはウォレットを接続。',
@@ -259,5 +269,21 @@ export const ja = {
     linkFailed: '{x} をリンクできませんでした',
     unlinkedToast: '{x} アカウントのリンクを解除しました',
     unlinkFailed: 'リンク解除に失敗しました',
+  },
+  tools: {
+    nav: 'Incognito',
+    badge: 'Incognito Tools',
+    title: 'Incognito Tools',
+    subtitle: '$ANSEM のマーケットデータとユーティリティ — ウォレット不要。',
+    chart: '$ANSEM チャート',
+    chartDescription: 'Aster パーペチュアル · ライブ K 線',
+    interval: 'チャート間隔',
+    loading: 'チャート読み込み中…',
+    loadError: 'Aster からチャートデータを読み込めませんでした',
+    high24h: '24h 高値',
+    low24h: '24h 安値',
+    volume24h: '24h 出来高',
+    poweredByAster: 'マーケットデータ: Aster DEX',
+    openOnAster: 'Aster で取引',
   },
 } as const;

@@ -1,7 +1,9 @@
 import { ExternalLink } from 'lucide-react';
 import { CopyWalletButton } from '@/components/CopyWalletButton';
+import { SolscanLink } from '@/components/SolscanLink';
 import { useLockerList } from '@/hooks/useLockerList';
 import { useI18n } from '@/lib/i18n/i18n-context';
+import { solscanTx } from '@/lib/solscan';
 import { cn } from '@/lib/cn';
 
 type LockerListPanelProps = {
@@ -48,6 +50,14 @@ export function LockerListPanel({ className }: LockerListPanelProps) {
                 <ExternalLink className="h-3 w-3 opacity-60" aria-hidden />
               </a>
               <CopyWalletButton address={entry.wallet} className="h-7 w-7" />
+              {entry.flexTxSig ? (
+                <SolscanLink
+                  href={solscanTx(entry.flexTxSig)}
+                  className="ml-0.5 text-[10px] font-medium text-muted-foreground"
+                >
+                  {t('info.viewLockTx')}
+                </SolscanLink>
+              ) : null}
             </li>
           ))}
         </ul>

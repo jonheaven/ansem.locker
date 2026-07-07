@@ -5,6 +5,7 @@ const ANSEM_MINT = '9cRCn9rGT8V2imeM2BaKs13yhMEais3ruM3rPvTGpump';
 type DexPair = {
   priceUsd?: string;
   liquidity?: { usd?: number };
+  priceChange?: { h24?: number };
 };
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -39,8 +40,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(502).json({ error: 'Invalid ANSEM price from market' });
     }
 
+    const rawChange = best?.priceChange?.h24;
+    const priceChange24h =
+      typeof rawChange === 'number' && Number.isFinite(rawChange) ? rawChange : null;
+
     res.setHeader('Cache-Control', 'public, s-maxage=45, stale-while-revalidate=120');
-    return res.status(200).json({ priceUsd, mint: ANSEM_MINT, source: 'dexscreener' });
+    return res.status(200).json({
+      priceUsd,
+      priceChange24h,
+      mint: ANSEM_MINT,
+      source: 'dexscreener',
+    });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Quote request failed';
     return res.status(502).json({ error: message });

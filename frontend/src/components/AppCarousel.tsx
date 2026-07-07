@@ -8,7 +8,9 @@ import { TrustSection } from '@/components/TrustSection';
 import { WhyLockSection } from '@/components/WhyLockSection';
 import { APP_VIEWS, useAppView } from '@/hooks/useAppView';
 import { useHasActiveLock } from '@/hooks/useHasActiveLock';
+import { SolscanLink } from '@/components/SolscanLink';
 import { GITHUB_URL, JUPITER_LOCK_PROGRAM_ID } from '@/config/constants';
+import { solscanAccount } from '@/lib/solscan';
 import { useI18n } from '@/lib/i18n/i18n-context';
 import { cn } from '@/lib/cn';
 
@@ -109,14 +111,12 @@ export function AppCarousel() {
                   <div className={cn('space-y-4', scrollPanelClass)}>
                     <TrustSection variant="stacked" />
                     <p className="text-center text-[11px] text-muted-foreground">
-                      <a
-                        href={`https://solscan.io/account/${JUPITER_LOCK_PROGRAM_ID.toBase58()}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-mono transition-colors hover:text-accent"
+                      <SolscanLink
+                        href={solscanAccount(JUPITER_LOCK_PROGRAM_ID.toBase58())}
+                        className="font-mono"
                       >
                         {t('info.program')}
-                      </a>
+                      </SolscanLink>
                       {' · '}
                       <a
                         href={`${GITHUB_URL}/blob/main/docs/SECURITY.md`}

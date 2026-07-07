@@ -11,6 +11,7 @@ import {
 import { useEffect, useId, useRef, useState, type ComponentType } from 'react';
 import { toast } from 'sonner';
 import { FlexVerifyForm } from '@/components/FlexVerifyForm';
+import { HoverTooltip } from '@/components/HoverTooltip';
 import { DiamondHoovesMenuIcon } from '@/components/DiamondHoovesIcon';
 import { useFlexVerifiedForWallet } from '@/hooks/useLockerList';
 import { useLeaderboard, sortLocks, useMyLocks } from '@/hooks/useLocks';
@@ -174,30 +175,32 @@ export function XMenuButton() {
   const xHandle = linked?.xHandle;
 
   return (
-    <div ref={rootRef} className="relative">
-      <button
-        type="button"
-        aria-expanded={open}
-        aria-haspopup="menu"
-        aria-controls={menuId}
-        onClick={() => setOpen((value) => !value)}
-        className={cn(
-          'inline-flex h-9 items-center gap-2 rounded-full border border-border bg-surface px-3 text-sm font-medium text-foreground transition-colors hover:bg-surface-hover',
-          open && 'bg-surface-hover',
-        )}
-      >
-        <img src="/x.png" alt="" className="h-4 w-4" aria-hidden />
-        <span className="hidden sm:inline">
-          {linked ? `@${linked.xHandle}` : X_SYMBOL}
-        </span>
-      </button>
-
-      {open ? (
-        <div
-          id={menuId}
-          role="menu"
-          className="absolute right-0 z-[60] mt-2 w-[min(100vw-2rem,22rem)] overflow-hidden rounded-2xl border border-border/80 bg-background/95 p-2 shadow-xl backdrop-blur-2xl backdrop-saturate-150"
+    <HoverTooltip label={t('xMenu.tooltip')} hidden={open}>
+      <div ref={rootRef} className="relative inline-flex">
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-haspopup="menu"
+          aria-controls={menuId}
+          aria-label={t('xMenu.tooltip')}
+          onClick={() => setOpen((value) => !value)}
+          className={cn(
+            'inline-flex h-9 items-center gap-2 rounded-full border border-border bg-surface px-3 text-sm font-medium text-foreground transition-colors hover:bg-surface-hover',
+            open && 'bg-surface-hover',
+          )}
         >
+          <img src="/x.png" alt="" className="h-4 w-4" aria-hidden />
+          <span className="hidden sm:inline">
+            {linked ? `@${linked.xHandle}` : X_SYMBOL}
+          </span>
+        </button>
+
+        {open ? (
+          <div
+            id={menuId}
+            role="menu"
+            className="absolute right-0 z-[60] mt-2 w-[min(100vw-2rem,22rem)] overflow-hidden rounded-2xl border border-border/80 bg-background/95 p-2 shadow-xl backdrop-blur-2xl backdrop-saturate-150"
+          >
           {panel === 'menu' ? (
             <>
               <div className="px-3 py-2">
@@ -434,6 +437,7 @@ export function XMenuButton() {
           )}
         </div>
       ) : null}
-    </div>
+      </div>
+    </HoverTooltip>
   );
 }

@@ -11,7 +11,7 @@ export const COPY = {
     'Choose how much to lock and for how long. Your wallet signs one transaction. Until the unlock date, nobody (including us) can move those tokens.',
   lockPanelBalanceHint: 'Lock a portion of your wallet balance.',
   lockPanelDisconnected:
-    'Connect a wallet to prove your bullishness. Lock $ANSEM on-chain — you sign everything, we never hold your keys.',
+    'Connect a wallet to prove your bullishness. Lock $ANSEM on-chain — you sign everything; we never see or touch your private keys.',
   lockFooter:
     'Mainnet · you sign every transaction · verifiable on Solscan · unlock works without this site',
   bonfidaShort:
@@ -45,7 +45,7 @@ export const HOW_IT_WORKS = [
 export const REASSURANCE = [
   {
     title: 'Non-custodial',
-    body: 'We never touch your private keys. Tokens go to a standard on-chain vault, not our servers.',
+    body: 'We never see or touch your private keys. Tokens go to a Jupiter Lock vault on Solana — not our servers. You approve every transaction in your wallet.',
   },
   {
     title: 'Fixed unlock date',

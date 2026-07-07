@@ -1,14 +1,36 @@
+import { Eye } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { HoverTooltip } from '@/components/HoverTooltip';
 import { PoweredByJupiter } from '@/components/PoweredByJupiter';
+import { AnsemPriceTicker } from '@/components/AnsemPriceTicker';
 import { AppWalletButton } from '@/components/AppWalletButton';
 import { CopyWalletButton } from '@/components/CopyWalletButton';
 import { LocaleCurrencySelector } from '@/components/LocaleCurrencySelector';
 import { XMenuButton } from '@/components/XMenuButton';
 import { BUILDER_WALLET, BUILDER_X, BUILDER_X_URL, GITHUB_URL } from '@/config/constants';
 import { useI18n } from '@/lib/i18n/i18n-context';
+import { cn } from '@/lib/cn';
 
 function HeaderActions() {
+  const { t } = useI18n();
+  const location = useLocation();
+  const onTools = location.pathname.startsWith('/tools');
+
   return (
     <div className="flex items-center gap-2">
+      <HoverTooltip label={t('tools.title')}>
+        <Link
+          to="/tools"
+          className={cn(
+            'inline-flex h-9 items-center gap-1.5 rounded-full border border-border bg-surface px-3 text-xs font-medium transition-colors hover:bg-surface-hover',
+            onTools && 'border-accent/40 bg-accent/10 text-accent',
+          )}
+          aria-current={onTools ? 'page' : undefined}
+        >
+          <Eye className="h-4 w-4 shrink-0" aria-hidden />
+          <span className="hidden sm:inline">{t('tools.nav')}</span>
+        </Link>
+      </HoverTooltip>
       <LocaleCurrencySelector />
       <XMenuButton />
       <AppWalletButton />
@@ -23,24 +45,27 @@ export function AppHeader() {
     <header className="sticky top-0 z-50 shrink-0 border-b border-border/80 bg-background/72 backdrop-blur-2xl backdrop-saturate-150 transition-colors duration-700">
       <div className="mx-auto flex w-full max-w-5xl flex-col px-4 py-3 sm:flex-row sm:items-center sm:gap-8 sm:px-6 lg:gap-10">
         <div className="relative flex w-full items-center justify-center sm:w-[38%] sm:max-w-[360px] sm:shrink-0 lg:max-w-[400px]">
-          <a
-            href="#lock"
+          <div
             className="group flex items-center gap-2.5"
-            onClick={(e) => {
-              e.preventDefault();
-              window.location.hash = 'lock';
-            }}
           >
-            <img
-              src="/blackbull4.png"
-              alt=""
-              className="h-8 w-auto transition-transform duration-300 group-hover:scale-105"
-              draggable={false}
-            />
-            <p className="text-base font-semibold tracking-tight text-foreground">
-              ansem.locker
-            </p>
-          </a>
+            <Link to="/" className="shrink-0">
+              <img
+                src="/blackbull4.png"
+                alt=""
+                className="h-8 w-auto transition-transform duration-300 group-hover:scale-105"
+                draggable={false}
+              />
+            </Link>
+            <div className="min-w-0 text-left">
+              <Link
+                to="/"
+                className="block text-base font-semibold tracking-tight text-foreground transition-colors hover:text-accent"
+              >
+                ansem.locker
+              </Link>
+              <AnsemPriceTicker className="mt-0.5" />
+            </div>
+          </div>
           <div className="absolute right-0 top-1/2 -translate-y-1/2 sm:hidden">
             <HeaderActions />
           </div>

@@ -1,9 +1,14 @@
 import { BaseWalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { useMemo } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+import { useLayoutEffect, useMemo } from 'react';
+import { HoverTooltip } from '@/components/HoverTooltip';
 import { useI18n } from '@/lib/i18n/i18n-context';
 
 export function AppWalletButton() {
   const { t } = useI18n();
+  const { publicKey } = useWallet();
+  const { visible } = useWalletModal();
 
   const labels = useMemo(
     () => ({
@@ -18,5 +23,19 @@ export function AppWalletButton() {
     [t],
   );
 
-  return <BaseWalletMultiButton labels={labels} />;
+  const tooltip = publicKey ? t('wallet.changeWallet') : t('wallet.selectWallet');
+
+  useLayoutEffect(() => {
+    document.querySelectorAll('.wallet-adapter-button[title]').forEach((el) => {
+      el.removeAttribute('title');
+    });
+  });
+
+  return (
+    <HoverTooltip label={tooltip} hidden={visible}>
+      <div className="inline-flex">
+        <BaseWalletMultiButton labels={labels} />
+      </div>
+    </HoverTooltip>
+  );
 }

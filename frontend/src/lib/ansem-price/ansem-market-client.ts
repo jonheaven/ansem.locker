@@ -1,5 +1,6 @@
 export type AnsemQuote = {
   priceUsd: number;
+  priceChange24h: number | null;
   mint: string;
   source: string;
 };
@@ -13,5 +14,9 @@ export async function fetchAnsemQuoteClient(): Promise<AnsemQuote> {
   if (typeof json.priceUsd !== 'number' || !Number.isFinite(json.priceUsd)) {
     throw new Error('Invalid ANSEM quote');
   }
-  return json;
+  const priceChange24h =
+    typeof json.priceChange24h === 'number' && Number.isFinite(json.priceChange24h)
+      ? json.priceChange24h
+      : null;
+  return { ...json, priceChange24h };
 }

@@ -1,5 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { apiErrorMessage, fetchJson } from '@/lib/fetch-json';
+import { signWalletAuthRequest } from '@/lib/wallet-auth';
 
 export type LockerListEntry = {
   wallet: string;
@@ -37,15 +39,17 @@ export function useFlexVerifiedForWallet(wallet?: string) {
 
 export function useVerifyFlexPost() {
   const queryClient = useQueryClient();
+  const { signMessage } = useWallet();
 
   return useMutation({
     mutationFn: async (input: { wallet: string; flexTweetUrl: string }) => {
+      const auth = await signWalletAuthRequest(signMessage, input.wallet, 'flex-verify');
       const result = await fetchJson<{ error?: string; entry?: LockerListEntry }>(
         '/api/flex-verify',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(input),
+          body: JSON.stringify({ ...input, ...auth }),
         },
       );
       if (!result.ok || !result.data?.entry) {

@@ -8,6 +8,8 @@ export const ru = {
     lock: 'Заблокировать',
     share: 'Поделиться',
     solscan: 'Solscan',
+    viewOnSolscan: 'Открыть в Solscan',
+    viewTxOnSolscan: 'Транзакция в Solscan',
     github: 'GitHub',
     openSource: 'открытый исходный код',
     nonCustodial: 'некастодиальный · децентрализованный',
@@ -21,6 +23,10 @@ export const ru = {
     solana: 'Solana',
     language: 'Язык',
     currency: 'Валюта',
+  },
+  price: {
+    tickerAria: '{price} {change} за последние 24 часа',
+    tickerAriaNoChange: '{price}, изменение за 24 ч недоступно',
   },
   wallet: {
     selectWallet: 'Выберите кошелёк',
@@ -59,7 +65,7 @@ export const ru = {
   lock: {
     title: 'Заблокировать $ANSEM',
     disconnected:
-      'Подключите кошелёк, чтобы доказать бычий настрой. Заблокируйте $ANSEM в блокчейне — все подписи делаете вы, мы никогда не храним ваши ключи.',
+      'Подключите кошелёк, чтобы доказать бычий настрой. Заблокируйте $ANSEM в блокчейне — все подписи делаете вы; мы никогда не видим и не касаемся ваших приватных ключей.',
     yourBalance: 'Ваш баланс',
     balanceError: 'Не удалось загрузить баланс. Попробуйте чуть позже.',
     lockAmount: 'Сумма блокировки',
@@ -72,6 +78,7 @@ export const ru = {
     insufficientBalance: 'Недостаточно средств',
     lockedToast: 'Заблокировано — похвастайтесь в 𝕏',
     txFailed: 'Транзакция не прошла',
+    maxHint: 'Заблокировать весь баланс',
     duration5m: '5м',
     duration1y: '1г',
     preset1m: '1м',
@@ -137,7 +144,7 @@ export const ru = {
     step3Body: 'Подтвердите в кошельке. Блокировка публична в блокчейне и появится в рейтинге.',
     reassuranceNonCustodialTitle: 'Некастодиально',
     reassuranceNonCustodialBody:
-      'Мы никогда не касаемся ваших приватных ключей. Токены идут в стандартное хранилище в блокчейне, а не на наши серверы.',
+      'Мы никогда не видим и не касаемся ваших приватных ключей. Токены хранятся в Jupiter Lock на Solana — не на наших серверах. Каждую транзакцию вы подтверждаете в кошельке.',
     reassuranceFixedTitle: 'Фиксированная дата разблокировки',
     reassuranceFixedBody:
       'Вы выбираете дату заранее. Досрочный вывод невозможен — программа строго соблюдает график.',
@@ -154,6 +161,8 @@ export const ru = {
       'Блокировки используют Jupiter Lock — открытую инфраструктуру, которую Jupiter поддерживает для эскроу в блокчейне. Токены находятся в хранилище под управлением программы; ansem.locker — только интерфейс.',
     aboutJupiter: 'О Jupiter Lock',
     programOnSolscan: 'Программа на Solscan',
+    tokenOnSolscan: '$ANSEM на Solscan',
+    viewLockTx: 'Транзакция блокировки',
     program: 'Программа',
     security: 'Безопасность',
     source: 'Исходный код',
@@ -225,6 +234,7 @@ export const ru = {
     xAria: 'Поделиться и подтвердить в X',
   },
   xMenu: {
+    tooltip: 'Меню 𝕏 и шеринг',
     linkedIntro: 'Кошелёк привязан к @{handle} для социального подтверждения в рейтинге.',
     linkIntro: 'Привяжите кошелёк к аккаунту {x} или делитесь без привязки.',
     shareIntro: 'Делитесь в {x} в любое время. Подключите кошелёк, чтобы привязать профиль.',
@@ -259,5 +269,21 @@ export const ru = {
     linkFailed: 'Не удалось привязать {x}',
     unlinkedToast: 'Аккаунт {x} отвязан',
     unlinkFailed: 'Не удалось отвязать',
+  },
+  tools: {
+    nav: 'Incognito',
+    badge: 'Incognito Tools',
+    title: 'Incognito Tools',
+    subtitle: 'Рыночные данные и утилиты для $ANSEM — кошелёк не нужен.',
+    chart: 'График $ANSEM',
+    chartDescription: 'Перпетуал на Aster · свечи в реальном времени',
+    interval: 'Интервал графика',
+    loading: 'Загрузка графика…',
+    loadError: 'Не удалось загрузить данные с Aster',
+    high24h: 'Макс. 24ч',
+    low24h: 'Мин. 24ч',
+    volume24h: 'Объём 24ч',
+    poweredByAster: 'Данные рынка: Aster DEX',
+    openOnAster: 'Торговать на Aster',
   },
 } as const;

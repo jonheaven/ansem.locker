@@ -6,9 +6,17 @@ export function parseTweetId(url: string): string | null {
     const parts = parsed.pathname.split('/').filter(Boolean);
     const statusIdx = parts.indexOf('status');
     if (statusIdx === -1 || !parts[statusIdx + 1]) return null;
-    return parts[statusIdx + 1]!.replace(/\D/g, '');
+    const id = parts[statusIdx + 1]!.replace(/\D/g, '');
+    if (!/^\d{5,25}$/.test(id)) return null;
+    return id;
   } catch {
     return null;
+  }
+}
+
+export function assertTweetUrl(url: string): void {
+  if (!parseTweetId(url)) {
+    throw new Error('Paste a valid x.com or twitter.com post URL');
   }
 }
 

@@ -5,6 +5,7 @@ import { Transaction } from '@solana/web3.js';
 import { Loader2, Lock } from 'lucide-react';
 import { toast } from 'sonner';
 import { BullSlider } from '@/components/BullSlider';
+import { HoverTooltip } from '@/components/HoverTooltip';
 import { AnsemAmountDisplay } from '@/components/AnsemFiatValue';
 import { PoweredByJupiter } from '@/components/PoweredByJupiter';
 import { Button } from '@/components/ui/button';
@@ -30,6 +31,7 @@ import {
 } from '@/lib/lock-duration';
 import { saveJustLocked } from '@/lib/just-locked';
 import { openLockShare } from '@/lib/share-x';
+import { solscanTx } from '@/lib/solscan';
 import { cn } from '@/lib/cn';
 
 const AMOUNT_SLIDER_STEPS = 1000;
@@ -218,8 +220,8 @@ export function LockPanel() {
         description: `${formatAnsemAmount(raw)} ${t('common.ansem')} · ${formatUnlockDate(unlockTs)}`,
         duration: 12_000,
         action: {
-          label: t('flex.flexOnX'),
-          onClick: () => openLockShare(raw, durationLabel, sig),
+          label: t('common.viewTxOnSolscan'),
+          onClick: () => window.open(solscanTx(sig), '_blank', 'noopener,noreferrer'),
         },
       });
 
@@ -322,17 +324,19 @@ export function LockPanel() {
           <div className="mt-2 flex items-center justify-between text-sm font-semibold text-muted-foreground">
             <span className="font-mono text-base">0</span>
             {hasBalance ? (
-              <button
-                type="button"
-                className="rounded-full bg-accent/15 px-4 py-1.5 text-sm font-bold text-accent transition-colors hover:bg-accent/25"
-                onClick={() => {
-                  setAmountRawExact(maxRaw);
-                  setAmountSlider(AMOUNT_SLIDER_STEPS);
-                  setAmountInput(formatAnsemAmount(maxRaw));
-                }}
-              >
-                {t('common.max')}
-              </button>
+              <HoverTooltip label={t('lock.maxHint')}>
+                <button
+                  type="button"
+                  className="rounded-full bg-accent/15 px-4 py-1.5 text-sm font-bold text-accent transition-colors hover:bg-accent/25"
+                  onClick={() => {
+                    setAmountRawExact(maxRaw);
+                    setAmountSlider(AMOUNT_SLIDER_STEPS);
+                    setAmountInput(formatAnsemAmount(maxRaw));
+                  }}
+                >
+                  {t('common.max')}
+                </button>
+              </HoverTooltip>
             ) : (
               <span>{t('common.max')}</span>
             )}

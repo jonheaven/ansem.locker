@@ -8,6 +8,8 @@ export const zh = {
     lock: '锁定',
     share: '分享',
     solscan: 'Solscan',
+    viewOnSolscan: '在 Solscan 查看',
+    viewTxOnSolscan: '在 Solscan 查看交易',
     github: 'GitHub',
     openSource: '开源',
     nonCustodial: '非托管 · 去中心化',
@@ -21,6 +23,10 @@ export const zh = {
     solana: 'Solana',
     language: '语言',
     currency: '货币',
+  },
+  price: {
+    tickerAria: '24 小时内 {price} {change}',
+    tickerAriaNoChange: '{price}，24 小时涨跌不可用',
   },
   wallet: {
     selectWallet: '选择钱包',
@@ -59,7 +65,7 @@ export const zh = {
   lock: {
     title: '锁定 $ANSEM',
     disconnected:
-      '连接钱包，证明你的看多态度。链上锁定 $ANSEM — 一切由你签名，我们从不持有你的私钥。',
+      '连接钱包，证明你的看多态度。链上锁定 $ANSEM — 一切由你签名；我们从不查看或触碰你的私钥。',
     yourBalance: '你的余额',
     balanceError: '无法加载余额，请稍后重试。',
     lockAmount: '锁定数量',
@@ -72,6 +78,7 @@ export const zh = {
     insufficientBalance: '余额不足',
     lockedToast: '已锁定 — 去 𝕏 炫耀',
     txFailed: '交易失败',
+    maxHint: '锁定全部余额',
     duration5m: '5m',
     duration1y: '1y',
     preset1m: '1m',
@@ -137,7 +144,7 @@ export const zh = {
     step3Body: '在钱包中确认。锁定公开记录在链上，并显示在排行榜。',
     reassuranceNonCustodialTitle: '非托管',
     reassuranceNonCustodialBody:
-      '我们从不接触你的私钥。代币存入标准链上金库，而非我们的服务器。',
+      '我们从不查看或触碰你的私钥。代币存入 Solana 上的 Jupiter Lock 金库 — 而非我们的服务器。每笔交易都在你的钱包中确认。',
     reassuranceFixedTitle: '固定解锁日期',
     reassuranceFixedBody:
       '你提前选定日期。无法提前取出 — 程序强制执行时间表。',
@@ -154,6 +161,8 @@ export const zh = {
       '锁定使用 Jupiter Lock，Jupiter 维护的链上托管开源基础设施。代币存放在程序控制的金库中；ansem.locker 仅是操作界面。',
     aboutJupiter: '关于 Jupiter Lock',
     programOnSolscan: '在 Solscan 查看程序',
+    tokenOnSolscan: '在 Solscan 查看 $ANSEM',
+    viewLockTx: '查看锁定交易',
     program: '程序',
     security: '安全',
     source: '源码',
@@ -225,6 +234,7 @@ export const zh = {
     xAria: '在 X 分享并验证',
   },
   xMenu: {
+    tooltip: '𝕏 菜单与分享',
     linkedIntro: '钱包已关联 @{handle}，用于排行榜社交证明。',
     linkIntro: '将钱包关联到 {x} 账号，或不关联直接分享。',
     shareIntro: '随时在 {x} 分享。连接钱包以关联你的个人资料。',
@@ -259,5 +269,21 @@ export const zh = {
     linkFailed: '无法关联 {x}',
     unlinkedToast: '已取消关联 {x} 账号',
     unlinkFailed: '无法取消关联',
+  },
+  tools: {
+    nav: 'Incognito',
+    badge: 'Incognito Tools',
+    title: 'Incognito Tools',
+    subtitle: '$ANSEM 行情数据与工具 — 无需钱包。',
+    chart: '$ANSEM 图表',
+    chartDescription: 'Aster 永续合约 · 实时 K 线',
+    interval: '图表周期',
+    loading: '加载图表中…',
+    loadError: '无法从 Aster 加载图表数据',
+    high24h: '24h 最高',
+    low24h: '24h 最低',
+    volume24h: '24h 成交量',
+    poweredByAster: '行情数据来自 Aster DEX',
+    openOnAster: '在 Aster 交易',
   },
 } as const;

@@ -10,9 +10,11 @@ type CurrencyContextValue = {
   currency: FiatCurrency;
   setCurrency: (c: FiatCurrency) => void;
   priceUsd: number | null;
+  priceChange24h: number | null;
   convertUsdFromRaw: (raw: bigint) => number | null;
   convertFiatFromRaw: (raw: bigint) => number | null;
   formatFiat: (value: number | null) => string | null;
+  formatTokenPrice: (usd: number | null) => string | null;
 };
 
 const CurrencyContext = createContext<CurrencyContextValue | undefined>(undefined);
@@ -50,6 +52,19 @@ function rawToUnits(raw: bigint): number {
   return Number(raw) / 10 ** ANSEM_DECIMALS;
 }
 
+function priceFractionDigits(value: number): number {
+  const abs = Math.abs(value);
+  if (abs === 0) return 2;
+  if (abs < 0.00001) return 8;
+  if (abs < 0.0001) return 7;
+  if (abs < 0.001) return 6;
+  if (abs < 0.01) return 5;
+  if (abs < 1) return 4;
+  if (abs < 10) return 3;
+  if (abs < 1000) return 2;
+  return 0;
+}
+
 export function CurrencyProvider({
   children,
   intlLocale,
@@ -59,6 +74,7 @@ export function CurrencyProvider({
 }) {
   const [currency, setCurrencyState] = useState<FiatCurrency>('USD');
   const [priceUsd, setPriceUsd] = useState<number | null>(null);
+  const [priceChange24h, setPriceChange24h] = useState<number | null>(null);
   const [fxFromUsd, setFxFromUsd] = useState<Record<FiatCurrency, number>>(FALLBACK_FX_FROM_USD);
 
   useEffect(() => {
@@ -75,6 +91,7 @@ export function CurrencyProvider({
       try {
         const json = await fetchAnsemQuoteClient();
         setPriceUsd(json.priceUsd);
+        setPriceChange24h(json.priceChange24h);
       } catch {
         // ignore
       }
@@ -141,15 +158,30 @@ export function CurrencyProvider({
       }).format(value);
     };
 
+    const formatTokenPrice = (usd: number | null) => {
+      if (usd == null || !Number.isFinite(usd)) return null;
+      const fx = fxFromUsd[currency] ?? 1;
+      const fiat = usd * fx;
+      const maxFrac = priceFractionDigits(fiat);
+      return new Intl.NumberFormat(intlLocale, {
+        style: 'currency',
+        currency,
+        minimumFractionDigits: Math.min(2, maxFrac),
+        maximumFractionDigits: maxFrac,
+      }).format(fiat);
+    };
+
     return {
       currency,
       setCurrency,
       priceUsd,
+      priceChange24h,
       convertUsdFromRaw,
       convertFiatFromRaw,
       formatFiat,
+      formatTokenPrice,
     };
-  }, [currency, fxFromUsd, intlLocale, priceUsd]);
+  }, [currency, fxFromUsd, intlLocale, priceChange24h, priceUsd]);
 
   return <CurrencyContext.Provider value={value}>{children}</CurrencyContext.Provider>;
 }
