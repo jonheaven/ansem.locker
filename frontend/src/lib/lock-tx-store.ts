@@ -52,3 +52,29 @@ export function resolveLockTxSig(lock: {
 
   return undefined;
 }
+
+/** Fetch lockTxSig from API when not cached locally (e.g. new device). */
+export async function ensureLockTxSig(
+  wallet: string,
+  vestingAccount: string,
+): Promise<string | undefined> {
+  const cached = resolveLockTxSig({ vestingAccount });
+  if (cached) return cached;
+
+  try {
+    const res = await fetch(`/api/wallet-locks?wallet=${encodeURIComponent(wallet)}`);
+    if (!res.ok) return undefined;
+    const data = (await res.json()) as {
+      locks?: { vestingAccount: string; lockTxSig?: string }[];
+    };
+    const match = data.locks?.find((l) => l.vestingAccount === vestingAccount);
+    if (match?.lockTxSig) {
+      rememberLockTx(vestingAccount, match.lockTxSig);
+      return match.lockTxSig;
+    }
+  } catch {
+    // offline / API down — share still works without proof line
+  }
+
+  return undefined;
+}

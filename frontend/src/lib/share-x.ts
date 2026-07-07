@@ -44,9 +44,17 @@ export function buildConvictionShare(
   xHandle?: string,
   txSig?: string,
 ) {
+  return tweetIntent(buildConvictionShareText(amount, timeRemaining, xHandle, txSig));
+}
+
+export function buildConvictionShareText(
+  amount: string,
+  timeRemaining: string,
+  xHandle?: string,
+  txSig?: string,
+) {
   const who = xHandle ? `@${xHandle.replace(/^@/, '')}` : 'I';
-  const text = `${who} ${xHandle ? 'has' : 'have'} ${amount} ${ANSEM_CASHTAG} locked on ansem.locker (${timeRemaining}). Diamond hooves.${lockProofLine(txSig)}\n\n${SITE_URL}/#leaderboard\n\n#ANSEM`;
-  return tweetIntent(text);
+  return `${who} ${xHandle ? 'has' : 'have'} ${amount} ${ANSEM_CASHTAG} locked on ansem.locker (${timeRemaining}). Diamond hooves.${lockProofLine(txSig)}\n\n${SITE_URL}/#leaderboard\n\n#ANSEM`;
 }
 
 export function openConvictionShare(
@@ -60,6 +68,27 @@ export function openConvictionShare(
     '_blank',
     'noopener,noreferrer',
   );
+}
+
+/** Opens 𝕏 intent and copies tweet text (mobile fallback when intent is blocked). */
+export async function openConvictionShareWithClipboard(
+  amount: bigint,
+  timeRemaining: string,
+  xHandle?: string,
+  txSig?: string,
+): Promise<void> {
+  const text = buildConvictionShareText(
+    formatAnsemAmount(amount),
+    timeRemaining,
+    xHandle,
+    txSig,
+  );
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    // clipboard optional
+  }
+  window.open(tweetIntent(text), '_blank', 'noopener,noreferrer');
 }
 
 export function buildLeaderboardShareUrl(rank: number, amount: string, xHandle?: string) {

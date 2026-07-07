@@ -145,6 +145,8 @@ export const ru = {
     unlockedToast: 'Разблокировано в блокчейне',
     unlockFailed: 'Не удалось получить — повторите или lock.jup.ag',
     solscanAccount: '{short}… на Solscan',
+    shareLock: 'Поделиться в 𝕏',
+    shareCopied: 'Твит скопирован — вставьте в 𝕏, если приложение не открылось.',
     jupiterFallback: 'Резерв: если ansem.locker недоступен, заберите на lock.jup.ag после даты — та же программа Jupiter Lock.',
   },
   leaderboard: {

@@ -145,6 +145,8 @@ export const es = {
     unlockedToast: 'Desbloqueado on-chain',
     unlockFailed: 'Reclamo fallido — reintenta o usa lock.jup.ag',
     solscanAccount: '{short}… en Solscan',
+    shareLock: 'Compartir en 𝕏',
+    shareCopied: 'Tweet copiado — pégalo en 𝕏 si la app no se abrió.',
     jupiterFallback: 'Respaldo: si ansem.locker cae, reclama en lock.jup.ag tras tu fecha — mismo programa Jupiter Lock.',
   },
   leaderboard: {

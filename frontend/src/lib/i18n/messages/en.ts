@@ -147,6 +147,8 @@ export const en = {
     unlockedToast: 'Unlocked on-chain',
     unlockFailed: 'Claim failed — try again or use lock.jup.ag as backup',
     solscanAccount: '{short}… on Solscan',
+    shareLock: 'Share on 𝕏',
+    shareCopied: 'Tweet copied — paste in 𝕏 if the app did not open.',
     jupiterFallback:
       'Backup only: if ansem.locker is ever offline, you can still claim from lock.jup.ag after your unlock date — same Jupiter Lock program, same wallet.',
   },

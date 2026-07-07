@@ -144,6 +144,8 @@ export const ja = {
     unlockedToast: 'オンチェーンでアンロックしました',
     unlockFailed: '請求失敗 — 再試行または lock.jup.ag',
     solscanAccount: '{short}… · Solscan',
+    shareLock: '𝕏でシェア',
+    shareCopied: 'ツイートをコピーしました — アプリが開かない場合は𝕏に貼り付けてください。',
     jupiterFallback: 'バックアップ: ansem.locker がオフラインでも、解除後は lock.jup.ag から請求可能（同一プログラム）。',
   },
   leaderboard: {

@@ -144,6 +144,8 @@ export const zh = {
     unlockedToast: '已在链上解锁',
     unlockFailed: '领取失败 — 重试或使用 lock.jup.ag',
     solscanAccount: '{short}… 在 Solscan 上',
+    shareLock: '在 𝕏 分享',
+    shareCopied: '推文已复制 — 若未打开应用，请粘贴到 𝕏。',
     jupiterFallback: '备用：若 ansem.locker 离线，到期后可在 lock.jup.ag 领取 — 同一 Jupiter Lock 程序。',
   },
   leaderboard: {

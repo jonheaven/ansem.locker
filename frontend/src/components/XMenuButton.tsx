@@ -26,7 +26,7 @@ import { useI18n } from '@/lib/i18n/i18n-context';
 import { formatAnsemAmount, formatTimeRemaining } from '@/lib/format';
 import {
   buildVerificationTweet,
-  openConvictionShare,
+  openConvictionShareWithClipboard,
   openLeaderboardHypeShare,
   openLeaderboardShare,
   openSiteShare,
@@ -34,7 +34,7 @@ import {
   X_PROFILES,
 } from '@/lib/share-x';
 import { buildVerificationCode } from '@/lib/x-link-store';
-import { resolveLockTxSig } from '@/lib/lock-tx-store';
+import { ensureLockTxSig, resolveLockTxSig } from '@/lib/lock-tx-store';
 
 type Panel = 'menu' | 'link' | 'flex';
 
@@ -302,13 +302,22 @@ export function XMenuButton() {
                   label={t('xMenu.shareMyLock')}
                   description={`${formatAnsemAmount(topLock.remainingInVault)} ${t('common.ansem')} · ${formatTimeRemaining(topLock.unlockTs)}`}
                   onClick={() => {
-                    openConvictionShare(
-                      topLock.remainingInVault,
-                      formatTimeRemaining(topLock.unlockTs),
-                      xHandle,
-                      resolveLockTxSig(topLock),
-                    );
-                    setPanel('flex');
+                    void (async () => {
+                      const w = wallet;
+                      if (!w) return;
+                      let txSig = resolveLockTxSig(topLock);
+                      if (!txSig) {
+                        txSig = await ensureLockTxSig(w, topLock.vestingAccount);
+                      }
+                      await openConvictionShareWithClipboard(
+                        topLock.remainingInVault,
+                        formatTimeRemaining(topLock.unlockTs),
+                        xHandle,
+                        txSig,
+                      );
+                      toast.success(t('locks.shareCopied'));
+                      setPanel('flex');
+                    })();
                   }}
                   trailing={null}
                 />

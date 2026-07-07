@@ -5,9 +5,11 @@ import { DiamondHoovesIcon } from '@/components/DiamondHoovesIcon';
 import { SolscanLink } from '@/components/SolscanLink';
 import { Button } from '@/components/ui/button';
 import type { LockRecord } from '@/hooks/useLocks';
+import { useShareLock } from '@/hooks/useShareLock';
 import { useLocalizedFormat } from '@/hooks/useLocalizedFormat';
 import { useI18n } from '@/lib/i18n/i18n-context';
-import { solscanAccount } from '@/lib/solscan';
+import { resolveLockTxSig } from '@/lib/lock-tx-store';
+import { solscanAccount, solscanTx } from '@/lib/solscan';
 import { cn } from '@/lib/cn';
 
 type ClaimLockCardProps = {
@@ -33,9 +35,12 @@ function useNowSec(tick: boolean) {
 export function ClaimLockCard({ lock, claiming, onClaim }: ClaimLockCardProps) {
   const { t } = useI18n();
   const { formatTimeRemaining, formatUnlockDate } = useLocalizedFormat();
+  const { shareLock, sharingId } = useShareLock();
   const nowSec = useNowSec(lock.unlockTs > Math.floor(Date.now() / 1000));
   const ready = lock.unlockTs <= nowSec && lock.remainingInVault > 0n;
   const secondsLeft = Math.max(0, lock.unlockTs - nowSec);
+  const lockTxSig = resolveLockTxSig(lock);
+  const sharing = sharingId === lock.vestingAccount;
 
   return (
     <li
@@ -86,20 +91,46 @@ export function ClaimLockCard({ lock, claiming, onClaim }: ClaimLockCardProps) {
             </div>
           )}
 
-          <SolscanLink
-            href={solscanAccount(lock.vestingAccount)}
-            className="mt-2 inline-block text-[10px] text-muted-foreground sm:text-xs"
-          >
-            {t('locks.solscanAccount', {
-              short: lock.vestingAccount.slice(0, 8),
-            })}
-          </SolscanLink>
+          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+            <SolscanLink
+              href={solscanAccount(lock.vestingAccount)}
+              className="text-[10px] text-muted-foreground sm:text-xs"
+            >
+              {t('locks.solscanAccount', {
+                short: lock.vestingAccount.slice(0, 8),
+              })}
+            </SolscanLink>
+            {lockTxSig ? (
+              <SolscanLink
+                href={solscanTx(lockTxSig)}
+                className="text-[10px] text-muted-foreground sm:text-xs"
+              >
+                {t('info.viewLockTx')}
+              </SolscanLink>
+            ) : null}
+          </div>
         </div>
+
+        <div className="flex w-full shrink-0 flex-col gap-2 sm:w-auto">
+          <Button
+            size="sm"
+            variant="secondary"
+            className="w-full gap-2 sm:w-auto"
+            disabled={sharing}
+            onClick={() => void shareLock(lock)}
+          >
+            {sharing ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <img src="/x.png" alt="" className="h-3.5 w-3.5" aria-hidden />
+            )}
+            {t('locks.shareLock')}
+          </Button>
 
         {ready ? (
           <Button
             size="lg"
-            className="w-full shrink-0 gap-2 bg-accent font-bold shadow-lg shadow-accent/25 hover:bg-accent/90 sm:w-auto"
+            className="w-full gap-2 bg-accent font-bold shadow-lg shadow-accent/25 hover:bg-accent/90 sm:w-auto"
             disabled={claiming}
             onClick={onClaim}
           >
@@ -120,6 +151,7 @@ export function ClaimLockCard({ lock, claiming, onClaim }: ClaimLockCardProps) {
             </p>
           </div>
         )}
+        </div>
       </div>
     </li>
   );

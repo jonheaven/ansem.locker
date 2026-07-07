@@ -229,7 +229,10 @@ export function LeaderboardTable({
                 return (
                   <div
                     key={entry.vestingAccount}
-                    className="relative flex flex-col gap-2 overflow-hidden rounded-xl border border-border/80 bg-surface-elevated px-4 py-3 app-row-glass sm:flex-row sm:items-center sm:justify-between sm:gap-3"
+                    className={cn(
+                      'relative flex flex-col gap-2 overflow-hidden rounded-xl border border-border/80 bg-surface-elevated px-4 py-3 app-row-glass sm:flex-row sm:items-center sm:justify-between sm:gap-3',
+                      isSelf && 'border-accent/50 bg-accent/5 ring-2 ring-accent/20',
+                    )}
                   >
                     {rank <= 3 ? (
                       <span
