@@ -7,6 +7,7 @@ import { CopyWalletButton } from '@/components/CopyWalletButton';
 import { DiamondHoovesIcon } from '@/components/DiamondHoovesIcon';
 import { FlexVerifyForm } from '@/components/FlexVerifyForm';
 import { LockerListPanel } from '@/components/LockerListPanel';
+import { LockProgressBar } from '@/components/LockProgressBar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLeaderboard, sortLocks, type LeaderboardSort } from '@/hooks/useLocks';
@@ -322,6 +323,10 @@ export function LeaderboardTable({
                       </Button>
                       </div>
                     </div>
+                    <LockProgressBar
+                      lock={entry}
+                      className="absolute inset-x-0 bottom-0 rounded-b-xl"
+                    />
                   </div>
                 );
               })}

@@ -10,6 +10,7 @@ export type VestingLockRecord = {
   score: bigint;
   remainingInVault: bigint;
   lockTxSig?: string;
+  lockTs?: number;
 };
 
 type LockDto = {
@@ -21,6 +22,7 @@ type LockDto = {
   score: string;
   remainingInVault: string;
   lockTxSig?: string;
+  lockTs?: number;
 };
 
 function dtoToRecord(d: LockDto): VestingLockRecord {
@@ -33,6 +35,7 @@ function dtoToRecord(d: LockDto): VestingLockRecord {
     score: BigInt(d.score),
     remainingInVault: BigInt(d.remainingInVault),
     lockTxSig: d.lockTxSig,
+    lockTs: d.lockTs,
   };
 }
 

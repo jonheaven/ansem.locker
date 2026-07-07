@@ -261,7 +261,7 @@ export function LockPanel({ hideIntro = false }: { hideIntro?: boolean }) {
 
       openLockShare(raw, durationLabel, sig);
       const vestingKey = vestingAccount.toBase58();
-      rememberLockTx(vestingKey, sig);
+      rememberLockTx(vestingKey, sig, Math.floor(Date.now() / 1000));
       saveJustLocked({
         amountRaw: raw,
         amountDisplay: formatAnsemAmount(raw),

@@ -1,3 +1,4 @@
+import { fetchLockCreationMeta } from './lock-creation-meta';
 import {
   escrowTotalAmount,
   JUPITER_LOCK_PROGRAM_ID,
@@ -21,6 +22,8 @@ export type WalletLockDto = {
   remainingInVault: string;
   /** Oldest on-chain tx for this escrow — the lock creation signature. */
   lockTxSig?: string;
+  /** Unix seconds when the lock was created (from creation tx block time). */
+  lockTs?: number;
 };
 
 function daysUntil(unixTs: number, now: number) {
@@ -29,32 +32,6 @@ function daysUntil(unixTs: number, now: number) {
 
 function lockScore(amount: bigint, days: number) {
   return amount * BigInt(Math.max(days, 1));
-}
-
-/** Paginate to the oldest signature — the lock creation tx for this escrow. */
-async function fetchLockCreationTxSig(
-  connection: import('@solana/web3.js').Connection,
-  vestingAccount: import('@solana/web3.js').PublicKey,
-): Promise<string | undefined> {
-  try {
-    let before: string | undefined;
-    let oldest: string | undefined;
-
-    for (;;) {
-      const batch = await connection.getSignaturesForAddress(vestingAccount, {
-        limit: 1000,
-        before,
-      });
-      if (batch.length === 0) break;
-      oldest = batch[batch.length - 1]!.signature;
-      if (batch.length < 1000) break;
-      before = oldest;
-    }
-
-    return oldest;
-  } catch {
-    return undefined;
-  }
 }
 
 export async function indexWalletLocks(
@@ -106,8 +83,8 @@ export async function indexWalletLocks(
 
   const vaultInfos = await connection.getMultipleAccountsInfo(vaultKeys);
 
-  const lockTxSigs = await Promise.all(
-    parsed.map((row) => fetchLockCreationTxSig(connection, row.vestingAccount)),
+  const lockMetas = await Promise.all(
+    parsed.map((row) => fetchLockCreationMeta(connection, row.vestingAccount)),
   );
 
   const locks: WalletLockDto[] = [];
@@ -122,7 +99,7 @@ export async function indexWalletLocks(
     if (remaining === 0n) continue;
 
     const daysRemaining = daysUntil(row.unlockTs, now);
-    const lockTxSig = lockTxSigs[i];
+    const meta = lockMetas[i]!;
 
     locks.push({
       vestingAccount: row.vestingAccount.toBase58(),
@@ -132,7 +109,8 @@ export async function indexWalletLocks(
       daysRemaining,
       score: lockScore(remaining, daysRemaining).toString(),
       remainingInVault: remaining.toString(),
-      ...(lockTxSig ? { lockTxSig } : {}),
+      ...(meta.lockTxSig ? { lockTxSig: meta.lockTxSig } : {}),
+      ...(meta.lockTs != null ? { lockTs: meta.lockTs } : {}),
     });
   }
 

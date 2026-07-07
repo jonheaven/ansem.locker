@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
 import { Loader2, Sparkles } from 'lucide-react';
 import { AnsemAmountDisplay } from '@/components/AnsemFiatValue';
 import { DiamondHoovesIcon } from '@/components/DiamondHoovesIcon';
+import { LockProgressBar } from '@/components/LockProgressBar';
 import { SolscanLink } from '@/components/SolscanLink';
 import { Button } from '@/components/ui/button';
 import type { LockRecord } from '@/hooks/useLocks';
+import { useNowSec } from '@/hooks/useNowSec';
 import { useShareLock } from '@/hooks/useShareLock';
 import { useLocalizedFormat } from '@/hooks/useLocalizedFormat';
 import { useI18n } from '@/lib/i18n/i18n-context';
@@ -18,27 +19,12 @@ type ClaimLockCardProps = {
   onClaim: () => void;
 };
 
-function useNowSec(tick: boolean) {
-  const [nowSec, setNowSec] = useState(() => Math.floor(Date.now() / 1000));
-
-  useEffect(() => {
-    if (!tick) return;
-    const id = window.setInterval(() => {
-      setNowSec(Math.floor(Date.now() / 1000));
-    }, 1_000);
-    return () => window.clearInterval(id);
-  }, [tick]);
-
-  return nowSec;
-}
-
 export function ClaimLockCard({ lock, claiming, onClaim }: ClaimLockCardProps) {
   const { t } = useI18n();
   const { formatTimeRemaining, formatUnlockDate } = useLocalizedFormat();
   const { shareLock, sharingId } = useShareLock();
   const nowSec = useNowSec(lock.unlockTs > Math.floor(Date.now() / 1000));
   const ready = lock.unlockTs <= nowSec && lock.remainingInVault > 0n;
-  const secondsLeft = Math.max(0, lock.unlockTs - nowSec);
   const lockTxSig = resolveLockTxSig(lock);
   const sharing = sharingId === lock.vestingAccount;
 
@@ -78,16 +64,6 @@ export function ClaimLockCard({ lock, claiming, onClaim }: ClaimLockCardProps) {
               <p className="text-xs text-muted-foreground sm:text-sm">
                 {t('leaderboard.unlocksOn', { date: formatUnlockDate(lock.unlockTs) })}
               </p>
-              {secondsLeft <= 600 ? (
-                <div className="h-1.5 overflow-hidden rounded-full bg-border/60">
-                  <div
-                    className="h-full rounded-full bg-accent transition-[width] duration-1000 ease-linear"
-                    style={{
-                      width: `${Math.min(100, Math.max(4, 100 - (secondsLeft / 600) * 100))}%`,
-                    }}
-                  />
-                </div>
-              ) : null}
             </div>
           )}
 
@@ -153,6 +129,11 @@ export function ClaimLockCard({ lock, claiming, onClaim }: ClaimLockCardProps) {
         )}
         </div>
       </div>
+
+      <LockProgressBar
+        lock={lock}
+        className="absolute inset-x-0 bottom-0 rounded-b-2xl"
+      />
     </li>
   );
 }

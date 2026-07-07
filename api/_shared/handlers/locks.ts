@@ -11,6 +11,7 @@ import {
   loadSolanaWeb3,
   loadSplToken,
 } from '../solana';
+import { fetchLockCreationMeta } from '../lock-creation-meta';
 import {
   getMultipleAccountsChunked,
   INDEXER_TIMEOUT_MS,
@@ -28,6 +29,8 @@ type LockDto = {
   daysRemaining: number;
   score: string;
   remainingInVault: string;
+  lockTxSig?: string;
+  lockTs?: number;
 };
 
 function daysUntil(unixTs: number, now: number) {
@@ -88,6 +91,10 @@ async function indexLocks(rpcUrl: string): Promise<LockDto[]> {
 
   const vaultInfos = await getMultipleAccountsChunked(connection, vaultKeys);
 
+  const lockMetas = await Promise.all(
+    parsed.map((row) => fetchLockCreationMeta(connection, row.vestingAccount)),
+  );
+
   const locks: LockDto[] = [];
 
   for (let i = 0; i < parsed.length; i++) {
@@ -100,6 +107,7 @@ async function indexLocks(rpcUrl: string): Promise<LockDto[]> {
     if (remaining === 0n) continue;
 
     const daysRemaining = daysUntil(row.unlockTs, now);
+    const meta = lockMetas[i]!;
 
     locks.push({
       vestingAccount: row.vestingAccount.toBase58(),
@@ -109,6 +117,8 @@ async function indexLocks(rpcUrl: string): Promise<LockDto[]> {
       daysRemaining,
       score: lockScore(remaining, daysRemaining).toString(),
       remainingInVault: remaining.toString(),
+      ...(meta.lockTxSig ? { lockTxSig: meta.lockTxSig } : {}),
+      ...(meta.lockTs != null ? { lockTs: meta.lockTs } : {}),
     });
   }
 
