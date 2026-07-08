@@ -2,10 +2,11 @@ import { useMemo, useState } from 'react';
 import { ArrowDownUp, Loader2 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ANSEM_DECIMALS } from '@/config/constants';
-import { useCurrency } from '@/lib/currency/currency-context';
+import { type FiatCurrency, useCurrency } from '@/lib/currency/currency-context';
+import { intlLocaleForFiat } from '@/lib/currency/fiat-format';
 import { formatAnsemAmount, parseAnsemAmount } from '@/lib/format';
 import { useI18n } from '@/lib/i18n/i18n-context';
-import { CURRENCY_SYMBOL } from '@/lib/locale/catalog';
+import { CURRENCY_SYMBOL, FIAT_OPTIONS } from '@/lib/locale/catalog';
 import { cn } from '@/lib/cn';
 
 const ANSEM_PRESETS = [1_000, 10_000, 100_000, 1_000_000] as const;
@@ -29,17 +30,31 @@ function rawToAnsemUnits(raw: bigint): number {
   return Number(raw) / 10 ** ANSEM_DECIMALS;
 }
 
+function formatFiatInputValue(currency: FiatCurrency, value: number): string {
+  return value.toLocaleString(intlLocaleForFiat(currency), {
+    maximumFractionDigits: value >= 1000 ? 0 : 2,
+  });
+}
+
 export function AnsemCalculator({ embedded = false }: { embedded?: boolean }) {
   const { t } = useI18n();
-  const { currency, priceUsd, convertFiatFromRaw, formatFiat, formatTokenPrice } = useCurrency();
+  const {
+    currency: siteCurrency,
+    priceUsd,
+    convertFiatFromRawIn,
+    formatFiatIn,
+    formatTokenPriceIn,
+  } = useCurrency();
+  const [calcCurrency, setCalcCurrency] = useState<FiatCurrency | null>(null);
+  const displayCurrency = calcCurrency ?? siteCurrency;
   const [ansemInput, setAnsemInput] = useState('10000');
   const [fiatInput, setFiatInput] = useState('');
   const [lastEdited, setLastEdited] = useState<'ansem' | 'fiat'>('ansem');
 
   const fiatPerAnsem = useMemo(() => {
     if (priceUsd == null) return null;
-    return convertFiatFromRaw(BigInt(10 ** ANSEM_DECIMALS));
-  }, [convertFiatFromRaw, priceUsd]);
+    return convertFiatFromRawIn(displayCurrency, BigInt(10 ** ANSEM_DECIMALS));
+  }, [convertFiatFromRawIn, displayCurrency, priceUsd]);
 
   const derived = useMemo(() => {
     if (fiatPerAnsem == null || fiatPerAnsem <= 0) {
@@ -67,9 +82,7 @@ export function AnsemCalculator({ embedded = false }: { embedded?: boolean }) {
 
   const displayFiat =
     lastEdited === 'ansem' && derived.fiat != null
-      ? derived.fiat.toLocaleString(undefined, {
-          maximumFractionDigits: derived.fiat >= 1000 ? 0 : 2,
-        })
+      ? formatFiatInputValue(displayCurrency, derived.fiat)
       : fiatInput;
 
   const displayAnsem =
@@ -87,14 +100,15 @@ export function AnsemCalculator({ embedded = false }: { embedded?: boolean }) {
     setFiatInput(value);
   };
 
+  const handleCurrencyChange = (code: FiatCurrency) => {
+    setCalcCurrency(code);
+    setLastEdited('ansem');
+  };
+
   const swapFields = () => {
     if (derived.ansem != null && derived.fiat != null) {
       setAnsemInput(formatAnsemAmount(ansemToRaw(derived.ansem)));
-      setFiatInput(
-        derived.fiat.toLocaleString(undefined, {
-          maximumFractionDigits: derived.fiat >= 1000 ? 0 : 2,
-        }),
-      );
+      setFiatInput(formatFiatInputValue(displayCurrency, derived.fiat));
     }
     setLastEdited((prev) => (prev === 'ansem' ? 'fiat' : 'ansem'));
   };
@@ -108,7 +122,8 @@ export function AnsemCalculator({ embedded = false }: { embedded?: boolean }) {
     </span>
   ) : (
     t('tools.pricePerAnsem', {
-      price: formatTokenPrice(priceUsd) ?? '—',
+      price: formatTokenPriceIn(displayCurrency, priceUsd) ?? '—',
+      currency: displayCurrency,
     })
   );
 
@@ -150,13 +165,52 @@ export function AnsemCalculator({ embedded = false }: { embedded?: boolean }) {
             </button>
           </div>
 
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                {t('tools.calculatorCurrency')}
+              </p>
+              <span className="rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 font-mono text-xs font-bold text-accent">
+                {CURRENCY_SYMBOL[displayCurrency]} {displayCurrency}
+              </span>
+            </div>
+            <div
+              className="flex gap-1.5 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              role="group"
+              aria-label={t('tools.calculatorCurrency')}
+            >
+              {FIAT_OPTIONS.map((code) => {
+                const selected = code === displayCurrency;
+                return (
+                  <button
+                    key={code}
+                    type="button"
+                    onClick={() => handleCurrencyChange(code)}
+                    aria-pressed={selected}
+                    className={cn(
+                      'shrink-0 rounded-full border px-2.5 py-1.5 font-mono text-xs font-semibold transition-colors',
+                      selected
+                        ? 'border-accent bg-accent/12 text-accent'
+                        : 'border-border text-muted-foreground hover:border-accent/40 hover:text-foreground',
+                    )}
+                  >
+                    {CURRENCY_SYMBOL[code]} {code}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           <label className="block">
-            <span className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-              {currency}
+            <span className="mb-1.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+              <span>{t('tools.fiatAmount', { currency: displayCurrency })}</span>
             </span>
             <div className="relative">
-              <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 font-mono text-lg text-muted-foreground">
-                {CURRENCY_SYMBOL[currency]}
+              <span
+                className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 font-mono text-lg font-semibold text-accent"
+                aria-hidden
+              >
+                {CURRENCY_SYMBOL[displayCurrency]}
               </span>
               <input
                 type="text"
@@ -166,9 +220,9 @@ export function AnsemCalculator({ embedded = false }: { embedded?: boolean }) {
                 disabled={priceLoading}
                 className={cn(
                   'w-full rounded-xl border border-border bg-surface-elevated py-3 pr-4 font-mono text-xl font-semibold tabular-nums text-foreground outline-none transition-colors focus:border-accent',
-                  currency === 'JPY' ? 'pl-10' : 'pl-9',
+                  displayCurrency === 'JPY' || displayCurrency === 'IDR' ? 'pl-12' : 'pl-10',
                 )}
-                aria-label={t('tools.fiatAmount', { currency })}
+                aria-label={t('tools.fiatAmount', { currency: displayCurrency })}
               />
             </div>
           </label>
@@ -176,11 +230,13 @@ export function AnsemCalculator({ embedded = false }: { embedded?: boolean }) {
 
         {derived.ansem != null && derived.fiat != null && !priceLoading ? (
           <div className="rounded-xl border border-accent/25 bg-accent/8 px-4 py-3 text-center">
-            <p className="text-sm text-muted-foreground">{t('tools.equals')}</p>
+            <p className="text-sm text-muted-foreground">
+              {t('tools.equals')} · {displayCurrency}
+            </p>
             <p className="mt-1 font-mono text-lg font-bold text-foreground">
               {formatAnsemAmount(ansemToRaw(derived.ansem))} {t('common.ansem')}
               <span className="mx-2 text-muted-foreground">=</span>
-              {formatFiat(derived.fiat)}
+              {formatFiatIn(displayCurrency, derived.fiat)}
             </p>
           </div>
         ) : null}

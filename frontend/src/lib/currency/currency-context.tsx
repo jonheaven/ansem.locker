@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { ANSEM_DECIMALS } from '@/config/constants';
 import { fetchAnsemQuoteClient } from '@/lib/ansem-price/ansem-market-client';
 import { FIAT_KEY, readStoredCurrency } from '@/lib/locale/prefs';
+import { formatFiatAmount } from '@/lib/currency/fiat-format';
 
 export type FiatCurrency =
   | 'USD'
@@ -24,8 +25,12 @@ type CurrencyContextValue = {
   priceChange24h: number | null;
   convertUsdFromRaw: (raw: bigint) => number | null;
   convertFiatFromRaw: (raw: bigint) => number | null;
+  convertFiatFromRawIn: (code: FiatCurrency, raw: bigint) => number | null;
   formatFiat: (value: number | null) => string | null;
+  formatFiatIn: (code: FiatCurrency, value: number | null) => string | null;
   formatTokenPrice: (usd: number | null) => string | null;
+  formatTokenPriceIn: (code: FiatCurrency, usd: number | null) => string | null;
+  fxFromUsd: Record<FiatCurrency, number>;
 };
 
 const CurrencyContext = createContext<CurrencyContextValue | undefined>(undefined);
@@ -73,22 +78,9 @@ function rawToUnits(raw: bigint): number {
   return Number(raw) / 10 ** ANSEM_DECIMALS;
 }
 
-function priceFractionDigits(value: number): number {
-  const abs = Math.abs(value);
-  if (abs === 0) return 2;
-  if (abs < 0.00001) return 8;
-  if (abs < 0.0001) return 7;
-  if (abs < 0.001) return 6;
-  if (abs < 0.01) return 5;
-  if (abs < 1) return 4;
-  if (abs < 10) return 3;
-  if (abs < 1000) return 2;
-  return 0;
-}
-
 export function CurrencyProvider({
   children,
-  intlLocale,
+  intlLocale: _intlLocale,
 }: {
   children: ReactNode;
   intlLocale: string;
@@ -163,34 +155,27 @@ export function CurrencyProvider({
       return units * priceUsd;
     };
 
-    const convertFiatFromRaw = (raw: bigint) => {
+    const convertFiatFromRawIn = (code: FiatCurrency, raw: bigint) => {
       const usd = convertUsdFromRaw(raw);
       if (usd == null) return null;
-      const fx = fxFromUsd[currency] ?? 1;
+      const fx = fxFromUsd[code] ?? 1;
       return usd * fx;
     };
 
-    const formatFiat = (value: number | null) => {
-      if (value == null || !Number.isFinite(value)) return null;
-      return new Intl.NumberFormat(intlLocale, {
-        style: 'currency',
-        currency,
-        maximumFractionDigits: value >= 1000 ? 0 : value >= 100 ? 1 : 2,
-      }).format(value);
+    const convertFiatFromRaw = (raw: bigint) => convertFiatFromRawIn(currency, raw);
+
+    const formatFiatIn = (code: FiatCurrency, value: number | null) =>
+      formatFiatAmount(code, value);
+
+    const formatFiat = (value: number | null) => formatFiatIn(currency, value);
+
+    const formatTokenPriceIn = (code: FiatCurrency, usd: number | null) => {
+      if (usd == null || !Number.isFinite(usd)) return null;
+      const fx = fxFromUsd[code] ?? 1;
+      return formatFiatAmount(code, usd * fx, { maxDigits: 'price' });
     };
 
-    const formatTokenPrice = (usd: number | null) => {
-      if (usd == null || !Number.isFinite(usd)) return null;
-      const fx = fxFromUsd[currency] ?? 1;
-      const fiat = usd * fx;
-      const maxFrac = priceFractionDigits(fiat);
-      return new Intl.NumberFormat(intlLocale, {
-        style: 'currency',
-        currency,
-        minimumFractionDigits: Math.min(2, maxFrac),
-        maximumFractionDigits: maxFrac,
-      }).format(fiat);
-    };
+    const formatTokenPrice = (usd: number | null) => formatTokenPriceIn(currency, usd);
 
     return {
       currency,
@@ -199,10 +184,14 @@ export function CurrencyProvider({
       priceChange24h,
       convertUsdFromRaw,
       convertFiatFromRaw,
+      convertFiatFromRawIn,
       formatFiat,
+      formatFiatIn,
       formatTokenPrice,
+      formatTokenPriceIn,
+      fxFromUsd,
     };
-  }, [currency, fxFromUsd, intlLocale, priceChange24h, priceUsd]);
+  }, [currency, fxFromUsd, priceChange24h, priceUsd]);
 
   return <CurrencyContext.Provider value={value}>{children}</CurrencyContext.Provider>;
 }

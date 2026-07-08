@@ -371,7 +371,8 @@ export const en = {
     chartNav: 'Chart',
     calculatorTitle: 'ANSEM Calculator',
     calculatorDescription: 'Convert between ANSEM and your local currency using the live market price.',
-    pricePerAnsem: '1 ANSEM ≈ {price}',
+    pricePerAnsem: '1 ANSEM ≈ {price} ({currency})',
+    calculatorCurrency: 'Display currency',
     priceLoading: 'Loading live price…',
     ansemAmount: 'ANSEM amount',
     fiatAmount: 'Amount in {currency}',
@@ -379,7 +380,7 @@ export const en = {
     equals: 'Conversion',
     quickAmounts: 'Quick amounts',
     calculatorNote:
-      'Uses the same live price as the header ticker. Change currency with the selector in the header.',
+      'Uses the same live price as the header ticker. Currency here is for this calculator only and does not change your site settings.',
     chart: 'ANSEM Chart',
     chartDescription: 'Perpetual futures on Aster · live klines',
     interval: 'Chart interval',
