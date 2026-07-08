@@ -53,7 +53,10 @@ export function BullSlider({
         )}
       >
         <div
-          className="absolute top-1/2 right-0 left-0 h-1 -translate-y-1/2 rounded-full bg-border"
+          className={cn(
+            'absolute top-1/2 right-0 left-0 -translate-y-1/2 rounded-full bg-border',
+            compact ? 'h-1' : 'h-1.5',
+          )}
           aria-hidden
         >
           <div

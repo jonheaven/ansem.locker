@@ -310,26 +310,26 @@ export function LockPanel({ hideIntro = false }: { hideIntro?: boolean }) {
 
   return (
     <Card className="overflow-visible">
-      <CardContent className="space-y-3 pt-3 sm:space-y-4 sm:pt-4">
-        <div className="flex items-center justify-between gap-3 rounded-xl border border-border/70 bg-surface-elevated/90 px-3 py-2.5 app-glass-elevated sm:px-4 sm:py-3">
+      <CardContent className="space-y-4 pt-3 sm:space-y-5 sm:pt-4">
+        <div className="flex items-center justify-between gap-3 rounded-xl border border-border/60 bg-surface/50 px-3 py-2 app-glass-elevated sm:px-3.5 sm:py-2">
           <div className="min-w-0">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+            <p className="text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
               {t('lock.yourBalance')}
             </p>
             {balance.isLoading ? (
-              <p className="mt-0.5 font-mono text-lg font-bold text-muted-foreground sm:text-xl">…</p>
+              <p className="mt-0.5 font-mono text-sm font-semibold text-muted-foreground">…</p>
             ) : balance.isError ? (
               <>
-                <p className="mt-0.5 font-mono text-lg font-bold text-muted-foreground sm:text-xl">—</p>
-                <p className="mt-1 text-xs text-destructive">{t('lock.balanceError')}</p>
+                <p className="mt-0.5 font-mono text-sm font-semibold text-muted-foreground">—</p>
+                <p className="mt-0.5 text-[10px] text-destructive">{t('lock.balanceError')}</p>
               </>
             ) : (
               <div className="mt-0.5">
-                <AnsemAmountDisplay raw={maxRaw} size="md" align="left" />
+                <AnsemAmountDisplay raw={maxRaw} size="sm" align="left" />
               </div>
             )}
           </div>
-          <p className="shrink-0 text-right text-[11px] leading-snug text-muted-foreground">
+          <p className="shrink-0 text-right text-[10px] leading-snug text-muted-foreground">
             {solBalance.isLoading
               ? t('lock.solBalanceLoading')
               : solBalance.isError
@@ -345,45 +345,76 @@ export function LockPanel({ hideIntro = false }: { hideIntro?: boolean }) {
           </p>
         ) : null}
 
-        <div>
-          <div className="mb-1 flex items-center justify-between gap-2">
-            <span className="text-sm font-semibold text-foreground">{t('lock.lockAmount')}</span>
-            <div className="flex items-baseline gap-1.5">
-              <input
-                type="text"
-                inputMode="decimal"
-                placeholder="0"
-                value={amountInputFocused ? amountInput : amountDisplay || '0'}
+        <section className="rounded-2xl border border-accent/25 bg-surface-elevated/80 p-4 app-row-glass sm:p-5">
+          <div className="mb-3 flex items-start justify-between gap-3">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              {t('lock.lockAmount')}
+            </p>
+            {hasBalance ? (
+              <HoverTooltip label={t('lock.maxHint')} align="end" side="top">
+                <button
+                  type="button"
+                  className="rounded-full bg-accent/15 px-3 py-1 text-xs font-bold text-accent transition-colors hover:bg-accent/25 sm:text-sm"
+                  onClick={() => {
+                    setAmountRawExact(maxRaw);
+                    setAmountSlider(AMOUNT_SLIDER_STEPS);
+                    setAmountInput(formatAnsemAmount(maxRaw));
+                  }}
+                >
+                  {t('common.max')}
+                </button>
+              </HoverTooltip>
+            ) : null}
+          </div>
+
+          <div className="mb-4 flex min-h-[4.5rem] flex-col items-center justify-center sm:min-h-[5rem]">
+            {amountInputFocused ? (
+              <div className="flex w-full max-w-xs items-baseline justify-center gap-2">
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  placeholder="0"
+                  value={amountInput}
+                  disabled={!hasBalance || balance.isLoading}
+                  autoFocus
+                  onChange={(e) => handleAmountInputChange(e.target.value)}
+                  onBlur={handleAmountInputBlur}
+                  className="min-w-0 flex-1 border-0 bg-transparent text-center font-mono text-4xl font-bold tabular-nums text-foreground outline-none placeholder:text-muted-foreground/40 sm:text-5xl"
+                  aria-label={t('lock.lockAmount')}
+                />
+                <span className="shrink-0 text-lg font-semibold text-muted-foreground sm:text-xl">
+                  {t('common.ansem')}
+                </span>
+              </div>
+            ) : amountRaw > 0n ? (
+              <button
+                type="button"
                 disabled={!hasBalance || balance.isLoading}
-                onFocus={() => {
+                onClick={() => {
                   setAmountInputFocused(true);
                   setAmountInput(amountDisplay || '');
                 }}
-                onChange={(e) => handleAmountInputChange(e.target.value)}
-                onBlur={handleAmountInputBlur}
-                className="w-24 rounded-lg border border-border bg-surface-elevated px-2.5 py-1 text-right font-mono text-base font-semibold tabular-nums text-muted-foreground outline-none transition-colors focus:border-accent focus:text-foreground sm:w-28"
+                className="w-full text-center transition-opacity hover:opacity-90 disabled:opacity-50"
                 aria-label={t('lock.lockAmount')}
-              />
-              <span className="text-xs font-medium text-muted-foreground sm:text-sm">
-                {t('common.ansem')}
-              </span>
-              {hasBalance ? (
-                <HoverTooltip label={t('lock.maxHint')} align="end" side="top">
-                  <button
-                    type="button"
-                    className="ml-1 rounded-full bg-accent/15 px-2.5 py-1 text-xs font-bold text-accent transition-colors hover:bg-accent/25 sm:px-3 sm:py-1.5 sm:text-sm"
-                    onClick={() => {
-                      setAmountRawExact(maxRaw);
-                      setAmountSlider(AMOUNT_SLIDER_STEPS);
-                      setAmountInput(formatAnsemAmount(maxRaw));
-                    }}
-                  >
-                    {t('common.max')}
-                  </button>
-                </HoverTooltip>
-              ) : null}
-            </div>
+              >
+                <AnsemAmountDisplay raw={amountRaw} size="hero" align="center" />
+              </button>
+            ) : (
+              <button
+                type="button"
+                disabled={!hasBalance || balance.isLoading}
+                onClick={() => {
+                  setAmountInputFocused(true);
+                  setAmountInput('');
+                }}
+                className="font-mono text-4xl font-bold tabular-nums text-muted-foreground/50 transition-colors hover:text-muted-foreground disabled:opacity-50 sm:text-5xl"
+                aria-label={t('lock.lockAmount')}
+              >
+                0
+              </button>
+            )}
           </div>
+
           <BullSlider
             ariaLabel={t('lock.lockAmount')}
             min={0}
@@ -393,22 +424,33 @@ export function LockPanel({ hideIntro = false }: { hideIntro?: boolean }) {
             onChange={handleAmountSlider}
             disabled={!hasBalance || balance.isLoading}
             bullishness={amountBullishness}
-            compact
           />
-        </div>
+        </section>
 
-        <div>
-          <div className="mb-1 flex items-baseline justify-between gap-2">
-            <span className="text-sm font-semibold text-foreground">{t('lock.lockUntil')}</span>
-            <div className="min-w-0 text-right">
-              <p className="truncate text-xs font-medium text-foreground sm:text-sm">
-                {formatUnlockDate(unlockTs)}
+        <section className="rounded-2xl border border-accent/25 bg-surface-elevated/80 p-4 app-row-glass sm:p-5">
+          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            {t('lock.lockUntil')}
+          </p>
+
+          <div className="mb-4 space-y-1 text-center">
+            <p
+              className={cn(
+                'font-mono text-3xl font-bold tracking-tight text-accent tabular-nums sm:text-4xl',
+                bullishness > 0.75 && 'animate-pulse',
+              )}
+            >
+              {durationAhead}
+            </p>
+            <p className="text-sm font-medium text-foreground sm:text-base">
+              {formatUnlockDate(unlockTs)}
+            </p>
+            {flexLabel ? (
+              <p className="text-xs font-bold uppercase tracking-wide text-accent/90 sm:text-sm">
+                {flexLabel}
               </p>
-              <p className="text-[11px] font-bold tracking-wide text-accent sm:text-xs">
-                {durationAhead}
-              </p>
-            </div>
+            ) : null}
           </div>
+
           <BullSlider
             ariaLabel={t('lock.lockUntil')}
             min={0}
@@ -417,32 +459,21 @@ export function LockPanel({ hideIntro = false }: { hideIntro?: boolean }) {
             value={durationSlider}
             onChange={handleDurationSlider}
             bullishness={bullishness}
-            compact
           />
-          {flexLabel ? (
-            <p
-              className={cn(
-                'mt-1 hidden text-xs font-bold text-accent sm:block',
-                bullishness > 0.75 && 'animate-pulse',
-              )}
-            >
-              {flexLabel}
-            </p>
-          ) : null}
-          <div className="-mx-1 mt-1.5 flex flex-wrap gap-1.5 px-1 pb-0.5">
+          <div className="-mx-1 mt-3 flex flex-wrap justify-center gap-1.5 px-1 pb-0.5">
             {LOCK_PRESETS.map(({ labelKey, minutes }) => (
               <button
                 key={minutes}
                 type="button"
                 onClick={() => applyPreset(minutes)}
-                className="shrink-0 rounded-full border border-border px-2.5 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-border-strong hover:bg-surface-elevated hover:text-foreground sm:min-h-11 sm:px-3 sm:py-2.5 sm:text-sm"
+                className="shrink-0 rounded-full border border-border px-3 py-2 text-xs font-semibold text-muted-foreground transition-colors hover:border-border-strong hover:bg-surface-elevated hover:text-foreground sm:min-h-11 sm:px-3.5 sm:text-sm"
               >
                 {t(labelKey)}
               </button>
             ))}
           </div>
-          <details className="mt-2 sm:hidden">
-            <summary className="cursor-pointer text-xs font-medium text-muted-foreground">
+          <details className="mt-3 sm:hidden">
+            <summary className="cursor-pointer text-center text-xs font-medium text-muted-foreground">
               {t('lock.customUnlockTime')}
             </summary>
             <label className="mt-2 block">
@@ -453,25 +484,29 @@ export function LockPanel({ hideIntro = false }: { hideIntro?: boolean }) {
                 min={minUnlockLocal()}
                 max={maxUnlockLocal()}
                 onChange={(e) => handleUnlockAtChange(e.target.value)}
-                className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-2 text-base font-medium text-foreground outline-none transition-colors focus:border-accent"
+                className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-3 text-base font-medium text-foreground outline-none transition-colors focus:border-accent"
               />
             </label>
           </details>
-          <label className="mt-2 hidden sm:block">
-            <span className="sr-only">Exact unlock date and time</span>
+          <label className="mt-3 hidden sm:block">
+            <span className="mb-1.5 block text-center text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+              {t('lock.customUnlockTime')}
+            </span>
             <input
               type="datetime-local"
               value={unlockAt}
               min={minUnlockLocal()}
               max={maxUnlockLocal()}
               onChange={(e) => handleUnlockAtChange(e.target.value)}
-              className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-2 text-base font-medium text-foreground outline-none transition-colors focus:border-accent"
+              className="w-full rounded-xl border border-border bg-surface-elevated px-3 py-3 text-base font-medium text-foreground outline-none transition-colors focus:border-accent"
             />
           </label>
           {validationError ? (
-            <p className="mt-1.5 text-xs font-medium text-destructive sm:text-sm">{validationError}</p>
+            <p className="mt-2 text-center text-xs font-medium text-destructive sm:text-sm">
+              {validationError}
+            </p>
           ) : null}
-        </div>
+        </section>
 
         <Button
           size="default"
